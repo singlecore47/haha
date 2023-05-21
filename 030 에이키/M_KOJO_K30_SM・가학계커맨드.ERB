@@ -1,0 +1,448 @@
+﻿
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;하드한 조교 커맨드
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;==================================================
+;140, 이라마치오
+;==================================================
+@M_KOJO_MESSAGE_COM_K30_140
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K30_140_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K30_140_1
+;-------------------------------------------------
+;기입 체크(=0, 비표시, 1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입 체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;기본 세트
+	;연모
+	IF TALENT:연모
+		PRINTFORMW 
+		RETURN 1
+	;굴복 3
+	ELSEIF MARK:괘씸각인 == 3
+		PRINTFORMW 
+		RETURN 1
+	;그 이외
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;150, 가슴의 골짜기를 범한다
+;==================================================
+@M_KOJO_MESSAGE_COM_K30_150
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K30_150_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K30_150_1
+;-------------------------------------------------
+;기입 체크(=0, 비표시, 1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입 체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;기본 세트
+	;연모
+	IF TALENT:연모
+		PRINTFORMW 
+		RETURN 1
+	;굴복 3
+	ELSEIF MARK:괘씸각인 == 3
+		PRINTFORMW 
+		RETURN 1
+	;그 이외
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;가학계 커맨드
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;==================================================
+;100, 스팽킹
+;==================================================
+@M_KOJO_MESSAGE_COM_K30_100
+IF TCVAR:30:385 || FLAG:70 || TCVAR:30:억지로
+	CALL TRAIN_MESSAGE
+ELSE
+	CALL K30_TRAIN_MESSAGE_100
+ENDIF
+TCVAR:30:355 = TIME:1
+CALL K30_PRINT_BUTT_IMAGE(SELECTCOM)
+CALL M_KOJO_MESSAGE_COM_K30_100_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K30_100_1
+;-------------------------------------------------
+;기입 체크(=0, 비표시, 1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;小分岐
+	;-------------------------------------------------
+	;初めて
+	;-------------------------------------------------
+	;時姦中
+	IF FLAG:70
+		RETURN 1
+	ELSEIF FIRSTTIME(SELECTCOM)
+		PRINTFORML 「!?」
+		PRINTFORML 「엣.. 갑자기 무슨 짓을 하는겁니까?」
+		PRINTFORMDW 에이키는 아픔보다 갑자기 맞은 것이 더 충격인듯 하다..
+		RETURN 1
+	;マグロスイッチオン
+	ELSEIF TCVAR:30:385 || TCVAR:30:억지로 || TCVAR:30:만취
+		CALL K30_GASPING_MAGURO
+		RETURN 1
+	;ABL:マゾっ気はちゃんと機能してない？結局お尻を使ったプレイになったし適当にＡ感覚で代用
+	;不慣れ
+	ELSEIF ABL:A감각 < 3
+		PRINTFORML 「%TEXTR("/우읏/싫엇/어째서")%... 저, 이런 일을 당해야 할 정도로 나쁜 일을 한 기억은 없다구요!?」
+		PRINTFORML 「체벌이 필요한 쪽은 오히려.. 당신 쪽이 아닐까 싶은데요..」
+		PRINTFORMDW 빨갛게 부은 엉덩이를 어루만지면서 에이키는 불평하고 있다..
+		RETURN 1
+	;非挿入時
+	ELSEIF ALLSAMES(TEQUIP:50, TEQUIP:51, -1)
+		PRINTDATAL
+			DATAFORM 「읏...♥ 마음껏 때려주셨네요...」\n「설마 이대로.. 끝은 아니겠죠♥」
+			DATAFORM 「아아.. 이 얼마나 가혹한..♥」\n「이건.. 당장이라도 포상이 필요하겠네요♥」
+			DATAFORM 「엉덩이가.. 따끔따끔해요...♥」\n「빨리... 달래주세요..♥」
+		ENDDATA
+		PRINTFORMDW 에이키는 막 맞은 엉덩이를 좌우로 흔들며 무언가를 기대하고 있다.
+		IF RAND:2 == 1
+			PRINTFORMDL %CALLNAME:MASTER%는 붉어진 엉덩이를 마치 개처럼 핥았다.
+			IF ABL:A감각 < 5 || RAND:2
+				PRINTFORML 「히얏♥ 잠깐.. %K30_C_NAME(MASTER)%!?」
+				PRINTFORML 「뭔가.. 저리는듯한.. 이상한 느낌이.. 우읏♥」
+				PRINTFORMDW 에이키는 %CALLNAME:MASTER%의 도착적인 벌에 칭얼거리는듯한 목소리를 냈다..
+			ELSE
+				CALL HPH_PRINT, @"「히앗HPH 거깃HPH 거기만 집중적으로 핥지말아줘...HPH」", "L"
+				CALL HPH_PRINT, @"「앗... 아앗HPH 싫엇.. 애태우는건.. 싫어HPH」", "L"
+				PRINTFORMDW 달아오른 엉덩이를 혀로 계속 핥아주자 에이키는 궁지에 몰린듯 다급한 교성을 질렀다..
+			ENDIF
+		ELSE
+			PRINTFORMDL %CALLNAME:MASTER%는 위로하는듯한 손길로 에이키의 엉덩이를 쓰다듬었다.
+			IF ABL:A감각 < 5 || RAND:2
+				PRINTFORML 「아흣♥ 그거, 좋앗... 따끔따끔한게.. 날아가는 느낌..♥」
+				PRINTFORML 「%K30_C_NAME(MASTER)%, 내 엉덩이.. 좀더좀더.. 귀여워해줬으면 좋겠어♥」
+				PRINTFORMDW 따끔한 통증이 쾌감으로 변해가는 감각에 에이키는 푹 빠진 것 같다.
+			ELSE
+				CALL HPH_PRINT, @"「응앗...HPH %K30_C_NAME(MASTER)%의 손, 상냥하고.. 기분 좋지마안.. 그치만..」", "L"
+				PRINTFORMDL 달아오른 엉덩이를 어루만지며 사타구니의 애액이 더욱 흘러나오고있다..
+				CALL HPH_PRINT, @"「그게.. 아주 조금, 허전해서.... 우으으으..HPHHPH」", "L"
+				PRINTFORMDW 기대에 떨고 있는 꽃봉오리를 가볍게 만져주니 염라님의 상스러운 목소리가 주변에 울린다.
+			ENDIF
+		ENDIF
+		RETURN 1
+	ENDIF
+	;挿入時
+	IF PALAM:욕정 < PALAMLV:10 || !RAND:4
+		STRDATA LOCALS
+			DATAFORM 「아우으...♥」\n「지, 지금... 굉장히, 안쪽에서...」\n「히이잇♥」
+			DATAFORM 「꺄앗♥」\n「...맞아서 기분이 좋아지다니」\n「어째서.. 어째서.. 이렇게나..?」
+			DATAFORM 「아훗..♥」\n「... 엉덩이에서.. 엄청난 소리가..」\n「아픈것 보다도.. 부끄러..워요...♥」
+		ENDDATA
+		SIF TEQUIP:51 == MASTER
+			LOCALS '= REPLACE(LOCALS, "♥", "HPH")
+		CALL HPH_PRINT, LOCALS, "L"
+		PRINTFORMDL 엉덩이를 두드리는 손에 살짝만 힘을 더해, 소리가 울려퍼지도록 하여 에이키의 수치심을 부추겨본다,
+		PRINTFORMDW 에이키가 안절부절하면서도 느끼고 있는 것을 \@ !TEQUIP:50 ? 암컷 # 국화 \@구멍이 조이는 정도로 가르쳐주었다..
+	ELSE
+		STRDATA LOCALS
+			DATAFORM 「힉♥ 안... 안돼엣 그거, 안대♥」\n「찌르면서.. 때리는거언.. 안대요옷♥」
+			DATAFORM 「앗! 앙♥ 아히잇♥」\n「지금, 엉덩이 때리면♥」\n「안..♥ 깊숙한곳까짓 느껴버려요오♥」
+			DATAFORM 「후웃♥ 후웃♥ 후우...」\n「...히이잇♥♥」\n「죄송합니다앗♥ 천박한 엉덩이라 죄송합니다앗♥」
+		ENDDATA
+		SIF TEQUIP:51 == MASTER
+			LOCALS '= REPLACE(LOCALS, "♥", "HPH")
+		CALL HPH_PRINT, LOCALS, "L"
+		PRINTFORMDW 스팽킹은 벌써 \@ TEQUIP:51 == MASTER ? 애널 # \@섹스의 쾌락을 높이는 향신료일 뿐만 아니라, 에이키는 거기에 푹 빠진듯 하다..
+	ENDIF
+	PRINTFORML 
+	;Ｖ挿入/Ａ挿入:感覚-低
+	IF TEQUIP:50 == MASTER || ABL:A감각 < 5 || PALAM:욕정 < PALAMLV:10 || RAND:2
+		PRINTFORMDL 갑자기 %CALLNAME:MASTER%는 피스톤을 멈추고 에이키의 엉덩이를 부드럽게 쓰다듬는다...
+		IF TEQUIP:50 == MASTER
+			PRINTFORML 「응.. 거기... 너무 화끈거려서..♥ 아앙♥」
+			PRINTFORML 「아아..♥ 뜨거워..♥」
+			PRINTFORML 「엉덩이.. 허벅지쪽도, 엄청 뜨거워♥」
+		ELSE
+			CALL HPH_PRINT, @"「아앗..HPH　싫어..!　엉덩이 애태우지 말아주세요오..HPH」", "L"
+			CALL HPH_PRINT, @"「%K30_C_NAME(MASTER)%! 부탁해요HPH 부디 기분좋게..HPHHPH」", "L"
+		ENDIF
+		PRINTFORMDW 자극으로 예민해진 엉덩이를 애무당해, \@ !TEQUIP:50 ? 장대를 문 # 흠뻑 젖은 \@질구로부터 꿀이 넘쳐나온다..
+	;Ａ挿入:感覚-高
+	ELSE
+		PRINTFORMDL 거기에 %CALLNAME:MASTER%는 장대를 직장 깊숙이 비틀어 넣었고, 이번엔 강하게 에이키의 엉덩이르 두드렸다.
+		CALL HPH_PRINT, @"「하힛HPHHPH　엉덩잇HPH　히익 히이HPH　격렬햇HPH」", "L"
+		CALL HPH_PRINT, @"「부서져엇HPH　엉덩잇, 부서져려엇HPH」", "W"
+		PRINTFORMDW %CALLNAME:MASTER%에게 지배당하는 감각에 빠져, 에이키는 침을 질질 흘리며 계속 헐떡거렸다.
+	ENDIF
+ENDIF
+RETURN 1
+
+;地の文改変
+@K30_TRAIN_MESSAGE_100
+CALL M_KOJO_COLOR_K30
+IF GROUPMATCH(MASTER, TEQUIP:50, TEQUIP:51)
+	PRINTFORMD 에이키의 \@ !TEQUIP:50 ? 암컷 # 국화 \@구멍을 느긋하게 즐기면서
+ELSEIF TEQUIP:0 & 1 && (EQUIP:치마 || EQUIP:하반신윗도리 || EQUIP:원피스 || EQUIP:기모노)
+	PRINTFORMD 에이키의 %SHOW_BOTTOM(TARGET,1)%를 넘기고
+ELSE
+	PRINTFORMD 에이키의
+ENDIF
+SIF EQUIP:TARGET:레오타드 || EQUIP:TARGET:보디슈트
+	PRINTFORMD %SHOW_하반신속옷(TARGET,2)%에 감싸진
+PRINTFORMDL %HIP(TARGET)%을 손바닥으로 찰싹 때렸다.
+PRINTFORMD %CALLNAME:MASTER%가 완급을 두고 몇 번 두드리는 동안,
+IF ABL:A감각 < 3
+	PRINTFORMDL 에이키의 엉덩이는 붉어져갔다...
+ELSEIF ALLSAMES(TEQUIP:50, TEQUIP:51, -1)
+	PRINTFORMDL 에이키의 사타구니는 자신의 애액으로 젖기 시작했다.
+ELSE
+	PRINTFORMDL 에이키의 \@ !TEQUIP:50 ? 암컷구멍 # 애널 \@는 또다른 자극을 기대하며 큥큥 조여왔다..
+ENDIF
+PRINTFORMW 
+RETURN
+
+;スパンキングというよりおしりぺんぺんプレイを楽しむ映姫様のEXTRASOURCE関数
+@M_KOJO_EXTRASOURCE_COM_K30_100
+SIF TCVAR:30:385 || FLAG:70 || TCVAR:30:억지로
+	RETURN
+SOURCE:굴종 = 750
+SOURCE:고통 /= 2
+SOURCE:공포 /= 2
+TCVAR:커맨드V보정 = 2 * MIN((ABL:A감각 - 1), 10)
+TCVAR:커맨드A보정 = 4 * MIN((ABL:A감각 - 1), 10)
+
+;==================================================
+;104, 눈가리개
+;==================================================
+@M_KOJO_MESSAGE_COM_K30_104
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K30_104_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K30_104_1
+;-------------------------------------------------
+;기입 체크(=0, 비표시, 1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입 체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;기본 세트
+	;장착
+	IF TEQUIP:눈가리개
+		;시간중
+		IF FLAG:70
+			PRINTFORMW 
+			RETURN 1
+		;연모
+		ELSEIF TALENT:연모
+			PRINTFORMW 
+			RETURN 1
+		;굴복 3
+		ELSEIF MARK:괘씸각인 == 3
+			PRINTFORMW 
+			RETURN 1
+		;그 이외
+		ELSE
+			PRINTFORMW 
+			RETURN 1
+		ENDIF
+	;해제
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;105, 줄
+;==================================================
+@M_KOJO_MESSAGE_COM_K30_105
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K30_105_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K30_105_1
+;-------------------------------------------------
+;기입 체크(=0, 비표시, 1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입 체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;기본 세트
+	;장착
+	IF TEQUIP:밧줄
+		;시간중
+		IF FLAG:70
+			PRINTFORMW 
+			RETURN 1
+		;연모
+		ELSEIF TALENT:연모
+			PRINTFORMW 
+			RETURN 1
+		;굴복 3
+		ELSEIF MARK:괘씸각인 == 3
+			PRINTFORMW 
+			RETURN 1
+		;그 이외
+		ELSE
+			PRINTFORMW 
+			RETURN 1
+		ENDIF
+	;해제
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;107, 구속플레이
+;==================================================
+@M_KOJO_MESSAGE_COM_K30_107
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K30_107_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K30_107_1
+;-------------------------------------------------
+;기입 체크(=0, 비표시, 1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입 체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;기본 세트
+	;장착
+	IF TEQUIP:볼개그
+		;연모
+		IF TALENT:연모
+			PRINTFORMW 
+			RETURN 1
+		;굴복 3
+		ELSEIF MARK:괘씸각인 == 3
+			PRINTFORMW 
+			RETURN 1
+		;그 이외
+		ELSE
+			PRINTFORMW 
+			RETURN 1
+		ENDIF
+	;해제
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;108, 젖스팽킹
+;==================================================
+@M_KOJO_MESSAGE_COM_K30_108
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K30_108_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K30_108_1
+;-------------------------------------------------
+;기입 체크(=0, 비표시, 1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입 체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;기본 세트
+	;시간중
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;연모
+	ELSEIF TALENT:연모
+		PRINTFORMW 
+		RETURN 1
+	;굴복 3
+	ELSEIF MARK:괘씸각인 == 3
+		PRINTFORMW 
+		RETURN 1
+	;그 이외
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1

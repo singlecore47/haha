@@ -1,0 +1,520 @@
+﻿;TWあなたは育児に係わるべきではないダメ人間…というのが口上作者の脳内設定
+;なので育児イベント内では全力でパージされています
+
+@M_KOJO_EVENT_K30_CHILD_RAISING_回復
+SIF GETBIT(CFLAG:1804, TALENT:육아중)
+	RETURN 
+PRINTFORML 「후우.. 드디어 본디 컨디션으로 돌아온거같네요..」
+PRINTFORML 「산후도 끝났는데 언제까지고 빈둥빈둥거릴 순 없으니까요」
+PRINTFORMW 「%SHOW_CHILDNAME(30)%... 좀더 좋은 엄마가 되도록 노력할테니까요」
+
+@M_KOJO_EVENT_K30_CHILD_RAISING_離乳
+SIF GETBIT(CFLAG:1804, TALENT:육아중)
+	RETURN 
+IF TALENT:모유체질 == 2
+	PRINTFORML 「...아무리 젖이 나온다고는 해도, 슬슬 젖을 뗄 시기.. 겠죠」
+	PRINTFORML 「%SHOW_CHILDNAME(30)%.. 미안해요, 이제 모유에서 졸업합시다?」
+	PRINTFORML 「하아..」
+	PRINTFORMDW 에이키는 젖을 뗄 시기라 더이상 수유할 수 없는 것에 서운해하고 있다...
+ELSE
+	PRINTFORML 「%SHOW_CHILDNAME(30)%, 자아, 아ㅡ...」
+	PRINTFORML 「이젠 밥도 잘 먹고 장하네요...」
+	PRINTFORML 「그래도 벌써 젖을 뗄 시기라니.. 조금 외로울지도」
+	PRINTFORML 
+	IF TALENT:모유체질 == 1 && EXP:분유경험 > 500 && EXP:출산경험 > 1
+		PRINTFORML 「그런데.. 어째선지 모유는 계속 나오네요..」
+		PRINTFORMW 「이건 혹시 %K30_C_NAME(MASTER)% 때문일까요..?」
+	ELSE
+		PRINTFORML 「%SHOW_CHILDNAME(30)%, 처음 젖을 빨때의 그 얼굴..」
+		PRINTFORML 「너무나 귀여워서 엄마는 너무나 좋아했답니다..?」
+		PRINTFORMDW 에이키는 젖을 뗄 시기라 더이상 수유할 수 없는 것에 서운해하고 있다...
+	ENDIF
+ENDIF
+PRINTFORML 
+
+@M_KOJO_EVENT_K30_CHILD_RAISING_玩具
+SIF GETBIT(CFLAG:1804, TALENT:육아중)
+	RETURN 
+PRINTFORMDL %SHOW_CHILDNAME(30)%가 가지고 놀 장난감에 대해 에이키는 이것저것 생각하고 있다...
+PRINTFORML 
+PRINTFORML 「%SHOW_CHILDNAME(30)%가 가지고 놀아도 안전하고 튼튼하며」
+PRINTFORML 「머리도 좋아지는 그런 장난감... 어디 없을까..?」
+PRINTFORMW 「...코마치나 쿠타카에게 찾는걸 도와달라고 해야겠네요」
+
+@M_KOJO_EVENT_K30_CHILD_RAISING_つかまり立ち
+IF GETBIT(CFLAG:1804, TALENT:육아중)
+	CALL K30_CLEAR_TEXTLINE
+	RETURN 
+ENDIF
+PRINTFORML 「아아.. 놓쳐버렸다..」
+PRINTFORMDL 에이키가 한숨을 내쉬는 동안 %SHOW_CHILDNAME(30)%는 옆에서 책상을 붙잡고 서서 싱글벙글 웃고 있다.
+PRINTFORML 「잠깐 눈을 뗀 사이에도 점점 커지는 것 같네요..」
+PRINTFORMW 「그런데, 이건 정말.. 눈을 뗄 수가 없네요..」
+
+@M_KOJO_EVENT_K30_CHILD_RAISING_よちよち
+IF GETBIT(CFLAG:1804, TALENT:육아중)
+	CALL K30_CLEAR_TEXTLINE
+	RETURN 
+ENDIF
+PRINTFORML 「에엣!? 잠.. 어느새 여기까지!?」
+PRINTFORMDL 아장아장 걸어가던 탈주 용의자가 방을 빠져나오기 직전이였다는 걸 깨닫고
+PRINTFORMDL 염라님 답지않게 당황한 비명을 질렀다.
+PRINTFORML 「%SHOW_CHILDNAME(30)%, 건강한건 좋지만.. 엄마를 너무 놀래키면 안돼요」
+PRINTFORML 「휴우.. 코마치같은 능력이 있다면 조금은 마음이 편할텐데..」
+PRINTFORMDW 천진난만하게 웃는 %SHOW_CHILDNAME(30)%를 안고, 에이키는 피곤한듯 중얼거렸다..
+
+@M_KOJO_EVENT_K30_CHILD_RAISING_会話寸前
+;3日間同じイベントは微妙なので1日のみ
+IF CFLAG:출산경과일 > CHILD_喋る - 3 || GETBIT(CFLAG:1804, TALENT:육아중)
+	CALL K30_CLEAR_TEXTLINE
+	RETURN
+ENDIF
+PRINTFORMDL 염라님의 아이인 만큼 %SHOW_CHILDNAME(30)%는 말을 하는 시기도 매우 빠른 것 같다...
+PRINTFORML 
+PRINTFORML 「엄마」
+CALL COLORMESSAGE(@"「엄마아」", K30_CHILDWORD() ,1 ,0)
+PRINTFORML 「안녕하세요」
+CALL COLORMESSAGE(@"「앙녀엉하세요오」", K30_CHILDWORD() ,1 ,0)
+PRINTFORML 「오구오구, 정말 잘했어요♪」
+PRINTFORMDL 에이키는 기뻐서 참을 수 없는듯 %SHOW_CHILDNAME(30)%의 머리를 쓰다듬고 잇다...
+CALL COLORMESSAGE(@"「저엉말 잘해써요!」", K30_CHILDWORD() ,2 ,0)
+
+@M_KOJO_EVENT_K30_CHILD_RAISING_喋る
+IF GETBIT(CFLAG:1804, TALENT:육아중)
+	CALL K30_CLEAR_TEXTLINE
+	RETURN 
+ENDIF
+PRINTFORMDL 빠르게 성장하는 %SHOW_CHILDNAME(30)%는 에이키에게 여러 질문을 던지고 있다..
+PRINTFORML 
+CALL COLORMESSAGE(@"「엄마아, 이건 뭐어야?」", K30_CHILDWORD() ,1 ,0)
+PRINTFORML 「그건 말야, 꽃이란다. 예쁘게 피어서 모두의 시선을 독차지하고싶대.」
+CALL COLORMESSAGE(@"「엄마아, 이 꽃님은 왜 빨간거야아?」", K30_CHILDWORD() ,1 ,0)
+PRINTFORML 「후훗.. 그건 엄마도 모르겠어.. 왜 그런 것 같니?」
+PRINTFORMDL 에이키는 질문에 진지하게 마주봐주며 아이가 온갖 것 흥미를 가진다는 사실에 내심 놀라고 있다.
+PRINTFORML 
+CALL COLORMESSAGE(@"「있잖아 있잖아, 엄마!」", K30_CHILDWORD() ,1 ,0)
+CALL COLORMESSAGE(@"「저 언니는 왜 매일 낮잠만 자는거야?」", K30_CHILDWORD() ,1 ,0)
+PRINTFORMDL %SHOW_CHILDNAME(30)%가 가리키는 곳에는 낮잠에 빠진 코마치가 있다..
+PRINTFORML 「...정말 왜 그러는걸까.. 엄마도 전혀 모르겠어」
+PRINTFORMW 「저 언니한데 한 번 물어보자.. 뭐라고 할까나ㅡ..」
+
+@M_KOJO_EVENT_K30_CHILD_RAISING_語彙
+IF GETBIT(CFLAG:1804, TALENT:육아중)
+	CALL K30_CLEAR_TEXTLINE
+	RETURN 
+ENDIF
+PRINTFORMDL %SHOW_CHILDNAME(30)%도 꽤나 성장하여 슬슬 사리를 분별할려고 한다.
+PRINTFORMDL 에이키는 자신의 아이라면 이제 이해할 수 있겠다고 생각해, 훈육에 대해 생각하고 있다..
+PRINTFORML 
+PRINTFORML 「알겠나요, 『거짓말은 도둑놈 될 장본』이라고들 해요」
+PRINTFORML 「조그만 악행에 익숙해져버리면 결국 나중엔 매우 나쁜 일도 눈 깜빡안하고 저지르는 사람이 되어버리는거야」
+PRINTFORML 「%SHOW_CHILDNAME(30)%도 앞으로 『미안해요』라고 사과해야 할 것도 망설여지는 때가 있을지도 모릅니다.」
+PRINTFORML 「그런데, 거기서 거짓말을..」
+PRINTFORML 
+PRINTFORMDL 에이키는 되도록 알아듣기 쉽도록 쉬운 말을 쓰고 있지만, 결국 평소의 설교와 다를 바가 없다..
+PRINTFORMDL 똑똑한 %SHOW_CHILDNAME(30)%는 어떻게든 이야기를 이해하는 듯 하지만
+CALL COLORMESSAGE(@"「...엄마 이야기 너무 길어ㅡ!」", K30_CHILDWORD() ,1 ,0)
+PRINTFORMDW 아무래도 참고 듣는 것과는 별개인듯 하다..
+
+@M_KOJO_EVENT_K30_CHILD_RAISING_しつけ
+IF GETBIT(CFLAG:1804, TALENT:육아중)
+	CALL K30_CLEAR_TEXTLINE
+	RETURN 
+ENDIF
+LOCAL = FLAG:구상색 ? 0xFF003C # GETDEFCOLOR()
+LOCALS = %\@ CHILD_SEX:30:(TALENT:육아중) == 1 ? 저 # 나 \@%
+CALL COLORMESSAGE(@"「언니가 낮잠 좋아하는거, %LOCALS% 알고 있다구요」", K30_CHILDWORD() ,1 ,0)
+CALL COLORMESSAGE(@"「낮잠은 일이 끝나고나서 한가득 자도록 해요」", K30_CHILDWORD() ,1 ,0)
+CALL COLORMESSAGE(@"「그러니 지금은 낮잠 금지에요ㅡ 엄마한데 또 혼날꺼에요!」", K30_CHILDWORD() ,1 ,0)
+CALL COLORMESSAGE(@"「네에, 그렇죠..」", LOCAL ,1 ,0)
+PRINTFORMDW ...지나가던 에이키의 앞에는 정좌중인 코마치와 열심히 말을 거는 %SHOW_CHILDNAME(30)%가 있었다.
+PRINTFORML 
+PRINTFORML 「어라? %SHOW_CHILDNAME(30)%와.. 코마치..?」
+PRINTFORML 「...하아... 훈육도, 손이 많이가는 것도, 설마 저 아이쪽일 줄은..」
+PRINTFORMDW 에이키는 바로 어떤 상황인지 눈치채고는 어이가 없다는 듯 한숨을 쉰다.
+PRINTFORML 
+PRINTFORML 「%SHOW_CHILDNAME(30)%, 엄마도 이 언니랑 『한가득』 이야기할 일이 생겼단다」
+PRINTFORML 「다른곳에서 잠깐 놀다오렴」
+CALL COLORMESSAGE(@"「네에!」", K30_CHILDWORD() ,1 ,0)
+CALL COLORMESSAGE(@"「으아아.. 시키님이 마치 두 명, 설교도 두배가 됐어..」", LOCAL ,1 ,0)
+PRINTFORMDW 또 설교 코스가 확정된 코마치는 어깨를 축 늘어뜨렸다...
+
+@M_KOJO_EVENT_K30_CHILD_RAISING_就学
+IF GETBIT(CFLAG:1804, TALENT:육아중)
+	CALL K30_CLEAR_TEXTLINE
+	RETURN 
+ENDIF
+PRINTFORMDL 서당에 등교하게 된 첫 날, 활기차게 나가는 %SHOW_CHILDNAME(30)%를 에이키는 배웅했다.
+PRINTFORML 
+PRINTFORML 「...알겠죠? 서당에선 선생님 말을 잘 들을 것」
+PRINTFORML 「그리고, 뭔가 곤란해하고 있는 친구가 있으면 자진해서 도와주세요」
+PRINTFORML 「그럼, 조심해서 다녀오세요.」
+CALL COLORMESSAGE(@"「네에! 다녀오겠습니다!!」", K30_CHILDWORD() ,1 ,0)
+PRINTFORML 
+PRINTFORMDW 활기차게 달려나가는 %SHOW_CHILDNAME(30)%의 등을 에이키는 감개무량한듯 계속 쳐다보았다...
+
+@M_KOJO_EVENT_K30_CHILD_RAISING_自立前
+IF GETBIT(CFLAG:1804, TALENT:육아중)
+	CALL K30_CLEAR_TEXTLINE
+	RETURN 
+ENDIF
+IF CHILD_SEX:30:(TALENT:육아중) == 1
+	PRINTFORMDL %SHOW_CHILDNAME(30)%는 키도 커지고, 어머니처럼 아름답게 미녀로 성장했다.
+ELSE
+	PRINTFORMDL %SHOW_CHILDNAME(30)%는 어머니의 키를 훨씬 앞질러 씩씩하게 성장했다.
+ENDIF
+PRINTFORMDL 장래의 일을 내다보며 에이키는 아이와 이야기하고 있다...
+PRINTFORML 
+PRINTFORML 「%SHOW_CHILDNAME(30)%가 일을 돕고 싶다고 말해주는 것은 매우 기뻐요.」
+PRINTFORML 「하지만, 저는 엄마로써 그걸 인정할 수는 없답니다.」
+PRINTFORML 「...죄를 재판하는 것 자체도 죄, 곁에서 그 재판을 돕는 것만으로도 죄를 지게 되고 그 죄에게서 벗어날 수 없습니다.」
+PRINTFORML 「저는 %SHOW_CHILDNAME(30)%에게 그런 무거운 짐을 지게 하고 싶지 않아요...」
+CALL COLORMESSAGE(@"「………」", K30_CHILDWORD() ,1 ,0)
+PRINTFORML 
+PRINTFORMDW 에이키와 %SHOW_CHILDNAME(30)%의 대화는 늦게까지 계속되었다..
+
+@K30_CHILD_INDEPENDENCE
+CALL K30_D_LINE
+IF CFLAG:1805
+	PRINTFORMDL 에이키가 남몰래 키워낸 아이는 마침내 자립의 시기를 맞았다.
+	PRINTFORMDL 앞으로의 일을 생각해 %CSTR:30:83%는 환상향에서 떠나는 것 같다.
+	PRINTFORMDL 조용히 작별인사를 마치고, 에이키 단 한사람이 지켜보며 %CSTR:30:83%는 떠나간다..
+	PRINTFORMDW 에이키는 그저 자신의 아이가 무사히 지내도록 빌며 눈물을 흘릴 수 밖에 없었다.
+	PRINTFORML 
+	PRINTFORMDL ...%CSTR:30:83%를 배웅한 후, 에이키는 스스로에게 미리 생각해놨던 벌을 내렸다..
+	CALL COLORMESSAGE, "에이키의 최대 체력이 200 줄었습니다.", C_YELLOW ,1 ,1
+	CALL COLORMESSAGE, "에이키의 최대 기력이 200 줄었습니다.", C_YELLOW ,2 ,1
+	PRINTFORML 
+	CALL COLORMESSAGE, "에이키는 두 번 다시 아이를 낳을 수 없는 불임이 되었습니다...", C_RED, 2 ,1
+	BASE:30:체력 -= 200
+	MAXBASE:30:체력 -= 200
+	BASE:30:기력 -= 200
+	MAXBASE:30:기력 -= 200
+ELSE
+	LOCALS = %\@ CHILD_SEX:30:(TALENT:육아중) == 1 ? 딸 # 아들 \@%
+	PRINTFORMDL 에이키의 %LOCALS%, %SHOW_CHILDNAME(30)%는 무사히 자립의 시기를 맞이했다.
+	PRINTFORML 
+	PRINTFORML 「...당신도 언젠가 저의 품으로 돌아오겠지요」
+	PRINTFORML 「그때에는 재판하는 쪽과 재판받는 쪽... %SHOW_CHILDNAME(30)%의 행실을 돌아보는데에 사적인 감정은 넣지않을거에요.」
+	PRINTFORML 「하지만 괜찮아요, 당신은 저의 자랑스러운 %LOCALS%...」
+	PRINTFORML 「%SHOW_CHILDNAME(30)%가 제대로 생각하며 행동한다면 분명.. 잘못될 일은 없겠지요.」
+	PRINTFORML 「가슴을 펴고 웃는 얼굴로 다시 만날 수 있도록, 앞으로 선행을 쌓는거에요.」
+	PRINTFORML 「자, 가도록 하세요.」
+	PRINTFORML 
+	IF CFLAG:임신경과일수 >= 20 && CFLAG:임신자각상태
+		PRINTFORMW 멀어지는 아이의 뒷모습을 바라보며 뱃속의 아이도 무사히 잘 키워내자고 에이키는 조용히 맹세했다.
+	ELSE
+		PRINTFORMW 멀어지는 아이의 뒷모습을 바라보며 에이키는 %LOCALS%의 무사를 기도했다..
+	ENDIF
+	CALL 自立先選定(30, TALENT:육아중)
+	CALL ASK_DIARY(@"%SHOW_CHILDNAME(30)%가 독립했다.")
+	TALENT:육아중 = 0
+	CFLAG:육아인원수 = 0
+	CFLAG:MASTER:육아인원수 -= 1
+ENDIF
+CFLAG:출산경과일 = 0
+PRINTFORML 
+
+@M_KOJO_EVENT_K30_CHILD_RAISING_登下校(ARGS,ARG,ARG:1)
+SIF GETBIT(CFLAG:1804, TALENT:육아중)
+	RETURN
+IF !ARG
+	PRINTDATAL
+		DATAFORM 「%SHOW_CHILDNAME(30)%, 다녀오세요」\n「늦기전에 돌아올게요」
+		DATAFORM 「잊어버린 건 없지요?」\n「네, 다녀올게요ㅡ」
+		DATAFORM 「어라? 오늘은 빨리 나가는거같네요?」\n「...그래, 할 일이 있는거네」\n「그럼 조심히 다녀오세요」
+	ENDDATA
+ELSE
+	PRINTDATAL
+		DATAFORM 「네, 어서오세요」\n「손 먼저 씻고오세요」
+		DATAFORM 「%SHOW_CHILDNAME(30)%, 어서오세요」\n「...후훗, 왠지 즐거워보이네요. 뭔가 좋은 일이라도 있었나요?」
+		DATAFORM 「어서오세요, 오늘은 일찍 왔구나」
+	ENDDATA
+ENDIF
+
+@M_KOJO_EVENT_K30_CHILD_RAISING_食事(ARGS,ARG,ARG:1)
+SIF GETBIT(CFLAG:1804, TALENT:육아중)
+	RETURN
+IF ARGS == "授乳"
+	PRINTFORML 「그래그래..%SHOW_CHILDNAME(30)%, 젖 빠는게 능숙해졌네요.」
+ELSEIF ARGS == "離乳食"
+	PRINTDATAL
+		DATAFORM 「어머.. 이렇게나 흘려서..」\n「자아, 한번 더.. 아앙ㅡ..」
+		DATAFORM 「앗, 안돼.. 아직 좀 뜨거울지도..」\n「후ㅡ.. 후ㅡ..」\n「자아, 아앙..」
+		DATAFORM 「으으음.. 오늘은 기분이 안 좋은걸까..」\n「부탁이니까, 한 번만 더 아앙 합시다? 아아.. 정말..」
+	ENDDATA
+ELSEIF ARGS == "幼少期"
+	PRINTDATAL
+		DATAFORM 「에? 엄마랑 똑같은거 먹고 싶어..?」\n「이건 %SHOW_CHILDNAME(30)%가 먹으면 속이 놀라서 딸꾹질이 나올 수도 있어요..」
+		DATAFORM 「%SHOW_CHILDNAME(30)%, 밥은 잘 씹어먹어야죠」
+		DATAFORM 「%SHOW_CHILDNAME(30)%, 편식은 안돼요」
+	ENDDATA
+ELSE
+
+ENDIF
+
+[SKIPSTART]
+@M_KOJO_EVENT_K30_CHILD_RAISING_BATH(ARGS,ARG,ARG:1)
+IF ARGS == "幼児期"
+
+ELSEIF ARGS == "幼少期"
+
+ELSE
+
+ENDIF
+
+@M_KOJO_EVENT_K30_CHILD_RAISING_SLEEPING(ARGS,ARG,ARG:1)
+IF ARGS == "幼児期"
+
+ELSEIF ARGS == "幼少期"
+
+ELSE
+
+ENDIF
+
+@M_KOJO_EVENT_K30_CHILD_RAISING_OYASUMI(ARGS,ARG,ARG:1)
+
+@M_KOJO_EVENT_K30_CHILD_RAISING_TOY(ARGS,ARG,ARG:1)
+IF ARGS == "幼児期"
+
+ELSEIF ARGS == "幼少期"
+
+ELSE
+
+ENDIF
+[SKIPEND]
+;子供自由行動
+;同室者にあいさつをする
+@M_KOJO_EVENT_K30_CHILD_RAISING_OTHER(ARGS,ARG,ARG:1)
+#DIM CHR
+#DIM VAL
+#DIM TEMP
+#DIM L_COUNT
+#DIM 連打防止
+#DIMS キャラ名
+#DIMS あいさつ
+SIF GETBIT(CFLAG:1804, TALENT:육아중) || !GET_TARGETNUM() || TIME:1 - 連打防止 < 30
+	RETURN
+VARSET LOCAL
+VAL = 0
+TEMP = 0
+IF GET_TARGETNUM() == 1
+	CHR = TARGET
+ELSE
+	FOR L_COUNT,1, GET_TARGETNUM() + 1
+		SIF CFLAG:(TARGET:L_COUNT):현재위치 != CFLAG:MASTER:현재위치
+			CONTINUE
+		LOCAL:TEMP = TARGET:L_COUNT
+		TEMP ++
+	NEXT
+	SIF !TEMP
+		RETURN
+	CHR = LOCAL:(RAND:TEMP)
+ENDIF
+SIF !CHR
+	RETURN
+連打防止 = TIME:1
+IF ARGS == "幼児期"
+	CHR = RAND:2 ? CHR # 30
+	PRINTDATADL
+		DATAFORM %SHOW_CHILDNAME(30)%는%CALLNAME:CHR%에게 손을 팔랑팔랑 흔들었다.
+		DATAFORM %SHOW_CHILDNAME(30)%는%CALLNAME:CHR%의 얼굴을 가만히 보고있다...
+		DATAFORM %SHOW_CHILDNAME(30)%는%CALLNAME:CHR%의 얼굴을 바라보며 기분좋게 웃고 있다...
+		DATAFORM %SHOW_CHILDNAME(30)%는%CALLNAME:CHR%의 머리 위쪽을 바라보고 있다..\n뭔가 보이는걸까...?
+		DATAFORM %SHOW_CHILDNAME(30)%는%CALLNAME:CHR%의 얼굴을 보고 눈을 동그랗게 뜨고 있다...\n무엇에 놀라고 있는 걸까...?
+	ENDDATA
+ELSEIF ARGS == "幼少期"
+	SELECTCASE CHR
+		CASE 23
+			キャラ名 = %\@ RAND:3 ? 요우무 # 반쪽이의 \@%
+		CASE 24
+			キャラ名 = %\@ RAND:3 ? 첸 # %TEXTR("고양이의/냥ㅡ냥ㅡ")% \@%
+		CASE 25
+			キャラ名 = %\@ RAND:3 ? 란 # %TEXTR("여우의/꼬리의")% \@%
+		CASE 30
+			キャラ名 = 엄마
+		CASE 26
+			キャラ名 = %\@ RAND:3 ? 유카리 # 틈새의 \@%
+		CASE 66
+			キャラ名 = %\@ RAND:3 ? 유유코 # %TEXTR("유령의/대식가의")% \@%
+		CASE 67
+			キャラ名 = %\@ RAND:3 ? 케이네 # \@%선생님
+		CASE 76
+			キャラ名 = %\@ RAND:2 ? 코마치 # \@%언니
+		CASE 113
+			キャラ名 = すてきな
+		CASE 127
+			キャラ名 = %\@ RAND:3 ? 에이카 # %TEXTR("해파리의/돌탑 건축가의")% \@%
+		CASE 128
+			キャラ名 = %\@ RAND:3 ? 우루미 # %TEXTR("음메ㅡ음메ㅡ/생선가게의")% \@%
+		CASE 129
+			キャラ名 = %\@ RAND:2 ? 쿠타카 # \@%언니
+		CASE 130
+			キャラ名 = %\@ RAND:3 ? 야치에 # 거북이의 \@%
+		CASE 131
+			キャラ名 = %\@ RAND:3 ? 마유미 # 하니와의 \@%
+		CASE 132
+			キャラ名 = 케이키
+		CASE 133
+			キャラ名 = %\@ RAND:3 ? 사키 # 말의 \@%
+		CASE 143
+			キャラ名 = %\@ RAND:3 ? 유마 # 양의 \@%
+		CASEELSE
+			キャラ名 = 
+	ENDSELECT
+	SIF !GROUPMATCH(CHR, 30, 67, 76, 129)
+		キャラ名 = %キャラ名% 언니
+	IF ONCE(@"幼%TOSTR(CHR)%")
+		あいさつ = %\@ INRANGE(TIME, 240, 599) ? 안녕하세요ㅡ # %K30_GREETING_EIKI()% \@%
+		CALL COLORMESSAGE, @"「%キャラ名%, %あいさつ%!」", K30_CHILDWORD() ,1 ,0
+		PRINTFORMDL %SHOW_CHILDNAME(30)%는%\@ CHR == 30 ? 에이키에게 인사를 반복하고 있다. # 기운차게 %CALLNAME:CHR%에게 인사했다. \@%
+	ELSE
+		あいさつ = 그림그리기 하자ㅡ/%\@ TALENT:CHR:체형 < 0 ? 같이 놀자ㅡ # 안아줘ㅡ \@%/
+		あいさつ += @"%\@ TALENT:CHR:음악지식 == 2 ? 노래하자! # 이야기하자! \@%/%\@ TALENT:CHR:동물귀 ? 동물귀 만지게 해줘! # \@%/"
+		あいさつ += @"%\@ CFLAG:CHR:임신경과일수 > 39 ? 배 엄청 크네! # 건강하신가요ㅡ? \@%/%\@ TALENT:CHR:기분 > 0 ? 좋은 일이라도 있었어ㅡ? # \@%/"
+		あいさつ += @"%\@ K30_JOBCHECK(CHR) ? 일 바빠? # \@%/%\@ BASE:CHR:술기운 <= 2 ? # 술 냄새ㅡ! \@%/"
+		CALL COLORMESSAGE, @"「%キャラ名%、%TEXTR(あいさつ)%」", K30_CHILDWORD() ,1 ,0
+		PRINTFORMDL %SHOW_CHILDNAME(30)%는%CALLNAME:CHR%가 놀아줬으면 하는듯 하다.
+	ENDIF
+ELSEIF ONCE(@"自%TOSTR(CHR)%")
+	あいさつ = %\@ INRANGE(TIME, 240, 599) ? 안녕하세요ㅡ # %K30_GREETING_EIKI()% \@%
+	SELECTCASE CHR
+		CASE 30
+			IF CHILD_SEX:30:(TALENT:육아중) == 1
+				CALL COLORMESSAGE, @"「엄마, 있지..」", K30_CHILDWORD() ,1 ,0
+			ELSE
+				CALL COLORMESSAGE, @"「엄마, 있잖아..」", K30_CHILDWORD() ,1 ,0
+			ENDIF
+			PRINTFORMDL %SHOW_CHILDNAME(30)%는 에이키와 이야기 하고 있다.
+		CASE 76, 129
+			CALL COLORMESSAGE, @"「%CALLNAME:CHR% 언니 %あいさつ%」", K30_CHILDWORD() ,1 ,0
+			SIF K30_JOBCHECK(ARG)
+				CALL COLORMESSAGE, @"「일 힘내 %\@ CHR == 76 ? ...고 있는거 맞지? # ㅡ \@%」", K30_CHILDWORD() ,1 ,0
+			PRINTDATADL
+				DATAFORM %SHOW_CHILDNAME(30)%는%CALLNAME:CHR%에게 %TEXTR("가볍게/친숙하게")% 인사했다.
+				DATAFORM %CALLNAME:CHR%와 %SHOW_CHILDNAME(30)%가 다정하게 말하는 모습은 마치 언니와%\@ CHILD_SEX:30:(TALENT:육아중) == 1 ? 여동생 # 남동생 \@%같다..
+			ENDDATA
+		CASE 113
+			CALL COLORMESSAGE, @"「헤카티아님 %あいさつ%」", K30_CHILDWORD() ,1 ,0
+			PRINTDATADL
+				DATAFORM %SHOW_CHILDNAME(30)%는 헤카티아에게 공손히 인사했다.
+				DATAFORM 헤카티아가 눈앞에 있어서인지, %SHOW_CHILDNAME(30)% 조금 긴장하고 있는 것 같다..
+			ENDDATA
+		CASE 49, 80, 66, 26
+			CALL COLORMESSAGE, @"「%CALLNAME:CHR%씨, %あいさつ%」", K30_CHILDWORD() ,1 ,0
+			SIF K30_JOBCHECK(ARG)
+				CALL COLORMESSAGE, @"「일, 수고하시네요」", K30_CHILDWORD() ,1 ,0
+			PRINTDATADL
+				DATAFORM %SHOW_CHILDNAME(30)%는%CALLNAME:CHR%에게 미소로 인사했다.
+				DATAFORM %CALLNAME:CHR%와 %SHOW_CHILDNAME(30)%는 %TEXTR("세상/일의")% 이야기를 하고 있다.
+			ENDDATA
+		CASE 56, 89 TO 92
+			CALL COLORMESSAGE, @"「%CALLNAME:CHR%씨, %あいさつ%」", K30_CHILDWORD() ,1 ,0
+			PRINTFORMDL  %SHOW_CHILDNAME(30)%는 %CALLNAME:CHR%에게 인사했다.
+		CASEELSE
+			キャラ名 = %CALLNAME:CHR%%\@ TALENT:CHR:신령 ? 님 # 씨 \@%
+			CALL COLORMESSAGE, @"「%キャラ名% %あいさつ%」", K30_CHILDWORD() ,1 ,0
+			SIF K30_JOBCHECK(ARG)
+				CALL COLORMESSAGE, @"「일, 수고하시네요」", K30_CHILDWORD() ,1 ,0
+			PRINTFORMDL  %SHOW_CHILDNAME(30)%는 %CALLNAME:CHR%에게 %TEXTR("예의바르게/공손하게")% 인사했다.
+	ENDSELECT
+ENDIF
+
+;仕事中の声掛けか判定する関数
+@K30_JOBCHECK(ARG)
+#FUNCTION
+SIF !업무일체크(ARG)
+	RETURNF 0
+;遊び/宴会に参加/宴会後の酔い/女子会
+SIF GROUPMATCH(CFLAG:ARG:직종, 46, 49, 51, 52)
+	RETURNF 0
+;その他職種
+RETURNF 1
+;@M_KOJO_EVENT_K30_CHILD_DAIRY_口上手紙(ARG)
+
+
+;@M_KOJO_EVENT_K30_CHILD_DAIRY_共通手紙(ARG, ARGS)
+
+@M_KOJO_EVENT_K30_CHILD_DAIRY_寺子屋(ARGS,ARG,ARG:1)
+SIF GETBIT(CFLAG:1804, TALENT:육아중)
+	RETURN
+IF ARGS == "怪我させた"
+	CALL K30_CLEAR_TEXTLINE(4)
+	PRINTFORMDL 아무래도 따돌림 당하는 아이를 감싸고, 따돌리던 아이들에게 혼자 따진 것 같은데..
+	PRINTFORML 
+	PRINTFORML 「...네, 들고 있던 자를 휘둘러서, 괴롭히던 아이들에게 사정없이 찰싹찰싹하고.. 」
+	PRINTFORML 「마지막엔 그 아이들을 전부 정좌시키고 설교하면서 계속 때렸다고 했던가요..」
+	PRINTFORML 「울면서 사과하는 상대를 때리는 모습은.. 선생님조차도 조금 무서웠었다고 하네요」
+	PRINTFORML 「저를 닮았다고 하면 그렇습니다만.. 지나친건 좋지않겠죠」
+	PRINTFORML 
+	PRINTFORMDL 미니 염라님에게 무자비하게 된통 혼난다면 어른이라도 견디기 힘들것이다.
+	PRINTFORMDL 그 아이들은 치료와 마음의 케어가 필요하겠지..
+ELSEIF ARGS == "褒められた"
+	CALL K30_CLEAR_TEXTLINE(2)
+	PRINTFORML 
+	IF RAND:2
+		PRINTFORML 「후후훗♪　%SHOW_CHILDNAME(30)%에게는 『부끄러우니까』라고 입막음을 당했지만요」
+		PRINTFORML 「저 아이 매일 아침 일찍 가서, 모두를 위해 교실을 청소했다네요」
+		PRINTFORML 「다행이에요. %K30_C_NAME(MASTER)%」
+		PRINTFORML 「%SHOW_CHILDNAME(30)%는 당신의 몇 안되는 장점을 잘 물려받았네요」
+		PRINTFORMDL ...왠지 에이키에게 비방을 들은 것 같지만 사실이라 아무 말도 하지못했다..
+	ELSE
+		PRINTFORML 「....와, 그런 느낌으로 친구끼리의 싸움을 잘 중재했다고 해요」
+		PRINTFORML 「%SHOW_CHILDNAME(30)%는 『별 것 아니에요. 엄마를 따라한 것 뿐일걸요』라고 말했지만..」
+		PRINTFORML 「저 아이가 제 나름대로의 생각으로.. 옳다고 생각되는 행동을 했다.」
+		PRINTFORML 「후후훗.. 몸뿐만 아니라, %SHOW_CHILDNAME(30)%는 훌룡하게 설장하고 있군요」
+		PRINTFORMDL 에이키는 아이의 성장이 너무나 기쁜듯하다.
+	ENDIF
+ENDIF
+
+;無自覚孕ませ関連口上
+@K30_INSENSIBLE_PREGNANCY
+#DIM NUM
+LOCAL = FLAG:스탠딩종류
+FLAG:스탠딩종류 = 1
+LOCAL:1 = CFLAG:30:대체적용
+CFLAG:30:대체적용 = 1
+IF CFLAG:임신경과일수 == 40
+	COM_STR = K30_無表情
+	CALL PRINT_FACE, 30, "通常", "妊娠服", "", "無表情"
+	PRINTFORML 「으음, 분명 뭔가 착각한거겠죠..」
+	PRINTFORML 「배가 커진건 그냥 살찐걸거에요..」
+	PRINTFORML 「피곤해지기 쉬워진것도.. 월경이 오지 않는것도.. 」
+	PRINTFORML 「그래요, 분명, 그런걸거에요..」
+	PRINTFORMDW 에이키는 필사적으로 부정하고 있다..
+ELSEIF CFLAG:임신경과일수 == 60
+	COM_STR = K30_泣き
+	CALL PRINT_FACE, 30, "赤面", "妊娠服", "", "泣き"
+	PRINTFORML 「임신...? 제가.. 아기를..」
+	PRINTFORML 「어째서, 왜.. 제가, 이런 일을..」
+	PRINTFORML 「어째서? 어째서어!? 어째서!!!!!」
+	PRINTFORML 「우읏.. 우흐읏, 흐흑...」
+	PRINTFORMDW 에이키는 너무나 충격을 받은것인지 그저 우는 것 밖에 할 수 없다..
+ELSEIF CFLAG:출산경과일 == 1
+	COM_STR = K30_無表情
+	CALL PRINT_FACE, 30, "通常", "服_パジャマ", "", "無表情"
+	PRINTFORML 「누가 아버지인지는 결국 알 수 없었지만」
+	PRINTFORML 「진통을 겪으며 이 아이를 낳은건 분명 나.」
+	PRINTFORML 「%SHOW_CHILDNAME(30)%의 엄마는 틀림없이 나..」
+	PRINTFORML 「제가, 오직 저만이 당신을 지킬 수 있어요...」
+	PRINTFORMDW 새근새근 자고있는 아이의 옆에서 에이키는 홀로 %SHOW_CHILDNAME(30)%를 키우기로 결심했다.
+	;出産隠蔽処理
+	NUM = TALENT:육아중
+	CSTR:30:83 = %SHOW_CHILDNAME(30)%
+	CHILDNAME:30:NUM =
+	CHILD_WEATHER:30:NUM = 
+	CHILD_AREA:30:NUM = 0
+	CHILD_SEX:30:NUM = 0
+	CHILD_BIRTHDAY:30:NUM = 0
+	CHILD_BIRTHDATE:30:NUM = 0
+	CHILD_LOVE:30:NUM = 0
+	CFLAG:육아인원수 = 0
+	CFLAG:아이인원수 --
+	CFLAG:MASTER:아이인원수 --
+	CFLAG:MASTER:육아인원수 --
+	TALENT:육아중 = 0
+ENDIF
+FLAG:스탠딩종류 = LOCAL
+CFLAG:30:대체적용 = LOCAL:1
+COM_STR = 
+RETURN 1

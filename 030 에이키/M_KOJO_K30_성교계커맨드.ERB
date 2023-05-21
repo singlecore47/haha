@@ -1,0 +1,2667 @@
+﻿;※※※※※※※※※※※※※※※※※※※※※※※※※
+;성교系コマンド
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;==================================================
+;60,正常位
+;==================================================
+@M_KOJO_MESSAGE_COM_K30_60
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K30_60_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K30_60_1
+TCVAR:30:398 = 0
+;-------------------------------------------------
+;立位
+;기입 체크（=0, 비표시、1, 표시）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL && TFLAG:193
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;マグロスイッチオン
+	ELSEIF TCVAR:30:385 || TCVAR:30:억지로 || TCVAR:30:만취
+		CALL K30_GASPING_MAGURO
+		RETURN 1
+	ENDIF
+	;-------------------------------------------------
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	IF LOCAL:1 && TCVAR:100 == PLAYER
+		CALL K30_GASPING_V("挿入継続")
+		RETURN 1
+	ENDIF
+	;基本セット
+	LOCAL = ABL:V감각 < 3 ? 2 # 4
+	SELECTCASE RAND:LOCAL
+		CASE 0, 1
+			CALL K30_GASPING_V("基本セット")
+		CASE 2
+			PRINTFORML 「으응.. 앗♥　잘 잡아줘..」
+			PRINTFORMDW 불안정한 자세의 피스톤으로 얕게 비빌 수 밖에 없지만, 에이키의 반응을 들으면서 각도를 바꾸어서 공격한다.
+			PRINTFORML 「아앗, 싫♥　거기, 안대♥　거긴 약한걸..」
+			PRINTFORMDL 에이키의 약점을 발견해 강약을 붙이면서 더욱 집요하게 공격했다.
+			PRINTFORML 「힛♥　히앗♥　안됏, 거기만 공격하대면♥」
+			PRINTFORMW 「기분 너무 좋아져섯.. 서 있을 수가 없어..♥」
+		CASE 3
+			PRINTFORML 「앗♥　느으읏♥　시. 시러엇..%K30_C_NAME(MASTER)%, 뭐하는거야..」
+			IF INROOM(CFLAG:현재위치)
+				PRINTFORMDL %CALLNAME:MASTER%는 에이키를 벽에다 밀어붙여 고정한다
+				PRINTFORMDL 아래에서 건져올리는듯한 피스톤으로, 에이키의 안쪽을 도려낸다.
+				PRINTFORMW 「아♥　시러엇♥　안까지.. 닿아서엇♥　안, 안돼엣♥」
+			ELSE
+				PRINTFORMDL 에이키를 더욱 격렬하게 탐하기 위해 삽입한채 두 다리를 끌어안는다.
+				PRINTFORMDL 놀란 에이키를 껴안아 깊고 긴 스트로크로 몰아갔다.
+				PRINTFORMW 「싫♥　싫어엇♥　아으웃♥　거깃, 찌르면 안돼엣♥」
+			ENDIF
+	ENDSELECT
+	RETURN 1
+ENDIF
+;-------------------------------------------------
+;正常位
+;기입 체크（=0, 비표시、1, 표시）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;マグロスイッチオン
+	ELSEIF CFLAG:1501 || TCVAR:30:억지로 || TCVAR:30:만취
+		CALL K30_GASPING_MAGURO
+		RETURN 1
+	ENDIF
+	;-------------------------------------------------
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	;条件項目付き等確率分岐의例
+	;ど의条件그래도表示される項目を@TEXTR의形式で文字列に代入
+	LOCALS = 0/1/
+	IF LOCAL:1 && TCVAR:100 == PLAYER
+		;条件項目を追加
+		LOCALS += @"%\@ ABL:V감각 > 2 ? 2/3/ # \@%"
+		LOCALS += @"%\@ !TEQUIP:계속키스 && !TEQUIP:유두빨기 && PALAM:욕정 > PALAMLV:9 && ABL:V감각 > 4 ? 4/ # \@%"
+		;代入や抽選失敗してもTOINT変換で0가返る
+		SELECTCASE TOINT(TEXTR(LOCALS))
+			CASE 0, 1
+				CALL K30_GASPING_V("挿入継続")
+			CASE 2
+				PRINTFORML 「으응..♥ 얼굴.. 보여지는거, 역시..부끄러울..지도..」
+				PRINTFORMDW 서로를 바라보며 피스톤을 하고 있는중, 에이키가 수줍게 속삭였다.
+				PRINTFORML 「..♥ 저.. 이상한 얼굴 하고있지는 않나요..?」
+				PRINTFORMW 「기분 좋아서, 행복해서.. 얼굴, 바보처럼 되버려요..♥」
+			CASE 3
+				PRINTFORML 「후..웃.. 후ㅡ읏..♥　굉장해..♥」
+				PRINTFORMDL 은밀하게 쾌감을 견디는 에이키의 표정을 보고 있노라면 정복감이 솟아오른다.
+				PRINTFORML 「... 싫어♥　안돼요.. 너무 보지말아줘..」
+				PRINTFORMDW %CALLNAME:MASTER%의 시선을 눈치챈 에이키는 얼굴을 손으로 가려버렸다.
+			CASE 4
+				PRINTFORML 「아앗, 아읏♥　저기..%K30_C_NAME(MASTER)%, 키스, 키스해주세요..♥」
+				PRINTFORMDL \@ NOWEX:MASTER:사정 ? 라스트 스퍼트니 허리를 빠르게 흔든다  # 질주름의 감촉을 맛보며 천천히 한다 \@%CALLNAME:MASTER%에 에이키가 호소한다.
+				PRINTFORMDW 가볍게 키스할 생각으로 얼굴을 갖다대자 에이키가 끌어안고 숨이 막힐 정도로 격렬하게 키스해왔다.
+				PRINTFORML 「므읏.. 응♥　츄룹.. 쪼옵..♥」
+				IF NOWEX:MASTER:사정
+					PRINTFORMDL 에이키의 입술이 %CALLNAME:MASTER% 혀에 빨려들어가며 꿀단지까지 %TEXTR("페니스/장대/육봉/물건/강직/남근/노장")%를 더욱 안쪽으로 불러들이도록 구불구불 얽힌다.
+					PRINTFORMDW %CALLNAME:MASTER%는 빨아들이는듯한 강렬한 쾌감을 맛보면서, 피니시를 향해 빠르게 허리를 움직였다.
+				ELSE
+					PRINTFORMW 「푸핫..♥」
+					PRINTFORMW 「안돼, 부족햇.. 좀더, 해요♥」
+				ENDIF
+		ENDSELECT
+		RETURN 1
+	ENDIF
+	;基本セット
+	LOCALS += @"%\@ ABL:V감각 > 2 && PALAM:욕정 > PALAMLV:4 ? 2/3/ # \@%"
+	LOCALS += @"%\@ ABL:노출벽 > 4 && PALAM:욕정 > PALAMLV:7 ? 4/ # \@%"
+	SELECTCASE TOINT(TEXTR(LOCALS))
+		CASE 0, 1
+			CALL K30_GASPING_V("基本セット")
+		CASE 2
+			PRINTFORML 「와줘..%K30_C_NAME(MASTER)%♥ 내.. 안에..」
+			PRINTFORMDL 에이키가 양손을 뻗어 %CALLNAME:MASTER%를 꼬셔왔다... 그 얼굴은 욕정으로 완전히 상기되어 있다.
+			PRINTFORMW 「여기에 꽂혀서.. 더이상 못 기다려..♥」
+			PRINTFORMDL 에이키를 안고 질 안으로 삽입하자 에이키는 %CALLNAME:MASTER%의 등에 손을 두르고 꽉 껴안았다.
+			PRINTFORML 「앗..♥　아앙!　이거어.. 좋아..♥」
+			PRINTFORMW 「%K30_C_NAME(MASTER)%..%K30_C_NAME(MASTER)%♥　조아♥　조아해♥」
+		CASE 3
+			PRINTFORML 「응..♥　흐웃.. 후아..♥」
+			PRINTFORMDL 소극적인 신음과 물소리쪽으로 눈을 돌리면 에이키가 질구를 만지작거리고 있다...
+			PRINTFORMW 「하아, 하아♥　으응..%K30_C_NAME(MASTER)%, 저는 언제든지.. 좋아요♥」
+			PRINTFORMDL 평소 상상도 할 수 없는 에이키의 음탕한 미소에 이끌려 %CALLNAME:MASTER%는 삽입했다.
+			PRINTFORML 「아핫♥ 들어..왔다아..♥」
+			PRINTFORMW 「아.. 으우..♥　%K30_C_NAME(MASTER)%... 한가득 사랑해주세요♥」
+		CASE 4
+			PRINTFORML 「%K30_C_NAME(MASTER)%, 이렇게 하는 편이.. 하기 쉽죠」
+			PRINTFORMDL 에이키는 새빨간 얼굴로 자신의 다리를 끌어안고, %SLIT(30, 1)%를 드러내주었다.
+			PRINTFORMDW 부끄러워하면서도 받아들일려는 모습에 %CALLNAME:MASTER%는 단숨에 질안에 삽입해버렸다.
+			PRINTFORML 「앗 하아앗♥　깊숙한 곳까지 왔어엇♥」
+			PRINTFORML 「응읏♥　앙♥　너무.. 기분 좋아서, 힘이 빠져버렷♥」
+			PRINTFORMDW 여전히 무릎을 껴안고 있는 에이키의 모습은 %CALLNAME:MASTER%의 열정을 더욱 돋보이게 했다..
+	ENDSELECT
+ENDIF
+
+RETURN 1
+
+
+;==================================================
+;61,後背位
+;==================================================
+@M_KOJO_MESSAGE_COM_K30_61
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K30_61_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K30_61_1
+TCVAR:30:398 = 1
+;-------------------------------------------------
+;立位
+;기입 체크（=0, 비표시、1, 표시）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL && TFLAG:193
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;マグロスイッチオン
+	ELSEIF TCVAR:30:385 || TCVAR:30:억지로 || TCVAR:30:만취
+		CALL K30_GASPING_MAGURO
+		RETURN 1
+	ENDIF
+	;-------------------------------------------------
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	IF LOCAL:1 && TCVAR:100 == PLAYER
+		CALL K30_GASPING_V("挿入継続")
+		RETURN 1
+	ENDIF
+	;基本セット
+	SELECTCASE RAND:(2 + (ABL:V감각 > 2) * 2)
+		CASE 0, 1
+			CALL K30_GASPING_V("基本セット")
+		CASE 2
+			PRINTFORML 「흣, 후읏♥　아흣♥　핫、핫、하앗♥　……」
+			PRINTFORMDL 선채 뒤에서 리드미컬한 물소리를 내며, 에이키의 요염한 신음도 리듬을 새기고 있다.
+			PRINTFORML 「핫♥！？　아앙♥　안쪽, 안쪽까짓♥」
+		CASE 3
+			PRINTFORMDL 조금 변화를 줄려고 %CALLNAME:MASTER%는 삽입한채 에이키의 한쪽 다리를 들어올렸다.
+			PRINTFORML 「햣♥　무슨 짓을.. %K30_C_NAME(MASTER)%.. 싫어엇♥」
+			PRINTFORML 「들어가있는게 훤히 보이잖아요..♥」
+			PRINTFORMDW 훤히 드러내자 에이키의 %SLIT()%가 더욱 조여왔다..
+	ENDSELECT
+	RETURN 1
+ENDIF
+;-------------------------------------------------
+;後背位
+;기입 체크（=0, 비표시、1, 표시）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	;時姦中
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;マグロスイッチオン
+	ELSEIF TCVAR:30:385 || TCVAR:30:억지로 || TCVAR:30:만취
+		CALL K30_GASPING_MAGURO
+		RETURN 1
+	ENDIF
+	;-------------------------------------------------
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	IF LOCAL:1 && TCVAR:100 == PLAYER
+		SELECTCASE RAND:(2 + (ABL:V감각 > 2) * 2)
+			CASE 0, 1
+				CALL K30_GASPING_V("挿入継続")
+			CASE 2
+				PRINTFORML 「앗 아앙♥　아앙♥　굉장해.. 자지 굉장해♥」
+				PRINTFORMDL 뒤에서 찔리는 에이키의 교성은 평소보다 대담해졌다.
+				PRINTFORMDL 얼굴을 볼 수 없는 안도감 때문인지 부끄러움도 잊고 쾌감에만 집중하는 것 같다.
+				PRINTFORMW 「히앗♥　거깃, 굉장해 좀더..♥　좀더엇♥」
+			CASE 3
+				PRINTFORML 「%K30_C_NAME(MASTER)%, 안아줘, 뒤에서.. 꼬옥ㅡ♥」
+				PRINTFORMDL 찌르는 것보다 천천히 사랑받는 것이 에이키의 취향인 것 같다.
+				PRINTFORMDL 깊게 삽입한채 안아주자 %SLIT()%는 환희로 꿈틀거리며 애액이 뿜어져나온다.
+				PRINTFORMW 「아핫..♥　행복해.. 기분좋아..♥」
+			ENDSELECT
+		RETURN 1
+	ENDIF
+	;基本セット
+	LOCALS = 0/1
+	LOCALS += @"%\@ ABL:V감각 > 2 && PALAM:욕정 > PALAMLV:4 ? 2/3/ # \@%"
+	LOCALS += @"%\@ (TALENT:임신소망 || GETBIT(CFLAG:1502, 4)) && !TEQUIP:콘돔 && !TCVAR:피임약 && PALAM:욕정 > PALAMLV:7 ? 4/ # \@%"
+	SELECTCASE TOINT(TEXTR(LOCALS))
+		CASE 0, 1
+			CALL K30_GASPING_V("基本セット")
+		CASE 2
+			PRINTFORML 「아. 저기.. 아직.. 인가요.... 혹시 이제 끝인가요..?」
+			PRINTFORMDL %CALLNAME:MASTER%는 돌출된%SLIT(30, 1)%에 쭈뼛쭈뼛%TEXTR("페니스/장대/육봉/물건/강직/남근/노장")%를 문지르고 있다.
+			PRINTFORMDW 애태운 염라님이 엉덩일 흔들며 조르는 모습은 보기 좋다..
+			PRINTFORML 「빨리, 주세요.. 부탁드립니다.. 부디 넣어주세요..」
+			PRINTFORMDL 재촉해오는 에이키에게 %CALLNAME:MASTER%는 단숨에 넣었다.
+			PRINTFORMW 「아.. 아아앗♥♥　끝까지 단숨에..♥」
+		CASE 3
+			PRINTFORML 「보이지않으면.. 오히려 더 두근두근해요..」
+			PRINTFORMDL 에이키는 \@ BEDROOM() ? 이불 # 부끄러운듯 \@에 얼굴을 숙이고 엉덩이만 높이 들고 있다.
+			PRINTFORMDW %SLIT(30)%는 욕심나는듯 %CALLNAME:MASTER%의%TEXTR("페니스/장대/육봉/물건/강직/남근/노장")%를 물고싶어 견딜 수 없는 눈치다.
+			PRINTFORML 「부디.. 넣어.. 주세요♥」
+			PRINTFORMDL %TEXTR("페니스/장대/육봉/물건/강직/남근/노장")%를 밀어넣자 끈끈한 물소리를 내면서 끝까지 쉽게 삼켜버렸다.
+			PRINTFORMW 「하아아아앙..♥　들어왔어..♥　기분..좋아..♥」
+		CASE 4
+			PRINTFORML 「이 자세로 하면.. %K30_C_NAME(MASTER)%의 정자를 맨안쪽에 받을 수 있겠네요..」
+			PRINTFORMW 「%K30_C_NAME(MASTER)%.. 와줘♥　저와『교미』 해주세요..♥」
+			PRINTFORMDL 그 염라가 %SLIT(30)%자신에게 씨를 뿌려달라고 조르고 있다.
+			PRINTFORMDL 참을 수 있을리가 없는 %CALLNAME:MASTER%는 질 안쪽을 향해 %TEXTR("페니스/장대/육봉/물건/강직/남근/노장")%를 단숨에 밀어넣었다.
+			PRINTFORML 「앗♥　아앙♥　들어.. 왔다앗♥」
+			PRINTFORMW 「%K30_C_NAME(MASTER)%♥　한가득.. 내주세요♥」
+	ENDSELECT
+	RETURN 1
+ENDIF
+RETURN 1
+
+;==================================================
+;62,正常位アナル
+;ナズ구상의構文構成参考にしてます
+;==================================================
+@M_KOJO_MESSAGE_COM_K30_62
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K30_62_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K30_62_1
+TCVAR:30:398 = 1
+;-------------------------------------------------
+;立位
+;기입 체크（=0, 비표시、1, 표시）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL && TFLAG:193
+	;時姦中
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;マグロスイッチオン
+	ELSEIF TCVAR:30:385 || TCVAR:30:억지로 || TCVAR:30:만취
+		CALL K30_GASPING_MAGURO
+		RETURN 1
+	ENDIF
+	;-------------------------------------------------
+	;挿入継続
+	;기입 체크
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	IF LOCAL:1 && TCVAR:101 == PLAYER
+		;前回사정した
+		IF TCVAR:104 == 1
+			IF ABL:A감각 < 3
+				PRINTFORML 「아아앙앗♥　기다려, 잠깐...멈춰, 멈춰엇......」
+				PRINTFORMDL 정액으로 미끌미끌해진 후장을 천천히 밀어올리자, 에이키는 %CALLNAME:MASTER%에게 매달리면서 부탁해온다
+				PRINTFORMW 「안대앳, 엉덩이, 안대앳... 찌걱찌걱, 하는거, 시러어...♥」
+			ELSE
+				SELECTCASE RAND:3
+					CASE 0
+						CALL HPH_PRINT, @"「후후훗... 아직, 부족해? %K30_C_NAME(MASTER)%의 속이 시원해질 때까지...부디HPH」", "L"
+						PRINTFORMDL 항문 사정의 여운에 잠긴 에이키는 황홀한 표정으로 %CALLNAME:MASTER%의 목을 끌어안고 있다
+						PRINTFORMDW 그 표정도 후장에 완만하게 파고들며, 금새 희열로 바뀌어 갔다
+					CASE 1
+						CALL HPH_PRINT, @"「소리, 커서...부끄러워...아앗HPH　그렇게, 찌르면, 앗HPH」", "L"
+						PRINTFORMDL 에이키의 항문에서는 %마스터가% 허리를 흔들 때마다 공기와 떨어지는 정액으로 아주 천박한 소리를 내고 있다...
+						CALL HPH_PRINT, @"「부끄러워엇... 이런 거, 싫어엇HPH　소리, 내면HPH　시러어HPH」", "W"
+					CASE 2
+						PRINTFORMDL %마스터는% 에이키의 수치를 부채질하듯이 한 발을 번쩍 들어 껴안았다
+						PRINTFORMDL 그런 자세로 천천히 큰 피스톤 운동을 계속하자, 페니스를 집어삼킨 항문에서 거품이 이는 정액이 흘러나왔다...
+						CALL HPH_PRINT, @"「엉덩이, 잔뜩, 인데엣HPH　안댓, 새버려어, 새버려어어HPH」", "W"
+				ENDSELECT
+			ENDIF
+		ELSE
+			IF ABL:A감각 < 3
+				PRINTFORML 「으으읏, 시러...응으으읏♥　이런 모습, 무리잖아...」
+				PRINTFORMDW 한쪽 다리로 서면 저절로 힘이 들어가 뒷구멍이 닫힌다... 그것을 페니스로 도려내는 기묘한 감각에 에이키는 부들부들 떨고 있다
+			;立位連続で駅弁に移行...という脳内設定
+			ELSEIF TEQUIP:체위2 == 1 && RAND:2 == 1
+				PRINTFORMDW 같은 체위만 하면 싫증나지 않을까... 문득, 그런 생각이 들어 허리의 움직임을 멈춘다
+				PRINTDATADL
+					DATAFORM %마스터는% 에이키를 에키벤의 체위로 고쳐, 다시 한 번 \@ ABL:애널 < 3 ? 단단히 죄어 오는 # 절묘하게 감싸오는 \@ 애널에 단숨에 삽입했다
+					DATALIST
+						DATAFORM 에이키에게 꼭 붙잡으라 속삭이고 엉덩이로 손을 돌려 들어 올린다
+						DATAFORM 흘러내리는 에이키의 엉덩이를 받치듯이 %조사처리(TINKO(),"를")% 후장에 삼키게 했다
+					ENDLIST
+				ENDDATA
+				PRINTFORMW 
+				SELECTCASE RAND:3
+					CASE 0
+						CALL HPH_PRINT, @"「하으읏! 안쪽, 닿아버려어HPH　굉장해, 굉장해애HPH」", "L"
+						PRINTFORMDW 체중이 걸리는 만큼, 에이키의 애널은 %CALLNAME:MASTER%의 페니스를 더욱 깊이 삼키고 있다
+					CASE 1
+						CALL HPH_PRINT, @"「시러어엇HPH　이거엇, 무서워어, 너무 기분 좋아서, 무서워엇HPH」", "L"
+						CALL HPH_PRINT, @"「%K30_C_NAME(MASTER)%, %K30_C_NAME(MASTER)%HPH　무서워, 무서워엇HPH」", "W"
+						PRINTFORMDL 끝없는 쾌락과 불안정한 자세에 에이키는 겁에 질려 %CALLNAME:MASTER%에게 필사적으로 매달린다
+						PRINTFORMDW 가학심을 부풀어오른 %마스터는% 굉장히 흥분해서 에이키를 격렬하게 상하로 흔들어댔다...
+					CASE 2
+						CALL HPH_PRINT, @"「시러ㅡㅡㅡㅡㅡ엇HPH　.........앗, 아앗HPH　......커헉......」", "L"
+						PRINTFORMDW 항내 깊숙히 페니스를 박혀, 에이키는 의식을 잃을 듯이 헐떡이고 있다...
+				ENDSELECT
+			ELSE
+				SELECTCASE RAND:3
+					CASE 0
+						CALL HPH_PRINT, @"「%K30_C_NAME(MASTER)%, %K30_C_NAME(MASTER)%HPH　......응읏ーーHPH　으으읏ーHPHHPH」", "L"
+						PRINTFORMDL 에이키의 게걸스럽게 입술을 탐해오며...입맞춤과 동시에 \@ ABL:애널 < 3 ? 애널을 꽉 조여 # 직장이 페니스를 감싸쥐어 \@왔다
+						PRINTFORMDW %마스터는% 몸을 그대로 기대오는 에이키를 확실히 받쳐, 욕망대로 \@ ABL:애널 < 3 ? 꽉 조이는 # 개발된 \@ 애널을 탐했다
+					CASE 1
+						PRINTFORML 「굉장한 꼴로, 만드는구나.........으읏... 아아앙앗♥　시러어, 엉덩이잇, 벌려져버려어♥」
+						PRINTFORMDW 체위를 바꾸어 꽂는 깊이는 얕아졌지만, 그만큼 귀두가 에이키의 후장을 확장하며 수치와 성감을 높여간다
+						PRINTFORMDL 항문에 얕게 박혔다가 빼낸다... 이 움직임이 반복되자 에이키는 참지 못하고 교성을 올렸다
+						CALL HPH_PRINT, @"「아아아앗HPH　그런 거엇, 안대앳HPH　엉덩이, 문질문질하는거, 안대애HPH」", "W"
+					CASE 2
+						CALL HPH_PRINT, @"「응, 응으읏HPH　당신이, 아까보다, 커졌어...HPH　앗, 응아아앗HPH」", "L"
+						PRINTFORMDW 한쪽 다리로 선 채로 몸에 힘이 들어가, 여느 때보다 항문은 페니스를 죄어온다...
+						PRINTFORMDL 빈 손으로 몸을 만지작거리며 익숙해지도록 피스톤질을 계속하자, 에이키는 더욱 좋은 반응을 해왔다
+						CALL HPH_PRINT, @"「앗HPH　대단, 엉덩이, 대단해앳HPH　앗HPH　아아아앗HPH」", "W"
+				ENDSELECT
+			ENDIF
+		ENDIF
+		;절정に応じて一言
+		SIF ABL:A감각 > 2 && (NOWEX:MASTER:11 || (PALAM:욕정 > PALAMLV:4 && NOWEX:A절정))
+			CALL K30_PRE_ORG_MES_A(0)
+		RETURN 1
+	ENDIF
+	;基本セット
+	IF ABL:A감각 > 4
+		IF ABL:노출벽 > 4 && RAND:4 == 0
+			PRINTFORML 「선 채로, 엉덩이로라니...... 당신은 정말 이상해. 변태 씨네요...♥」
+			PRINTFORMDW ...자신의 뒷구멍과 %CALLNAME:MASTER%의 페니스를 만지작거리며, 에이키가 무엇인가 말하고 있다
+			CALL HPH_PRINT, @"「그런 변태 씨에게, 딱 맞는 구멍...후후훗、부디...HPH」", "L"
+			PRINTFORMDW 준비완료인 애널에 페니스가 삼켜지자, 에이키의 표정은 금세 희열로 녹기 시작했다...
+		ELSE
+			SELECTCASE RAND:3
+				CASE 0
+					CALL HPH_PRINT, @"「아앗아앙HPH　엉덩이잇, 좀더엇HPH　움직여줘어, 좀 더어HPH」", "L"
+					PRINTFORMDW ...넣고 가볍게 움직였을 뿐인데, 에이키는 이미 쾌락의 소용돌이에 빠져 버렸다
+					PRINTFORMDL 다리를 후들후들 떨면서 %마스터가% 지탱하지 않으면 서 있는 것조차 불안해 보인다
+					CALL HPH_PRINT, @"「하아ー앗HPH　하-앗HPH　......앗, 앗HPH　앗HPH　아아앗HPHHPH」", "W"
+				CASE 1
+					CALL HPH_PRINT, @"「후으읏HPH　후으읏HPH　......응읏.........후으읏HPH」", "L"
+					PRINTFORMDW 에이키는 %CALLNAME:MASTER%에게 볼을 잡아 끌어당기며, 바싹 껴안아 왔다
+					PRINTFORMDL 좀 움직이긴 힘들지만 여리여리한 에이키의 몸을 껴안자 사랑스러움이 넘쳐흐른다
+					PRINTFORMDL %마스터는% 허리의 움직임을 피스톤에서 그라인드로 바꾸어 느긋한 애널 섹스를 즐겼다...
+					CALL HPH_PRINT, @"「으읏! 앗HPH　굉장햇HPH　......엉덩이잇, 찔꺽찔꺽, 하고 이써어...HPH」", "W"
+				CASE 2
+					CALL HPH_PRINT, @"「%K30_C_NAME(MASTER)%, 키스, 해줘HPH　쪼ㅡ옥, 해줘HPH」", "L"
+					CALL HPH_PRINT, @"「응츄우HPH　츄웃, 츄우웃......쥬르릅, 츄르릅HPH　쥬으읍HPH」", "W"
+					PRINTFORMDL 선 채로 뒷구멍을 범해져, 타액을 %마스터와% 교환하며 에이키는 욕정으로 얼굴이 녹아있다
+					PRINTFORMDW 염마님을 이렇게까지 타락한 것에 만족하면서 %마스터는% 본능에 따라 피스톤을 계속했다
+			ENDSELECT
+		ENDIF
+	ELSEIF ABL:A감각 > 2
+		IF RAND:2 == 1
+			PRINTFORML 「저기...넣기 힘들면, 다른 자세로......으읏♥　......좋을지도......아앙앗♥」
+			PRINTFORMDW 정면으로 부둥켜안아 사타구니에 페니스를 문지를 때마다, 에이키는 민감한 반응을 돌려준다...
+			PRINTFORMDL 조금 애태워 주고 나서, 한쪽 발을 들어 천천히 페니스를 항문에 미끄러뜨린다
+			CALL HPH_PRINT, @"「아아으HPH　들어와버려어, 엉덩이, 들어와버려어어HPH」", "W"
+		ELSE
+			PRINTFORML 「응, 아으읏♥　당신의 것이, 평소보다......커」
+			PRINTFORMDW 한 다리로 서있는 것은 몸이 힘이 들어가는 것인지, 에이키의 애널은 여느 때 이상으로 죄어 온다
+			PRINTFORMDL ...그러나 침입을 거부하는 것이 아니라 오히려 에이키를 보다 민감하게 하는 결과가 되었다
+			CALL HPH_PRINT, @"「시럿HPH　앗...엉덩이, 구멍이HPH　질척질척, 안대애HPH」", "W"
+		ENDIF
+	ELSE
+		IF RAND:2 == 1
+			PRINTFORML 「이 꼴은, 역시 무서운데......으읏!? 으으읏......응츄우웃♥　츄븟♥」
+			PRINTFORMDW 긴장을 풀기 위해서 %마스터는% 에이키의 입술을 빼앗고, 혀를 서로 얽어갔다
+			PRINTFORMDL ...얼마 안 있어 에이키의 힘이 빠졌을 때, 아직 딱딱함이 남아있는 후장으로 페니스를 삽입했다
+			PRINTFORMW 「츄웃♥　......으응!? 으으ー읏......응아아아앗!」
+		ELSE
+			PRINTFORML 「으으읏...아아으, 아앗...앗♥　엉덩이가, 넓혀져 있어...」
+			PRINTFORMDW 낯선 항교성교와 안정적이지 않은 체위로, 에이키는 좀처럼 성감이 높아지지 않는 것 같다
+			PRINTFORML 「저기, %K30_C_NAME(MASTER)%, 키스, 해줘, 키스해, 주세요......응읏, 츄웃」
+			PRINTFORMDW 에이키와 집어 먹는 듯한 키스를 하면서, 차분히 후장을 적응시켜 나갔다...
+		ENDIF
+	ENDIF
+	;절정に応じて一言
+	SIF ABL:A감각 > 2 && (NOWEX:MASTER:11 || (PALAM:욕정 > PALAMLV:4 && NOWEX:A절정))
+		CALL K30_PRE_ORG_MES_A(0)
+	RETURN 1
+ENDIF
+;-------------------------------------------------
+;正常位
+;기입 체크（=0, 비표시、1, 표시）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	;時姦中
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;マグロスイッチオン
+	ELSEIF TCVAR:30:385 || TCVAR:30:억지로 || TCVAR:30:만취
+		CALL K30_GASPING_MAGURO
+		RETURN 1
+	ENDIF
+	;-------------------------------------------------
+	;挿入継続
+	;기입 체크
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	IF LOCAL:1 && TCVAR:101 == PLAYER
+		;前回사정した
+		IF TCVAR:104 == 1
+			IF ABL:A감각 < 3
+				PRINTFORML 「ㅅ, 시러어...그렇게, 쳐다보지마...부끄러우, 니까아...아아앗♥」
+				PRINTFORMDW 한 번 싼 것으로 진정된 %마스터는% 차분히 간음하면서 다시 피스톤질을 시작했다
+				PRINTFORMDL 그 염마님이 자신에게 항문을 관통당해 치태를 드러내고 있다, 엉덩이 구멍에 사정당해 직장에 정액이 고이고 있다...
+				PRINTFORMDL 그런 모습을 바라본 것으로 %CALLNAME:MASTER%의 페니스는 더욱 흥분하기 시작했다
+				PRINTFORMW 「......앗♥　당신의, 커졌어...!? 앗, 시러어엇♥」
+			ELSE
+				SELECTCASE RAND:3
+					CASE 0
+						CALL HPH_PRINT, @"「응읏HPH　아직, 건강하네...HPH」", "L"
+						PRINTFORMDL 항문 사정의 여운에 잠긴 에이키는 황홀한 표정으로 %마스터를% 바라보고 있다
+						CALL HPH_PRINT, @"「좋아, 나로, 기분 좋아져 줘... 좀 더, 잔뜩, 싸 줘...HPH」", "W"
+					CASE 1
+						CALL HPH_PRINT, @"「응읏HPH......들어와 있어... 당신의 것이, 느껴져...HPH」", "L"
+						PRINTFORMDL 한 번 사정한 것으로 여유가 생긴 %마스터는% 차분히 에이키의 애널을 괴롭혔다...
+						PRINTFORMDW 로션 대신 정액이 끈적끈적 소리를 내며, \@ ABL:애널 < 3 ? 꽉 끼는 # 부드럽게 감싸는 듯한 \@ 애널은 미끄러움을 더해 %마스터를% 받아들인다...
+					CASE 2
+						PRINTFORMDL %마스터는% 욕망에 떠밀려, 피니시의 기세 그대로 허리를 계속 흔들었다...
+						CALL HPH_PRINT, @"「히익! ......기다려! 부탁이니까, 잠깐만 기다려! ...시러어HPH」", "W"
+						PRINTFORMDL 정액에 젖은 직장을 큰 스트로크로 찔러주자, 수치를 부추기는 차마 들을 수 없는 소리가 애널에서 새어 나온다...
+						CALL HPH_PRINT, @"「부끄러워... 부끄러워......안대앳, 안대애HPH」", "W"
+				ENDSELECT
+			ENDIF
+		ELSE
+			IF ABL:A감각 < 3
+				PRINTFORML 「역시, 부끄러워...응읏, 으으읏♥」
+				PRINTFORMDW 에이키의 부담을 줄이기 위해 정상위의 다리를 더욱 크게 벌려, 천천히 신중한 페이스로 피스톤 운동을 계속했다
+				PRINTFORML 「아흐읏♥　응읏, 이건, 기분, 좋은거야...? ...나, 엉덩이로...?」
+				PRINTFORMDW 미개발에 가까운 애널의 자극에, 에이키는 어리둥절해 하면서도 쾌락의 싹을 느끼고 있다
+			;正常位連続でまんぐり返しに移行...という脳内設定
+			;体勢に無理가あり해엣る・・・けど、era의에이키님とあなたなら이거ぐらい平気
+			ELSEIF TEQUIP:체위2 == 1 && RAND:2 == 1
+				PRINTFORMDW ...문득 생각나서 허리의 움직임을 멈추었다. 같은 체위만은 재미없으니 조금 모험을 해 보자
+				PRINTDATADW
+					DATAFORM %마스터는% 에이키를 굴곡위자세로 만들어, 눈 앞에서 과시하듯이 움직이기 시작했다
+					DATAFORM 자세를 바꾸어 에이키를 굴곡위 자세로 만들고, 항문이 페니스를 삼키는 꼴을 확실히 보여 주었다
+				ENDDATA
+				PRINTFORML 
+				SELECTCASE RAND:3
+					CASE 0
+						CALL HPH_PRINT, @"「아앗HPH　시럿...이런거엇HPH　이런거엇, 시러어HPH」", "L"
+						PRINTFORMDW 에이키는 새빨개진 얼굴로 부정하듯 고개를 흔들고 있...지만, 음부에서는 음란한 즙이 하염없이 넘쳐흐른다
+						PRINTFORMDL ...스스로의 치태에 흥분한 것 같다. 시험삼아 한 번 푹 찔러주자 재미있는 반응이 되돌아왔다
+						CALL HPH_PRINT, @"「히이이으으읏HPH　시러어HPH　용서해줘, 용서해줘HPH」", "W"
+					CASE 1
+						CALL HPH_PRINT, @"「아아으읏HPH　들어왔어엇, 엉덩이에, 이렇게...이렇게나HPH」", "L"
+						PRINTFORMDW 부정한 구멍에 마구 박는 페니스가 빼고 꽂히는 것을 에이키는 눈물을 글썽이며 바라보고 있다...
+						CALL HPH_PRINT, @"「나의, 엉덩이가HPH　당신 것으로, 잔뜩...HPH」", "W"
+					CASE 2
+						CALL HPH_PRINT, @"「아앗HPH　시러엇HPH　......시러시러엇HPH　아앗HPH」", "L"
+						PRINTFORMDW 굴욕적인 모습을 당하면서 에이키는 평소 이상으로 느끼고 있는 것 같다...
+				ENDSELECT
+				SIF ABL:A감각 > 2 && PALAM:욕정 > PALAMLV:4 && NOWEX:A절정
+					CALL K30_PRE_ORG_MES_A(3)
+				RETURN 1
+			ELSE
+				SELECTCASE RAND:3
+					CASE 0
+						PRINTFORMDL 에이키의 다리를 잡고 허리를 띄우고, 부드럽게 봉사하는 듯한 피스톤을 계속했다
+						CALL HPH_PRINT, @"「아, 응읏HPH　기분, 좋아아... 엉덩이로, 나...기분, 좋아앗...HPH」", "W"
+						PRINTFORMDW 편안한 체위로 에이키는 순순히 항문으로부터의 쾌락을 누리고 있다...
+					CASE 1
+						PRINTFORMDL 에이키에게 꽉 조여져, 더욱 허리를 움직인다...에이키의 표정을 보며 반응이 좋은 장소를 찾아보았다
+						CALL HPH_PRINT, @"「응읏HPH　%K30_C_NAME(MASTER)%, 그거엇HPH　좀 더...해줘어HPH　기분, 좋아앗HPH」", "W"
+						PRINTDATAD
+							DATAFORM 출구에서 몇 번이나 들락날락하는 움직임
+							DATAFORM 깊숙한 곳에서 천천히 빼내는 동작
+							DATAFORM 뿌리까지 깊숙이 가라앉히는 동작
+						ENDDATA
+						PRINTFORMDW  을 특히 마음에 들어하는 것 같아, 에이키는 부끄러운 소리를 계속 질렀다...
+					CASE 2
+						PRINTFORMDL 체위를 바꾸자 %마스터는% 페이스를 올려 무작정 피스톤질로 에이키의 항문을 몰아세웠다
+						CALL HPH_PRINT, @"「히익, 앗HPH　굉장햇... 잠깐! ......앗HPH　갱장해, 갱장해애애HPH」", "W"
+						PRINTFORMDL 에이키의 항문은 성감대로 \@ ABL:A감각 < 5 ? 바뀌어 # 완전히 변화해 \@, 격렬한 괴롭힘에도 기뻐하는 소리를 내고 있다...
+				ENDSELECT
+			ENDIF
+		ENDIF
+		;절정に応じて一言
+		SIF ABL:A감각 > 2 && (NOWEX:MASTER:11 || (PALAM:욕정 > PALAMLV:4 && NOWEX:A절정))
+			CALL K30_PRE_ORG_MES_A(0)
+		RETURN 1
+	ENDIF
+	;基本セット
+	IF ABL:A감각 > 4
+		IF ABL:노출벽 > 4 && RAND:6 == 0
+				PRINTFORML 「저기, 엉덩이에...해 줬으면 해. %K30_C_NAME(MASTER)%의 자지... 나에게 넣어줘...♥」
+				PRINTFORMDL 에이키는 참을 수 없다는 듯이 스스로 가랑이를 벌리고, 애널을 드러내고 유혹한다...
+				PRINTFORMDW 완전히 %TEXTR("기분 좋게 만들기/남자를 기쁘게 하기 위한/페니스를 받아들이기/")% 위한 구멍이 된 애널이 유혹하듯이 꿈틀거리고 있다
+				CALL HPH_PRINT, @"「들어오고, 있어......HPH　기분...좋아아HPH　엉덩이, 기분 좋아HPH」", "L"
+				PRINTFORMDW 이끌리는 대로 %마스터가% 페니스를 삽입하자, 직장이 환희로 떨리는 듯한 느낌이 들었다
+		ELSE
+			SELECTCASE RAND:4 + (TEQUIP:입접촉부위 == 0)
+				CASE 0
+					CALL HPH_PRINT, @"「아앗HPH　이, 느낌HPH　버릇이 되버렸어...HPH」", "L"
+					PRINTFORMDW 에이키는 스스로 다리를 껴안아 벌려, 애널의 조임을 가감없이 더하고 있다
+					PRINTFORMDL 뿌리의 조임과 장내의 부드러움이 참을 수 없는 쾌감을 가져오며...에이키는 그 이상으로 느끼고 있는 것 같다
+					CALL HPH_PRINT, @"「그래, 천천히, 뽑아줘......아아으읏HPH　이거어, 좋아앙HPHHPH」", "W"
+				CASE 1
+					CALL HPH_PRINT, @"「하아아앙, 응읏HPH　%K30_C_NAME(MASTER)%......엉덩이로, 잔뜩 사랑해 주세요...HPH」", "L"
+					PRINTFORMDW 에이키는 애널의 쾌락을 완전히 받아들이고, 행복 그 자체라는 표정으로 교성을 지르고 있다
+					CALL HPH_PRINT, @"「둘이서, 기분 좋아지고 싶어HPH　......앗......HPH 크읏, 으으읏HPH」", "W"
+				CASE 2
+					PRINTFORMDL 에이키를 바라보면서, 기분 좋은 장소를 탐색하듯이 애널을 휘저었다
+					CALL HPH_PRINT, @"「%K30_C_NAME(MASTER)%, 거깃HPH　거깃, 한 번 더......하아아, 아앙앗HPH」", "W"
+					PRINTFORMDW 빼내거나 벽을 문지르거나 할 때마다, 에이키는 민감하게 반응하며 너무 좋은 목소리로 울어준다
+				CASE 3
+					CALL HPH_PRINT, @"「아...응읏HPH　엉덩이, 들어와서......아앗HPH　굉장햇、조아앗HPH」", "L"
+					PRINTFORMDW 애널에 삽입함과 동시에 음부에서 애액이 왈칵 쏟아져 사타구니를 촉촉하게 적셨다
+					PRINTFORMDW 음란한 액이 엉덩이까 반짝반짝하고 빛내며, 후장으로의 괴롭힘에 몸부림치는 에이키는 더없이 추접스러워 보인다...
+				CASE 4
+					CALL HPH_PRINT, @"「%K30_C_NAME(MASTER)%HPH　키스, 하고싶어HPH 츄웃하고, 해줘...HPH」", "L"
+					PRINTFORMDW 에이키는 두 팔을 쭉 뻗으며 키스를 졸라왔다. %마스터는% 바짝 몸을 붙여 거기에 부응한다
+					CALL HPH_PRINT, @"「으으읏、츄웃HPH　......으으읏HPH　응앗, 앗HPH」", "L"
+					PRINTFORMDW 서로 연결되어 녹아갈 것 같은 착각을 느끼면서 에이키는 뒷구멍의 쾌락에 빠져갔다
+			ENDSELECT
+		ENDIF
+	ELSEIF ABL:A감각 > 2
+		IF RAND:2 == 1
+			PRINTFORML 「응읏......굉장히, 딱딱해앳......으으읏♥」
+			PRINTFORMDW 출구에 이물질이 침입했음에도 불구하고 에이키에게 고통의 기색은 없다...오히려 침입자를 받아들이듯 장벽은 꿈틀거리고 있다
+			PRINTFORMDL %마스터는% 난폭하게 굴고 싶어지는 걸 참고, 익숙해지도록 차분히 피스톤 운동을 시작했다
+			CALL HPH_PRINT, @"「아아앗HPH　엉덩이...엉덩이로, 기분, 좋아지다니...아아아앗앙HPH」", "W"
+		ELSE
+			PRINTFORML 「엉덩이가 기문 좋다니, 정말 이걸로... 괜찮은 걸까...」
+			PRINTFORMDW 부정한 구멍이 성감대라고 자각해 가는 에이키는 좀 복잡한 얼굴을 하고 있다
+			CALL HPH_PRINT, @"「역시...넣는거야? .........응읏... 응아앗HPH　아하아아앗HPH」", "L"
+			PRINTFORMDW 하지만 육봉으로 후장이 열리고 움직임이 시작되자, 곧 녹아내리는 암컷의 표정으로 바뀌어 갔다
+		ENDIF
+	ELSE
+		IF RAND:2 == 1
+			PRINTFORML 「응읏, 으으읏...으윽, 크읏...%K30_C_NAME(MASTER)%가, 내, 안에......」
+			PRINTFORMDW 꼭 닫힌 꽃봉오리는 %CALLNAME:MASTER%의 페니스를 단단하게 꽉 죄어온다
+			PRINTFORML 「아프진, 않지만...이대로...움직이지 말아줘...으으응♥...크으읏...」
+			PRINTFORMDW 에이키의 이마에 흐르는 땀을 닦아 주고, 항문이 풀리기를 천천히 기다리기로 했다...
+		ELSE
+			PRINTFORML 「으읏, 으으읏...우리들, 엄청난 짓을, 하고 있네...」
+			PRINTFORMDW 수치와 도착적인 성행위로 에이키의 기분이 고조되어도, 아직 쾌락을 얻기까지는 이르지 못했다
+			PRINTFORML 「이상한...느낌...배에 눌리는 데도......응읏♥ 응아앗...」
+			PRINTFORMDL 위화감은 있어도 아파하고 있지는 않다...애널로 느끼는 소질은 충분히 있는 것 같다
+			PRINTFORMDW 지금부터의 개발을 기대하고, 우선은 차분히 풀어나갈 수 있도록 피스톤 운동을 시작했다
+		ENDIF
+	ENDIF
+ENDIF
+;절정に応じて一言
+SIF ABL:A감각 > 2 && (NOWEX:MASTER:11 || (PALAM:욕정 > PALAMLV:4 && NOWEX:A절정))
+	CALL K30_PRE_ORG_MES_A(0)
+RETURN 1
+
+;==================================================
+;63,後背位アナル
+;==================================================
+@M_KOJO_MESSAGE_COM_K30_63
+CALL TRAIN_MESSAGE
+CALL K30_PRINT_BUTT_IMAGE(SELECTCOM)
+CALL M_KOJO_MESSAGE_COM_K30_63_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K30_63_1
+TCVAR:30:398 = 1
+;-------------------------------------------------
+;立位
+;기입 체크（=0, 비표시、1, 표시）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL && TFLAG:193
+	;時姦中
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;マグロスイッチオン
+	ELSEIF CFLAG:1501 || TCVAR:30:억지로 || TCVAR:30:만취
+		CALL K30_GASPING_MAGURO
+		RETURN 1
+	ENDIF
+	;-------------------------------------------------
+	;挿入継続
+	;기입 체크
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	IF LOCAL:1 && TCVAR:101 == PLAYER
+		;前回사정した
+		IF TCVAR:104 == 1
+			IF ABL:A감각 < 3
+				PRINTFORMDL 한 번 내어 만족은 되었지만, 조금씩 풀어지는 애널은 아직도 즐길 수 있을 것 같다...
+				PRINTFORMDW 「하아...아아♥　......잠깐, 이대로, 계속 하는거야...?」
+				PRINTFORMDL 에이키의 \@ OPENPLACE(CFLAG:MASTER:현재위치) == 2 ? 양손을 다시 붙잡고 # 허리에 단단히 손을 감고 \@, 백탁투성이의 항문에 다시 찔러 넣었다
+				CALL HPH_PRINT, @"「힛, 아아HPH　아직도... 정말 건강하네...HPH」", "W"
+			ELSE
+				SELECTCASE RAND:3
+					CASE 0
+						CALL HPH_PRINT, @"「나로, 기분 좋아져 줘...%K30_C_NAME(MASTER)%의 좋을대로 해줘......HPH」", "L"
+						PRINTFORMDW 정액으로 한층 더 끈적끈적해진 후장은, 뒤에서 찌를 때마다 짜릿한 쾌감을 두 사람에게 가져온다...
+						CALL HPH_PRINT, @"「기분, 좋아앗... 조아앗HPH　갱장해, 갱장해애앳HPH　조아아앗HPH」", "W"
+					CASE 1
+						CALL HPH_PRINT, @"「앗HPH　굉장햇、앗, 아앗HPH　앗HPH　굉장햇、아앗HPH」", "L"
+						PRINTFORMDW 넘쳐흘러 부글부글 거품이 이는 백탁을 로션 대신으로 하여, 조금 전보다도 빠른 리듬으로 항문에 피스톤질을 계속해 나간다
+						PRINTFORMDW 스트로크를 할 때마다, 에이키의 목구멍에서 달콤하고 음탕한 교성이 마치 악기처럼 뿜어져 나왔다
+					CASE 2
+						PRINTFORMDL 뒷구멍에서도 정액 맛을 제대로 기어할 수 있도록, 사정도 개의치 않고 피스톤을 계속해 나간다
+						PRINTFORMDW 에이키의 몸을 일으켜 뒤에서 움츠리고 쏟아부은 백탁을 결장까지 바르듯이 깊숙이 밀어 올렸다
+						CALL HPH_PRINT, @"「아아으읏HPH　안대앳, 안대애......깊어, 기퍼어엇HPH　굉장해애앳HPH」", "W"
+				ENDSELECT
+			ENDIF
+		ELSE
+			IF ABL:A감각 < 3
+				PRINTFORML 「으으읏, 크읏......안쪽까지, 너무 들어가서...조금, 괴로울 정도야...」
+				PRINTFORMDW 서서 뒷치기로 애널은 아직 힘든 것 같아, \@ OPENPLACE(CFLAG:MASTER:현재위치) == 2 ? %CALLNAME:MASTER%에게 받쳐져 # 벽에 체중을 거의 다 맡기고 \@ 에이키는 어떻게든 서 있다
+				PRINTFORMDL 좀더 개발해 주는 것이 우선일 것이다... %마스터는% 얕은 위치까지 빼내어 오므라드는 듯한 움직임으로 반응을 살폈다
+				PRINTFORMW 「응읏, 아앗♥　시러......엉덩이 구멍, 펼쳐지고 있어......♥」
+			;立ちバック連続で背面駅弁に移行...という脳内設定
+			ELSEIF TEQUIP:체위2 == 2 && RAND:2 == 1
+				LOCAL = K30_FIND_AROUND()
+				PRINTFORMDW ......뒤에서 찔리며 헐떡이는 에이키에게 조금 심술궂게 굴고 싶어진다
+				PRINTFORMDL 에이키의 한 발을 들어 뒤에서 쳐올리고 다른 한 발에도 손을 돌려 단숨에 안아올린 \@ LOCAL ? 다 # 다 \@
+				SIF LOCAL
+					PRINTFORMDL 말문이 막힌 %CALLNAME:LOCAL%의 정면으로 돌아, 에이키를 한계까지 다리를 벌려 후장이 페니스를 삼키는 모습을 보여주었다
+				PRINTFORMD %조사처리(SLIT(30, 1),"와")%, 망측한 페니스를 물고 있는 항문
+					IF LOCAL 
+						PRINTFORMDW 을 %조사처리(CALLNAME:LOCAL,"는")% \@ ABL:LOCAL:A감각 > 4 ? 넋을 잃고 보고 있다 # 얼굴을 붉히면서도 눈을 떼지 못하고 있다 \@...
+					ELSE
+						PRINTFORMDW 이 곁에서는 훤히 보인다
+					ENDIF
+				PRINTFORML 
+				IF LOCAL
+					PRINTFORMDL %CALLNAME:LOCAL%의 눈앞에서 더할 나위 없이 굴욕적인 체위로 항문을 범해져, 에이키는 반정도는 패닉에 빠져있다
+					CALL HPH_PRINT, @"「잠깐, 잠깐!!%조사처리(K30_C_NAME(LOCAL),"가")%앗......아아앗HPH」", "W"
+					PRINTFORMDL 에이키는 바둥바둥 발버둥을 치지만, 오히려 더 깊이 페니스가 항내에 찔러넣어, 더욱 문란한 치태를 드러낸다...
+					CALL HPH_PRINT, @"「아하아아아앗HPH　%K30_C_NAME(LOCAL)%, 보지마앗HPH　보지마아HPHHPH」", "W"
+				ELSE
+					PRINTFORMDW 완전히 아이처럼 오줌을 싸게 하는 꼴이 되어 에이키는 몹시 당황하고 있다...
+					SELECTCASE RAND:3
+						CASE 0
+							CALL HPH_PRINT, @"「시러ㅡㅡㅡ엇HPH　안대앳, 안대애앳HPH　이런거엇, 부끄러워HPH」", "L"
+							PRINTFORMDW 어린아이가 배설하는 모습으로 항문을 후벼져, 에이키는 너무나 부끄러운 나머지 온몸을 홍조시키고 있다
+							CALL HPH_PRINT, @"「이런거엇、이런 모습은HPH　싫어어엇HPH」", "W"
+							
+						CASE 1
+							CALL HPH_PRINT, @"「안대애ㅡㅡㅡ애HPH　.........히앗, 앗HPH　아앗.........」", "L"
+							PRINTFORMDW 항내 깊숙이 육봉을 꽂혀, 에이키는 페니스에 온 체중을 맡기는 것 같은 착각에 빠진다
+							PRINTFORMDW 강렬한 쾌감으로 반쯤 의식을 날리고, 애널을 두 번 세 번 찔러 올려도 고개를 까딱까딱 흔들 뿐이다...
+						CASE 2
+							CALL HPH_PRINT, @"「안대앳, 이런 모습, 부끄러워...앗HPH　아아앗...안대애HPH」", "L"
+							PRINTFORMDW 너무나 부끄러워서 에이키는 얼굴을 손으로 감싸 버리고, 고개를 설레설레 흔들고 있다
+							CALL HPH_PRINT, @"「하아아...HPH　%K30_C_NAME(LOCAL)%의 것이, 또, 굵어져서HPH」", "L"
+							PRINTFORMDW ...수치와 흥분으로 스스로 애널을 옥죄고 있지만 에이키는 그것을 눈치채지 못했다
+					ENDSELECT
+				ENDIF
+				;절정に応じて一言
+				SIF ABL:A감각 > 2 && PALAM:욕정 > PALAMLV:4 && NOWEX:A절정
+					CALL K30_PRE_ORG_MES_A(2)
+				RETURN 1
+			ELSE
+				SELECTCASE RAND:3
+					CASE 0
+						PRINTFORMDL 가장 깊은 곳으로 파고들었다가 허리를 일단 멈추고, 에이키에게 알아서 움직이도록 부탁해 보았다
+						CALL HPH_PRINT, @"「스스로? ......알겠어. 으응......으으읏HPH　으앗HPH」", "W"
+						PRINTFORMDL 이미 쾌락의 포로가 되어버린 에이키는 순순히 고개를 끄덕이고, 애절하게 엉덩이를 앞뒤로 움직인다
+						CALL HPH_PRINT, @"「앗, 후와앗HPH　으으읏! 여깃, 조아앗...아앗HPH　아아아아앗HPH」", "L"
+						PRINTFORMDW 항문에 %조사처리(TINKO(),"를")% 물고, 찌걱찌걱하는 소리를 내며 스스로 엉덩이를 흔드는 염마님은 더할 나위없이 음란해 보였다
+					CASE 1
+						IF OPENPLACE(CFLAG:MASTER:현재위치) == 2
+							PRINTFORMDL 에이키의 뒷구멍에 더욱 격렬하게 파고들 수 있도록, 체위를 조금 바꾸기로 했다
+							PRINTFORMDW 말을 걸어 잡았던 손을 천천히 놓자, 에이키는 팔을 뻗어서 엎드려 누워서 몸을 지탱한다
+						ELSE
+							CALL HPH_PRINT, @"「읏아아......아으으HPH　......안대애, 더 이상, 안대애HPHHPH」", "L"
+							PRINTFORMDL 격렬한 피스톤으로 몸이 어긋나, 벽에서 손이 떨어져 버린다
+							PRINTFORMDW 에이키는 팔을 뻗고 엎드려 간신히 몸을 지탱했다
+						ENDIF
+						CALL HPH_PRINT, @"「싫어...이 모습, 훤히 보여져......앗HPH　시러, 아아아으읏HPH」", "L"
+						PRINTFORMDW %마스터는% 높이 들어올린 에이키의 엉덩이를 꽉 잡고 전신을 이용해 엉덩이에 찔러 넣었다
+						CALL HPH_PRINT, @"「아앗, 아으으읏HPH　시러엇, 격렬해앳HPH　앗, 앗HPH　앗HPHHPH」", "L"
+						PRINTFORMDW 힘찬 피스톤이 가져다주는 쾌락에 농락당하면서 에이키는 떨리는 다리로 필사적으로 버티고 있다...
+					CASE 2
+						PRINTFORMDL 에이키의 한쪽 다리를 접듯이 들어 올리고 나서 각도를 붙여 직장을 휘저었다
+						CALL HPH_PRINT, @"「응, 응으읏HPH　응아, 앗HPH　굉장해, 스치고있어엇HPH」", "L"
+						PRINTFORMDL 질구와는 또 다른 주름의 감촉과 페니스 뿌리의 \@ ABL:애널 < 3 ? 강렬한 # 기묘한 \@ 억압이 %CALLNAME:MASTER%에게 강렬한 쾌감을 가져온다
+						CALL HPH_PRINT, @"「앗HPH　아앗HPH　굉장햇、엉덩이, 굉장해앳HPH　굉장해애앳HPH」", "W"
+				ENDSELECT
+			ENDIF
+		ENDIF
+		;절정に応じて一言
+		SIF ABL:A감각 > 2 && (NOWEX:MASTER:11 || (PALAM:욕정 > PALAMLV:4 && NOWEX:A절정))
+			CALL K30_PRE_ORG_MES_A(0)
+		RETURN 1
+	ENDIF
+	;基本セット
+	IF ABL:A감각 > 4
+		IF ABL:노출벽 > 4 && RAND:5 == 0
+			PRINTFORML 「선 채로, 엉덩이로 하고 싶다니......당신은 정말 짐승이네요」
+			PRINTFORMD 그렇게 말하며 에이키는 스스로 
+			IF TEQUIP:0 & 2
+				PRINTFORMD %조사처리(SHOW_BOTTOM(TARGET,2),"를")% 비껴놓고 
+			ELSEIF TEQUIP:0 & 1
+				PRINTFORMD %조사처리(SHOW_BOTTOM(TARGET,1),"를")% 걷어올리고
+			ELSE
+				PRINTFORMD 엉덩이를 벌리고
+			ENDIF
+			PRINTFORMDW , 욕정으로 벌름거리는 뒷구멍을 과시해 왔다
+			CALL HPH_PRINT, @"「......하지만, %조사처리(K30_C_NAME(MASTER),"이라")%면 짐승으로 떨어져도, 상관 없어...HPH」", "L"
+			PRINTFORMDL 애널섹스라는 금기의 쾌락에 에이키는 이젠 돌아오지 못할 정도로 푹 빠져 버린 것 같다
+			PRINTFORMDW 뒤에서 항문에 페니스를 찔러넣자, 기쁨으로 몸을 떨며 달콤하고 음란한 목소리로 울기 시작했다
+		ELSE
+			SELECTCASE RAND:4
+				CASE 0
+					PRINTFORMDL 최심부까지 밀고 들어간 자지를 일부러 시간을 들여서 천천히 뽑았다...
+					CALL HPH_PRINT, @"「으으읏HPH　아앗, 아앙으으읏HPH　아아으읏...」", "W"
+					PRINTFORMDL 곧이어 귀두가 항문에 걸리고... 충혈된 점막을 넘길 기세로 단숨에 뽑아냈다
+					CALL HPH_PRINT, @"「햐아아아아아앗HPH　시러어HPH　나와버려어어엇HPH」", "W"
+				CASE 1
+					CALL HPH_PRINT, @"「아아아앗HPH　대단햇, 안쪽HPH　이렇게, 이렇게나HPH」", "L"
+					PRINTFORMDW 에이키의 단단히 조여진 엉덩이에 문질문질하고 치골을 누르며, 직장 깊숙히 삽입하여 벽을 자극한다
+					CALL HPH_PRINT, @"「앗HPH　아핫, 대단해앳......앗HPH　아아아으읏HPH」", "L"
+					PRINTFORMDW 자궁까지 밀려 올라오는 감각에, 에이키는 강렬한 쾌감을 느껴 몸을 떨었다
+				CASE 2
+					CALL HPH_PRINT, @"「하아, 하아HPH　하아아HPH　......아아앙앗......하아아앙앗HPH」", "L"
+					PRINTFORMDW 완전히 개발이 진행된 후장은 육봉을 삼켜간다
+					CALL HPH_PRINT, @"「엉덩이...조아앗HPH　엉덩이로, 하는 거, 너무 조아앗HPH」", "L"
+					PRINTFORMDW 에이키는 애널의 쾌락에 완전히 굴복하여 상스러운 말을 중얼거리고 있다
+				CASE 3
+					CALL HPH_PRINT, @"「하아, 하아HPH　하아아HPH　......하아, 하아......아아아앙앗HPH」", "L"
+					PRINTFORMDW 에이키의 \@ OPENPLACE(CFLAG:MASTER:현재위치) == 2 ? 팔을 잡아당겨 몸을 젖히고 # 허리를 꽉 움켜쥐고 \@, 한결같이 허리를 흔들었다
+					PRINTFORMDL 서로의 한숨과 살이 부딪치는 파열음, 끈적한 물소리... 그것에 희열을 느낀 에이키의 헐떡이는 소리만이 주변에 메아리친다
+					PRINTFORMDW 임신키지도 않는 오직 정욕만을 채우는 항문 성교에 두 사람은 열중해 있다...
+			ENDSELECT
+		ENDIF
+	ELSEIF ABL:A감각 > 2
+		IF RAND:2 == 1
+			PRINTFORML 「으으읏!! 응읏♥　......너무 심취한 거, 아니야...?」
+			PRINTFORMDL 갑자기 최심부까지 쑤셔박힌 에이키는 가볍게 항의의 소리를 낸다
+			PRINTFORMDW 역시 무리하게 했던 것 같다...익숙해질 때까지 잠시 기다리는 것이 좋을지 조금 망설여진다
+			CALL HPH_PRINT, @"「......움직이지, 않는 건가요, 이대로면, 엉덩이가, 괴로워져서......HPH」", "L"
+			PRINTFORMDW ...심취한 건 어느 쪽인가. %마스터는% 쓴웃음을 삼키고 허리를 움직이기 시작했다
+		ELSE
+			PRINTFORML 「읏응♥　으앗...으으읏, 으으응...」
+			PRINTFORMDW 단숨에 삽입하면 에이키가 약간 괴로운 듯한 소리를 질렀다. 걱정이 되어 몸을 일으켜 돌아보게 하였으나
+			CALL HPH_PRINT, @"「왜 그러세요...? 빨리, 이어서......움직여, 주세요HPH」", "L"
+			PRINTFORMDW 항문의 일격에 에이키는 완전히 몽롱한 얼굴이 되어 있다... %마스터는% 안심하고 피스톤 운동을 시작했다
+		ENDIF
+	ELSE
+		IF RAND:2 == 1
+			PRINTFORML 「으읏!? 시러엇...너무, 깊어......너무 깊이 넣었잖아...」
+			PRINTFORMDW 허리가 자유롭게 움직이는 만큼 정복욕에 맡기고 깊게 찔러버렸다...너무 과했던 것 같다
+			PRINTFORML 「조금만 더, 상냥하게 해줘... 꽤, 힘드니까......」
+			PRINTFORMDW 아파하지 않은 것은 좋았지만, 이번에는 지나치지 않도록 조심스럽게 허리를 움직였다
+		ELSE
+			PRINTFORML 「아...으응♥......하아...하아......이렇게, 들어가는 거구나......」
+			PRINTFORMDW 항문에 페니스를 깊이 삼키며, 에이키는 크게 숨을 고르고 있다
+			PRINTFORML 「아직, 조금만, 움직이지 말아줘......응읏♥...괴로울지도...」
+			PRINTFORMDW 경험은 얼마 되지 않았는데도 거의 아파하지 않는다...역시 에이키에게는 소질이 있는 것 같다
+		ENDIF
+	ENDIF
+	;절정に応じて一言
+	SIF ABL:A감각 > 2 && (NOWEX:MASTER:11 || (PALAM:욕정 > PALAMLV:4 && NOWEX:A절정))
+		CALL K30_PRE_ORG_MES_A(0)
+	RETURN 1
+ENDIF
+;-------------------------------------------------
+;後背位
+;背面立位を流用＠バックと立ちバック의書き分けムリぽ
+;기입 체크（=0, 비표시、1, 표시）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	;時姦中
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;マグロスイッチオン
+	ELSEIF CFLAG:1501 || TCVAR:30:억지로 || TCVAR:30:만취
+		CALL K30_GASPING_MAGURO
+		RETURN 1
+	ENDIF
+	;-------------------------------------------------
+	;挿入継続
+	;기입 체크
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	IF LOCAL:1 && TCVAR:101 == PLAYER
+		;前回사정した
+		IF TCVAR:104 == 1
+			IF ABL:A감각 < 3
+				PRINTFORMDL 한 번 내어 만족은 했지만 조금씩 풀어지는 애널은 아직도 즐길 수 있을 것 같다...
+				PRINTFORMDW 「하아...아아♥......잠깐, 이대로、계속 하는거야...?」
+				PRINTFORMDL 에이키가 높이 쳐든 엉덩이를 어루만지면서, 백탁이 배어나는 항문에 다시 찔렀다
+				PRINTFORMDW 「히, 아아♥...아직...이렇게나, 건강하네...」
+			ELSE
+				SELECTCASE RAND:3
+					CASE 0
+						CALL HPH_PRINT, @"「나로, 기분 좋아져 줘HPH　%K30_C_NAME(MASTER)%의 좋을대로 해줘......HPH」", "L"
+						PRINTFORMDW 정액으로 한층 더 끈적끈적해진 후장은, 뒤에서 찌를 때마다 짜릿한 쾌감을 두 사람에게 가져온다...
+						CALL HPH_PRINT, @"「기분, 좋아앗... 조아앗HPH　갱장해, 갱장해애앳HPH　조아아앗HPH」", "W"
+					CASE 1
+						CALL HPH_PRINT, @"「앗HPH　굉장햇、앗, 아앗HPH　앗HPH　굉장햇、아앗HPH」", "L"
+						PRINTFORMDW 넘쳐흘러 부글부글 거품이 이는 백탁을 로션 대신으로 하여, 조금 전보다도 빠른 리듬으로 항문에 피스톤질을 계속해 나간다
+						PRINTFORMDW 스트로크를 할 때마다, 에이키의 목구멍에서 달콤하고 음탕한 교성이 마치 악기처럼 뿜어져 나왔다
+					CASE 2
+						PRINTFORMDL 뒷구멍에서도 정액 맛을 제대로 기어할 수 있도록, 사정도 개의치 않고 피스톤을 계속해 나간다
+						PRINTFORMDW 에이키의 귀를 물면서 뒤에서 움츠리고 쏟아부은 백탁을 결장까지 칠할 기세로 깊숙이 찔렀다
+						CALL HPH_PRINT, @"「아아으읏HPH　안대앳, 안대애......굉장해앳, 깊어엇HPH　깊어어엇HPH」", "W"
+				ENDSELECT
+			ENDIF
+		ELSE
+			IF ABL:A감각 < 3
+				PRINTFORML 「으으읏, 크읏......안쪽까지, 너무 들어가서...조금, 괴로울지도...」
+				PRINTFORMDW 소질은 있어도 경험이 아직 적은 애널은 꽉 펴저, 꽉 죄어 피스톤을 막아온다
+				PRINTFORMDL 좀더 개발해 주는 것이 우선일 것이다...%마스터는% 얕은 위치까지 빼내어 오므라드는 듯한 움직임으로 익숙하게 해 나갔다
+				PRINTFORMW 「응읏, 아앗♥　시러......엉덩이 구멍이, 넓혀지고 이써......♥」
+			;後背位連続で寝バックに移行...という脳内設定
+			ELSEIF TEQUIP:체위2 == 2 && RAND:2 == 1
+				PRINTFORMDW 같은 체위만 하면 싫증나지 않을까...문득 그런 생각이 나서 허리의 움직임을 멈춘다
+				PRINTFORMDW 변화를 주기 위해 에이키를 엎드려 눞혀, 찰싹 덮는듯한 자세로 항문에 삽입했다
+				PRINTFORML 
+				SELECTCASE RAND:3
+					CASE 0
+						CALL HPH_PRINT, @"「응, 응으읏HPH　당신 것으로, 이제, 잔뜩...HPH　응읏, 아아앗HPH」", "L"
+						PRINTFORMDL 에이키의 허벅지를 끼우고 다리를 닫자, 애널이 꽉 조여 삽입감이 더 높아진다...
+						CALL HPH_PRINT, @"「아아앗HPH　이거, 굉장해HPH　엉덩이, 엉덩이가앗, 이렇게나HPH」", "W"
+					CASE 1
+						CALL HPH_PRINT, @"「응읏...아앙앗HPH　후으읏, 이걸로, 나... 움직일 수 없겠어...HPH」", "L"
+						PRINTFORMDW %CALLNAME:MASTER%에게 옴쭉달싹 못할 정도로 덮쳐 눌려진 에이키였지만, 그 목소리는 왠지 기쁜 것 같다
+						CALL HPH_PRINT, @"「내 몸...엉덩이도...전부, %K30_C_NAME(MASTER)%의 것이야...HPH」", "W"
+						PRINTFORMDW \@ TALENT:연인 ? 사랑하는 # 일편단심인 \@ %CALLNAME:MASTER%에게 뒷구멍을 유린당하고 암컷으로서 신체를 지배당한 것에, 에이키는 견딜 수 없는 기쁨을 기억하고 있다
+						PRINTFORMDL 밀착한 몸을 즐기듯 애무하자 에이키의 직장이 환희에 떨며 꿈틀거렸다....
+						CALL HPH_PRINT, @"「아아, 아앙HPH　엉덩이, 가슴...전부, 기분 좋아... 행복해HPH」", "W"
+						
+					CASE 2
+						CALL HPH_PRINT, @"「아앗HPH　안쪽HPH　찔꺽하고 안쪽에......HPH」", "L"
+						PRINTFORMDL 뒷구멍에 바로 뒤에서 삽입해서, 간단하게 깊숙히 찔려 들어간다
+						PRINTFORMDW 에이키의 체온・숨결을 가까이 느낄 수 있어, 페니스는 더욱 흥분해간다
+						PRINTFORMDL 목덜미와 귀에 키스를 몇 번이나 하면서, %마스터는% 직장 깊숙이에서 허리를 그라인드시켰다
+						CALL HPH_PRINT, @"「하아, 아아...앗HPH　엉덩이도, 좋아서...키스도 받아서, 멋져...HPHHPH」", "L"
+						PRINTFORMDW 밑구멍부터 전신까지 두루 사랑받는 감각에 에이키는 꿈을 꾸는 기분으로 쾌락을 누리고 있다...
+				ENDSELECT
+			ELSE
+				SELECTCASE RAND:3
+					CASE 0
+						PRINTFORMDL 가장 깊은 곳으로 파고들었다가 허리를 일단 멈추고,에이키에게 알아서 움직이도록 부탁해 보았다
+						CALL HPH_PRINT, @"「스스로...? 알겠어......응읏......으으읏HPH　응앗HPH」", "L"
+						PRINTFORMDW 이미 쾌락의 포로가 되어버린 에이키는 순순히 고개를 끄덕이고, 애절하게 엉덩이를 앞뒤로 움직인다
+						CALL HPH_PRINT, @"「앗, 후와앗HPH　여깃, 조아앗! ...아앗HPH　아아아아앗HPH」", "L"
+						PRINTFORMDW 뒷구멍으로 %조사처리(TINKO(),"를")% 삼키며 마치 암캐처럼 스스로 허리를 흔드는 염마님은 더할 나위없이 음란해 보였다
+					CASE 1
+						CALL HPH_PRINT, @"「응읏HPH　아앙앗...%K30_C_NAME(MASTER)%...%K30_C_NAME(MASTER)%HPH　좀 더, 좀 더엇HPH」", "L"
+						PRINTFORMDW 에이키의 항문은 %CALLNAME:MASTER%의 모양을 외운 것 같아 실로 친숙해지고 있다.
+						CALL HPH_PRINT, @"「아앗, 아으으읏HPH　엉덩이잇, 좋아아앗HPH　앗, 앗HPH　앗HPHHPH」", "L"
+						PRINTFORMDW 찌를 때마다 팔랑거리는 볼기와 그 중심으로 %조사처리(TINKO(),"를")% 깊숙히 물고있는 에이키의 모습은 몹시 음란하게 비쳤다 
+					CASE 2
+						PRINTFORMDL %마스터는% 페이스를 더 올리기 위해 에이키의 양 팔꿈치를 꽉 붙들고 허리를 흔들었다
+						CALL HPH_PRINT, @"「읏아아......아으으HPH　굉ㅈ, 좋아앗HPH　안대애, 더 이상, 안대애HPH」", "W"
+						PRINTFORMDW 마치 등뒤에 묶여 애널을 능욕당하는 감각에 에이키는 눈물과 침을 흘리면서 계속 헐떡였다
+				ENDSELECT
+			ENDIF
+		ENDIF
+		;절정に応じて一言
+		SIF ABL:A감각 > 2 && (NOWEX:MASTER:11 || (PALAM:욕정 > PALAMLV:4 && NOWEX:A절정))
+			CALL K30_PRE_ORG_MES_A(0)
+		RETURN 1
+	ENDIF
+	;基本セット
+	IF ABL:A감각 > 4
+		IF ABL:노출벽 > 4 && RAND:5 == 0
+				PRINTFORML 「뒤에서...하고 싶은 거구나. 그래, 좋아......언제든지, 준비되어 있어♥」
+			PRINTFORMD 에이키는 %마스터가% 쉽게 넣을 수 있도록, 
+			IF TEQUIP:0 & 2
+				PRINTFORMD %조사처리(SHOW_BOTTOM(TARGET,2),"를")% 비껴놓고
+			ELSEIF TEQUIP:0 & 1
+				PRINTFORMD %조사처리(SHOW_BOTTOM(TARGET,1),"를")% 걷어올리고
+			ELSE
+				PRINTFORMD 양손으로 애널을 벌리며
+			ENDIF
+			PRINTFORMDL  엉덩이를 이쪽으로 내밀었다
+			PRINTFORMDW 엉덩이를 요염하게 흔들며 삽입을 조르는 모습은 \@ TALENT:항문광 ? 그야말로 항문광의 염마님이다 # 、평상시의 에이키에게는 상상도 못할 정도로 음란하다 \@
+			CALL HPH_PRINT, @"「이곳은 이제, %K30_C_NAME(MASTER)%의 자지%TEXTR("를... 기분좋게 하기/를... 꽂아두기/로...휘젓기/")% 위한 구멍이니까...HPH」", "L"
+			PRINTFORMDW 에이키의 추잡한 권유에 흥분하면서, %마스터는% %조사처리(TINKO(),"를")% 애널에 찔러 넣었다
+		ELSE
+			SELECTCASE RAND:4
+				CASE 0
+					PRINTFORMDL 끝까지 밀고 들어간 자지를 일부러 시간을 들여서 천천히 뽑았다...
+					CALL HPH_PRINT, @"「으으읏HPH　아앗, 아앙으으읏HPH　아아으읏...」", "W"
+					PRINTFORMDL 곧이어 귀두가 항문에 걸리고... 충혈된 점막을 넘길 기세로 단숨에 뽑아냈다
+					CALL HPH_PRINT, @"「시러어ㅡㅡㅡㅡ엇HPH　시러어HPH　나와버려어어엇HPH」", "W"
+				CASE 1
+					CALL HPH_PRINT, @"「아아아앗HPH　대단햇, 안쪽HPH　이렇게, 이렇게나HPH」", "L"
+					PRINTFORMDW 에이키의 단단히 조여진 엉덩이에 문질문질하고 치골을 누르며, 직장 깊숙히 삽입하여 벽을 자극한다
+					CALL HPH_PRINT, @"「앗HPH　아핫, 대단해앳......앗HPH　아아아으읏HPH」", "L"
+					PRINTFORMDW 자궁까지 밀려 올라오는 감각에, 에이키는 강렬한 쾌감을 느껴 몸을 떨었다
+				CASE 2
+					CALL HPH_PRINT, @"「하아, 하아HPH　하아아HPH　......아아앙앗......하아아앙앗HPH」", "L"
+					PRINTFORMDW 완전히 개발이 진행된 후장은육봉을 삼켜간다
+					CALL HPH_PRINT, @"「엉덩이...조아앗HPH　엉덩이로, 하는 거, 너무 조아앗HPH」", "L"
+					PRINTFORMDW 뒤에서 직장 안쪽까지 찔러주자, 에이키는 허리를 비비 꼬며 항문의 쾌락에 빠져 갔다
+				CASE 3
+					CALL HPH_PRINT, @"「하아, 하아HPH　하아아HPH　......꼬집으면, 시러엇HPH　......아아아앙앗HPH」", "L"
+					PRINTFORMDW 뒤에서 에이키의 젖꼭지나 클리토리스에 장난을 치면서, 애널에 피스톤 운동을 계속했다
+					CALL HPH_PRINT, @"「히이익! 시러어HPH　시러어......괴롭히면, 안대애HPH　......후아아아아앗HPH」", "L"
+					PRINTFORMDW 애널에 대한 쾌락 몰아세우기로 무방비한 상태에서, 게다가 성감대를 만져져 에이키는 몸부림치고 있다
+			ENDSELECT
+		ENDIF
+	ELSEIF ABL:A감각 > 2
+		IF RAND:2 == 1
+			PRINTFORML 「으으읏!! 응읏♥　......너무 심취한 거, 아니야...?」
+			PRINTFORMDL 갑자기 최심부까지 쑤셔박힌에이키는 가볍게 항의의 소리를 낸다
+			PRINTFORMDW 역시 무리하게 했던 것 같다...익숙해질 때까지 잠시 기다리는 것이 좋은 것일까 하고 조금 망설인다
+			CALL HPH_PRINT, @"「......움직이지, 않는 건가요? 이대로면, 엉덩이가, 괴로워져서......HPH」", "L"
+			PRINTFORMDW ...심취한 건 어느 쪽인가. %마스터는% 쓴웃음을 삼키고 허리를 움직이기 시작했다
+		ELSE
+			PRINTFORML 「읏응♥　으앗...으으읏, 으으응...」
+			PRINTFORMDW 단숨에 삽입하면 에이키가 조금 괴로운 듯한 소리를 내기에, 몸을 안아 일으켜 돌아보게 했다
+			CALL HPH_PRINT, @"「왜 그러세요...? 빨리, 이어서......움직여, 주세요HPH」", "L"
+			PRINTFORMDW 항문의 일격에 에이키는 완전히 몽롱한 얼굴이 되어 있다...%마스터는% 일단 안심하고 피스톤 운동을 시작했다
+		ENDIF
+	ELSE
+		IF RAND:2 == 1
+			PRINTFORML 「으읏!!? ......시럿... 깊이...... 너무, 깊이 넣잖아...」
+			PRINTFORMDW 허리가 자유롭게 움직이는 만큼 정복욕에 맡기고 깊게 찔러버렸다...너무 과했던 것 같다
+			PRINTFORML 「조금만 더, 상냥하게 해줘... 꽤, 힘드니까......」
+			PRINTFORMDW 아파하지 않은 것은 좋았지만 이번에는 무리하지 않도록 신중하게 허리를 움직였다
+		ELSE
+			PRINTFORML 「아...으응♥　......하아...하아......이렇게, 들어가는 거구나......」
+			PRINTFORMDW 항문에 페니스를 깊이 삼키며, 에이키는 크게 숨을 고르고 있다
+			PRINTFORML 「아직, 잠깐만, 움직이지 말아줘......응읏♥　괴로울지도...」
+			PRINTFORMDW 경험은 얼마 되지 않았는데도 거의 아파하지 않는다...역시 에이키에게는 소질이 있는 것 같다
+		ENDIF
+	ENDIF
+	;절정に応じて一言
+	SIF ABL:A감각 > 2 && (NOWEX:MASTER:11 || (PALAM:욕정 > PALAMLV:4 && NOWEX:A절정))
+		CALL K30_PRE_ORG_MES_A(0)
+ENDIF
+RETURN 1
+
+;====================================================================
+;64,逆レイプする
+;紛らわしい가女あなた가上に乗る의であり、あなた가襲われるわけではない
+;====================================================================
+@M_KOJO_MESSAGE_COM_K30_64
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K30_64_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K30_64_1
+;-------------------------------------------------
+;기입 체크（=0, 비표시、1, 표시）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;小分岐
+	;-------------------------------------------------
+	;初めて
+	;기입 체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		;調教者가처녀
+		IF TCVAR:PLAYER:파과 == 1
+			PRINTFORMW 
+			RETURN 1
+		ELSE
+			PRINTFORMW 
+			RETURN 1
+		ENDIF
+	ENDIF
+	;-------------------------------------------------
+	;挿入継続
+	;기입 체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && TCVAR:PLAYER:100 == TARGET
+		;前回사정した
+		IF TCVAR:PLAYER:102
+			PRINTFORMW 
+			RETURN 1
+		ELSE
+			PRINTFORMW 
+			RETURN 1
+		ENDIF
+	ENDIF
+	;基本セット
+	;연모
+	IF TALENT:연모
+		PRINTFORMW 
+		RETURN 1
+	;굴복3
+	ELSEIF MARK:괘씸각인 == 3
+		PRINTFORMW 
+		RETURN 1
+	;그거以外
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;65,騎乗位
+;==================================================
+@M_KOJO_MESSAGE_COM_K30_65
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K30_65_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K30_65_1
+;-------------------------------------------------
+;기입 체크（=0, 비표시、1, 표시）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	;時姦中
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;マグロスイッチオン
+	ELSEIF TCVAR:30:385 || TCVAR:30:억지로 || TCVAR:30:만취
+		CALL K30_GASPING_MAGURO
+		RETURN 1
+	ENDIF
+	;-------------------------------------------------
+	;挿入継続
+	;기입 체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && TCVAR:100 == PLAYER
+		;前回사정した
+		IF TCVAR:102 == 1
+			SELECTCASE RAND:3
+				CASE 0
+					PRINTFORML 「후앗..♥　안, 따뜻해..♥」
+					PRINTFORMDL 에이키는 사정을 받아들인 여운에 젖어 %CALLNAME:MASTER%에 걸친채 여운에 잠겨있다.
+					PRINTFORMDW 꿀단지는 구불구불 계속해서 사정 후 민감한 귀두에 휘감긴다..
+					PRINTFORML 「하아, 하아..♥　기다려셨죠.. 그럼 계속해볼까요」
+					PRINTFORMW 「좀더좀더, 둘이서 기분 좋아져요♥」
+				CASE 1
+					PRINTFORML 「아흣♥　응우으.. 늘어져.. 조금 부끄러워요..」
+					PRINTFORMDL 듬뿍 나온 정액이 피스톤에 하얗게 거품이나 결합부에서 추잡한 소리를 내고 있다.
+					PRINTFORML 「그래도, 멈출 수 없어요.. 기분 좋아..♥」
+					PRINTFORMW 「%K30_C_NAME(MASTER)%도, 그렇죠?　좀더 한가득 내주세요♥」
+				CASE 2
+					PRINTFORML 「으읏♥　흘러넘쳐버려요..」
+					PRINTFORML 「아까워요..♥」
+					PRINTFORMDL 에이키는 페니스를 깊이 삼킨채 허리를 그라인드 하기 시작했다.
+					PRINTFORMDL 마치 질내사정 당한 정액을 질벽에 문질러 스며들게 할려는 것 같다.
+					PRINTFORMW 「아아.. 안에서 엄청나게.. 기분 좋아..♥」
+			ENDSELECT
+			RETURN 1
+		ELSE
+			;背面騎乗位と対面騎乗位의２種類ある...という脳内設定
+			IF (((TEQUIP:체위2 == 3 && TCVAR:30:398) && RAND:2 == 1) || GROUPMATCH(TEQUIP:체위2, 2, 5)) && !TEQUIP:계속키스 && ABL:V감각 > 4 && ABL:노출벽 > 4
+				IF GROUPMATCH(TEQUIP:체위2, 2, 5)
+					PRINTFORMDL 에이키는 \@ TEQUIP:체위2 == 2 ? 뒤 # 좌위 \@에서 기승위로 체위를 바꾸자 스스로 적극적으로 움직이기 시작했다.
+					PRINTFORMDL %CALLNAME:MASTER%에 걸쳐 등을 돌린채 음탕하게 허리를 흔들고 있다.
+					PRINTFORMW 
+				ELSE
+					PRINTFORMDL 에이키는 여전히 %CALLNAME:MASTER%에게 등을 돌린채 허리를 흔들고있다.
+					PRINTFORMW 
+				ENDIF
+				;背面騎乗位だと에이키様가肉食系...という脳内設定
+				SELECTCASE RAND:3
+					CASE 0
+						PRINTFORML 「핫..핫.. 하아앗..♥ 하우으..♥　앗♥　아앗♥♥」
+						PRINTFORMDL 에이키는 쾌감만을 추구하며 허리를 흔들고있다.
+						PRINTFORML 「기분좋앗..♥　하아앗♥　아아아♥」
+						PRINTFORMDL 꿀단지가 장대를 삼키는 것 처럼\@ TEQUIP:애널바이브 ? 바이브를 꽉 물고 # 움찔움찔거리며 \@엉덩이 구멍을 보여주면서
+						PRINTFORMDW 에이키는 말뚝 박기같은 허리놀림을 가속시켜간다..
+					CASE 1
+						PRINTFORML 「아앗♥　아앙♥　여깃 여기가 좋아♥」
+						IF EXP:자궁구개발경험 > 49 && !RAND:3
+							PRINTFORML 「자궁까지 닿아섯 ♥　굉장햇♥♥」
+							PRINTFORMDL 에이키는 체중을 실은 피스톤에 질 안쪽을 찔리는 느낌에 취해 있다.
+							PRINTFORMDW \@ TEQUIP:30:자궁 ? 흥분으로 이미 내려온 # %CALLNAME:MASTER%에게 개발된 \@자궁구가 귀두와 여러 번 키스를 반복하며 에이키는 침을 흘리며 쾌락을 탐하고있다.
+						ELSEIF PALAM:욕정 > PALAMLV:9 && RAND:2 == 1
+							PRINTFORML 「이런거 너무.. 너무.. ♥　저, 저어어.. 바보가 되버려어요..♥」
+							PRINTFORMDL 스스로의 G스팟에 닿도록 피스톤을 계속하고 있다.
+							PRINTFORMDW 애액을 떨어뜨리면서 결합부에서 매우 천박한 소리가 나오고있지만 에이키는 신경쓰는 내색도 하지 않는다.
+						ELSE
+							PRINTFORML 「여기에 스치는거♥　엄청 엄청 기분좋아앗♥」
+							PRINTFORMDL 에이키는 %CALLNAME:MASTER%의 위에 엉거주춤 걸쳐 피스톤을 계속하고 있다.
+							PRINTFORML 「굉장햇♥　아아아앗♥」
+							PRINTFORMDW 에이키의 평소 헌신적인 모습은 온데간데 없이, %CALLNAME:MASTER%의 위에서 계속 허리를 흔들었다.
+						ENDIF
+					CASE 2
+						PRINTFORML 「후읏♥　하앗♥　아아앗♥」
+						PRINTFORMDL 에이키의 입과 아랫입에서 천박한 소리를 계속 연주한다..
+						PRINTFORML 「하히잇..　기분좋아.. 이거..♥」
+						PRINTFORMDL 보이지않는 에이키의 얼굴은 분명 아무에게도 보여줄 수 없는 표정이 되어있을 것이 틀림없다.
+						PRINTFORMDW %SLIT()%의 조임과 애액의 양을 보아 쉽게 상상할 수 있었다.
+				ENDSELECT
+				TCVAR:30:398 = 1
+			ELSE
+				IF TCVAR:30:398
+					IF TEQUIP:계속키스
+						PRINTFORML 「%TEXTR("으응/으흣/응/")%♥　%TEXTR("츄/츄읍/아읍/")%..%TEXTR("츄룹/츄루룹/쥬룹/")%...♥♥」
+						PRINTFORMDL 입을 맞추자 에이키는 전혀 놓아줄 생각이 없는듯 계속 붙잡고 키스를 하고있다..
+					ELSE
+						PRINTFORM 「%TEXTR("으응/으흣/응/")%..♥　
+						PRINTDATAL
+							DATAFORM %K30_C_NAME(MASTER)%의 기분 좋아진 얼굴도 보고싶어..♥」
+							DATAFORM 둘이서 기분 좋아질거라면.. 이쪽이 좋을 것 같네요..♥」
+							DATAFORM 이번엔 이쪽으로 같이 기분 좋아져요♥」
+						ENDDATA
+						PRINTFORMDL 에이키는 삽입한채 능숙하게 몸을 반 회전시켰다.
+					ENDIF
+					PRINTFORMW 
+				ENDIF
+				;対面騎乗位では에이키様가献身的...という脳内設定가活かせてない
+				SELECTCASE RAND:3
+					CASE 0
+						PRINTFORML 「다리를 벌리건가요..? 더? .... 이렇게나?!」
+						PRINTFORMDW 에이키의 다리를 완전히 M자로 크게 벌리게 하여 기승위를 이어갔다.
+						PRINTFORML 「이건.. 부끄러워요.. \@ ABL:노출벽 > 4 ? 그래도 당신에 보여지는것이라면..♥ # 굉장히.. 부끄럽지만.. \@」
+						PRINTFORMDL 풋풋한 에이키의 꿀단지가 장대 형태로 변한 부분까지 보여 %CALLNAME:MASTER%의 흥분을 부추긴다.
+						PRINTFORML 「아아아앗♥　굉장햇♥　부끄러운데.. 기분 좋아..♥」
+						PRINTFORMDW 에이키에게도 %CALLNAME:MASTER%의 흥분이 전해진듯 움직일때마다 애액을 뿌리고 있다.
+					CASE 1
+						PRINTFORML 「기분좋아아♥」
+						PRINTFORMDL 에이키는 %CALLNAME:MASTER%의 가슴에 손을 대고 허리를 구불거리고 있다.
+						PRINTFORML 「하우우웃♥　안 쪽이 녹아버렷 %K30_C_NAME(MASTER)%와 이어져서.. 녹을 것 같아♥」
+						PRINTFORMDW 질내가 장대에 엉겨붙어 %CALLNAME:MASTER%도 허리부터 녹아내릴 정도로 기분이 좋다..
+					CASE 2
+						PRINTFORML 「응♥　응후흣♥　%K30_C_NAME(MASTER)%.. 여기가 기분 좋은거죠..♥」
+						PRINTFORMDW 에이키는 %CALLNAME:MASTER%의 젖꼭지를 손가락으로 만지작거리며 기승위를 하고 있다.」 
+						PRINTFORML 「자아♥　여기.. 이렇게 해주는거 좋아하는거네요♥」
+						PRINTFORMDL 에이키의 손가락에 %CALLNAME:MASTER%의 젖꼭지는 확실히 서버렸다..
+						PRINTFORML 「후훗♥　제 손, 기분 좋죠?」
+						PRINTFORMW 「평소의 답례에요.. 더 기분 좋게 해줄게요♥」
+				ENDSELECT
+				TCVAR:30:398 = 0
+			ENDIF
+			RETURN 1
+		ENDIF
+	ENDIF
+	;基本セット
+	IF ABL:V감각 > 4 && ABL:노출벽 > 4 && !TEQUIP:계속키스 && RAND:2 == 1
+		TCVAR:30:398 = 1
+		PRINTFORML 「.. 저기,%K30_C_NAME(MASTER)%. 이건 어떤가요♥」
+		PRINTDATADL
+			DATAFORM %CALLNAME:MASTER%에게 말을 걸고 에이키는 빙그레 등을 돌렸다.
+			DATAFORM 에이키는 강아지처럼 네 발로 서서 유혹하듯 엉덩이를 흔들고있다.
+			DATAFORM 에이키가 %CALLNAME:MASTER%에게 등을 돌려, %SLIT()%를 벌리며 유혹해왔다.
+		ENDDATA
+		PRINTFORMW 
+		SELECTCASE RAND:3
+			CASE 0
+				PRINTFORML 「다르게 즐길 수 있는 방법이 있어요..」
+				PRINTFORMDL 에이키는 등을 돌려 %TEXTR("페니스/음경/육봉/물건/자지/남근/좆대")%를 %SLIT()%로 삼켜간다.
+				PRINTFORML 「아훗♥　응..후훗♥　기분좋은 곳에 딱 닿아서..♥」
+				PRINTFORMDW %TEXTR("페니스/음경/육봉/물건/자지/남근/좆대")%를 근본까지%SLIT()%에 삼켜 에이키는 만족스러운 신음을 내쉬었다.
+			CASE 1
+				PRINTFORML 「이런 부끄러운 모습은 당신만 봐줬으면 좋겠어요..♥」
+				PRINTFORMDL %CALLNAME:MASTER%로 보이게 에이키는 엉덩이를 내밀고 그 자세 그대로 페니스를 향해 허리를 숙여간다.
+				PRINTFORMDL 에이키의 %SLIT()%가 활짝 열리는 모습도, 페니스 형태로 징그럽게 연장되는 부분까지 %CALLNAME:MASTER%에서 훤히 보인다...
+				PRINTFORMW 「하우읏♥　저의 여기.. 완전히 당신의 형태로 되버렸어요♥」
+			CASE 2
+				PRINTFORMDL %CALLNAME:MASTER%를 등진 채 에이키는 천천히 앉아 %TEXTR("니스/음경/육포/물건/자지/남근/대")%를 조금씩 %SLIT()% 속에 넣어 간다.
+				PRINTFORMW 「하흣..♥　답답한가요?　조금만 참아주세요♥」
+				PRINTFORML 「아아아아앗♥♥」
+				PRINTFORMDL 평소와 다른 각도로 삽입한 %TEXTR("아니스/음경/물건/자지/근대")%가 에이키의 민감한 장소를 정확하게 포착한 것 같다.
+				PRINTFORMDW 교성과 동시에 훤히 보이는 결합부에서 애액이 쏟아져 나왔다...
+		ENDSELECT
+	ELSE
+		TCVAR:30:398 = 0
+		SELECTCASE RAND:3
+			CASE 0
+				PRINTFORML 「넣기전에 준비해보도록 할까요」
+				PRINTFORMDL 에이키는 %TEXTR("니스/음경/육건/자지/남근/대")%에 손을 얹고 꽂는 것도 아니고 %SLIT()%에 문지르기 시작했다.
+				PRINTFORMDW %CALLNAME:MASTER%에게 근질근질한 쾌감이 느껴지지만 맡겨져 있는 것 같아 정말 답답하다..
+				PRINTFORML 「후훗...♥ 오래 기다리셨습니다, 그럼 넣을게요..♥」
+				PRINTFORMDL 에이키는 준비 완료된 %SLIT() %에 장대를 꿀꺽 삼키게 한다
+				PRINTFORML 「아앙♥ 굉장해♥ 엄청 느껴져♥」
+				PRINTFORMDW 단단히 준비된 %SLIT()%는 삽입만으로 두 사람에게 강렬한 쾌감을 선사했다
+			CASE 1
+				PRINTFORML 「당신을 내려다보는건 이상한 느낌이에요..」
+				PRINTFORML 「저.. 열심히 움직일테니 듬뿍 기분좋아져주세요♥」
+				PRINTFORMDW 스스로 장대를 물어 에이키는 허리를 흔든다
+				PRINTFORML 「응♥　저.. 무겁진 않은가요?」
+				PRINTFORMW 「괜찮은가요? 그럼.. 더 움직일게요♥」
+			;こんな의実際やったら折れそう
+			CASE 2
+				PRINTFORMDL %TEXTR("페니스/음경/육봉/물건/자지/남근/좆대")%를 에이키는 삽입감을 맛보듯 슬슬 허리를 숙여 간다.
+				PRINTFORML 「으응 조금 미끄러워서.. 꺄악♥」
+				PRINTFORMDW 에이키기 조금 균형을 잃은 순간, %SLIT()%는 장대를 뿌리까지 삼켜버렸다..
+				IF EXP:자궁구개발경험 > 49
+					PRINTFORML 「후아앗♥　굉장해♥　기분좋은 곳에 딱 닿아서..♥」
+					PRINTFORMDW 개발된 질 깊은 곳을 자극받은 에이키는 더 많은 쾌감을 찾아 허리를 흔들기 시작했다
+				ELSE
+					PRINTFORML 「으...으... 으음... ♥ 갑자기, 안쪽은...힘들지도...」」
+					PRINTFORMDW 에이키는 얕게 허리를 흔들기 시작했다.
+				ENDIF
+		ENDSELECT
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;66,騎乗位アナル
+;==================================================
+@M_KOJO_MESSAGE_COM_K30_66
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K30_66_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K30_66_1
+;-------------------------------------------------
+;기입 체크（=0, 비표시、1, 표시）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	;時姦中
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;マグロスイッチオン
+	ELSEIF TCVAR:30:385 || TCVAR:30:억지로 || TCVAR:30:만취
+		CALL K30_GASPING_MAGURO
+		RETURN 1
+	ENDIF
+	;-------------------------------------------------
+	;挿入継続
+	;기입 체크
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	IF LOCAL:1 && TCVAR:101 == PLAYER
+		;前回사정した
+		IF TCVAR:104 == 1
+			IF ABL:A감각 < 3
+				PRINTFORML 「시럿♥　잠깐, 이거엇, 소리가......부끄러워, 엄청, 부끄러워......」
+				PRINTFORMDW 정액이 두 사람의 결합 부분에서 흘러나와 허리가 움직일 때마다 끈적끈적하고 불쾌한 소리를 내 버린다
+				PRINTFORML 「안대앳、이런거엇、안대애...♥　부탁이야...용서해줘♥」
+				PRINTFORMDW 너무나 부끄러워서 에이키는 허리를 움직이는 것을 멈추고 말았다...
+			ELSE
+				SELECTCASE RAND:3
+					CASE 0
+						CALL HPH_PRINT, @"「아핫HPH　엉덩이, 배가...무척, 뜨거워서...... 기분 좋아앗...HPH」", "L"
+						PRINTFORMDL %CALLNAME:MASTER%의 사정을 항내에서 받아 에이키는 기쁨으로 몸을 떨고 있다
+						PRINTFORMDW 에이키의 직장도 환희에 떨며 페니스에 얽히고, %마스터를% 쉬게할 생각은 없어 보인다...
+						CALL HPH_PRINT, @"「......응읏HPH　아직... 당신 것은, 단단한 그대로네...HPH」", "L"
+						PRINTFORMDW 아직까진 건강한 %CALLNAME:MASTER%의 %TEXTR("페니스/음경/육봉/물건/자지/남근/좆대")%에 기분 좋게 하기위해, 에이키는 다시 스스로 허리를 흔들기 시작했다
+					CASE 1
+						CALL HPH_PRINT, @"（굉장, 햇HPH　배가, 엉덩이......정액으로, 잔뜩......HPHHPH）", "L"
+						PRINTFORMDW 에이키는 등을 뒤로 젖히면서 항내사정의 쾌감을 남김 없이 만족하고 있다......
+						CALL HPH_PRINT, @"「......아핫HPH　아직, 부족해HPH　한 번 더, 하자......좀 더 잔뜩, 해줘HPH」", "L"
+						PRINTFORMDW 도취에서 내려온 에이키는 다시 항문사정의 쾌락을 추구하며 엉덩이를 부딪치기 시작했다
+					CASE 2
+						CALL HPH_PRINT, @"「대단해...HPH　내 안에서, 넘칠 것 같아...HPH」", "L"
+						PRINTFORMDW 에이키는 항내사정의 여운에 잠긴 채 허리의 움직임은 답답할 정도로 완만하다
+						PRINTFORMDL 조금 초조해져 버린 %마스터는% 에이키의 페이스를 무시고 쳐올리듯이 허리를 움직이기 시작했다...
+						CALL HPH_PRINT, @"「아앙앗HPH　지금, 그거, 잠깐HPH　지금은, 잠깐...…아아아아아HPH」", "W"
+				ENDSELECT
+			ENDIF
+		ELSE
+			IF ABL:A감각 < 3
+				PRINTFORML 「하으……이상한, 기분……크으읏, 아으♥　……아앙앗」
+				PRINTFORMDW %CALLNAME:MASTER%의 위에서 에이키는 조심조심 허리를 움직이고 있다
+				PRINTFORML 「스스로、엉덩이…로, 하다니…이런거, 이상해…나 분명히, 이상해졌어……햐아앙♥」
+				PRINTFORMDW 에이키의 오므라드는 것은 아직 익숙해지지 않았지만, 고통을 호소하지 않는 것을 볼 때 충분히 소질은 있는 것 같다……
+			;背面騎乗位と対面騎乗位의2種類ある…という脳内設定
+			ELSEIF (((TEQUIP:체위2 == 3 && TCVAR:30:397) || GROUPMATCH(TEQUIP:체위2, 2, 5)) && RAND:3 != 1) && !TEQUIP:계속키스 && ABL:A감각 > 4 && ABL:노출벽 > 4
+				LOCAL = 0
+				IF RAND:3 == 1 && (NOWEX:A절정 % 3 == 0 && NOWEX:A절정) && TCVAR:30:393 > 2
+					LOCAL = 1
+				ELSEIF GROUPMATCH(TEQUIP:체위2, 2, 5)
+					PRINTFORMDL \@ TEQUIP:체위2 == 2 ? 뒷치기 # 좌위 \@에서 기승위로 넘어갔지만 에이키는 뒤돌아보지도 않고 계속 허리를 움직이고 있다
+					PRINTFORMDL 애널이 %조사처리(TEXTR("페니스/음경/육봉/물건/자지/남근/좆대"),"를")% 삼키는 모습도 %CALLNAME:MASTER%에게 훤히 들여다보이지만, 에이키는 이젠 그런 일에 신경 쓰고 있지 않다…
+					PRINTFORMW 
+				ELSE
+					PRINTFORMDL %마스터는% 에이키의 들뜨듯 움직이는 엉덩이와 추잡하게 %조사처리(TEXTR("페니스/음경/육봉/물건/자지/남근/좆대"),"를")% 삼키는 애널을 차분히 시간했다…
+					PRINTFORMW 
+				ENDIF
+				;A超強절정의時イきっぱなしに…という感じで
+				IF LOCAL
+					PRINTFORMDL …애널에 빠져있는 염마님을 바라보고 있는 사이에 %마스터는% 더욱 에이키를 흐트러지게 하고 싶어진다
+					PRINTFORMDL 무릎을 걸치듯이 하고 에이키를 M자로 다리를 벌리자, 몸이 들뜨는 기세로 엉덩이를 세차게 밀어 올렸다…
+					PRINTFORMW 
+					CALL HPH_PRINT, @"「하히익! 히앗HPH　굉장햇…격렬해앳…HPH　잠깐, 잠깐만HPHHPH」", "L"
+					PRINTFORMDW 허용량 이상의 쾌락에 노출되어 에이키는 흐느끼는 것밖에 할 수 없게 되어 버린다
+					CALL HPH_PRINT, @"「안대앳、가고 있어HPH　엉덩이로, 가고 이써HPH　벌써, 가고 이쓰니까아HPHHPH」", "L"
+					PRINTFORMDL ……아무래도 에이키는 애널을 찔려서 연속으로 절정하고 있는 모양이다
+					PRINTFORMDW 허리춤에 애액을 퓻퓻하고 앞으로 튀기며 몸을 바들바들 떨고 있다
+					RETURN
+				ELSE
+					SELECTCASE RAND:3
+						CASE 0
+							CALL HPH_PRINT, @"「아앗HPH　이렇게, 들어와버려어어HPH　이렇게나…이렇게나HPH」", "L"
+							PRINTFORMDW 에이키는 엉덩이를 %CALLNAME:MASTER%에게 슥하고 문질러 더욱 깊숙히 %조사처리(TEXTR("페니스/음경/육봉/물건/자지/남근/좆대"),"를")% 삼켰다
+							CALL HPH_PRINT, @"「닿았어…HPH　엉덩이, 에서… 아기 방에, 닿고 있어HPH　콕콕, 닿고 있어어HPH」", "L"
+							PRINTFORMDW %CALLNAME:MASTER%에게 걸터앉아 에이키는 자궁을 뒤에서 압박당하는 감각에 농락당하고 있다
+						CASE 1
+							CALL HPH_PRINT, @"「아흐읏…HPH　평소랑, 다른 곳에, 닿아서……앗HPH　여기잇! 굉장햇HPH」", "L"
+							PRINTFORMDW 칠칠치 못한 얼굴을 보여지지 않는다는 안도감 때문일까, 에이키는 부끄러움보다도 쾌감을 우선시하여 음란하게 엉덩이를 흔들고 있다
+							CALL HPH_PRINT, @"「히아앙HPH　자안뜩, 밀려 올라가서HPH　안쪽이잇! 다아써엇HPHHPH」", "L"
+							PRINTFORMDW 평소의 헌신적인 자세도 거기에는 없고, 에이키는 오로지 스스로의 쾌락만을 추구하며 애널 섹스에 몰두해 갔다
+						CASE 2
+							CALL HPH_PRINT, @"「하앗HPH　하앗HPH　하흐읏HPH　하앗HPH　하아아……HPH」", "L"
+							PRINTFORMDW 에이키는 네 발로 엎드린 채로 엉덩이를 흔들고, 숨을 헐떡이며 오로지 애널의 쾌락을 탐하고 있다
+							CALL HPH_PRINT, @"「이러케, 이러케나! 기분 조은거어HPH　멈추지 아나앗HPH　멈출 수 업써어HPHHPH」", "L"
+							PRINTFORMDW 쾌감에 이성도 타 버린 모양이고, 에이키는 찰싹찰싹거리는 소리를 내며 육욕이 내키는 대로 피스톤질을 계속했다…
+					ENDSELECT
+				ENDIF
+				TCVAR:30:397 = 1
+			ELSE
+				IF TCVAR:30:397
+					IF TEQUIP:계속키스
+						CALL HPH_PRINT, @"「%TEXTR("으으읏/응후읏/응읏/")%HPH　%TEXTR("츄우/응츄우/아으읍/")%…%TEXTR("츄우우/츄르릇/쥬르릇/")%……HPHHPH」", "L"
+						PRINTFORMDL 입맞춤을 놓지 않는 에이키를 이쪽을 향하게하고 위에 걸터앉혔다
+					ELSE
+						PRINTFORM 「%TEXTR("아앙앗/후아앗/아흐읏/")%
+						CALL HPH_PRINT, "…HPH　……", ""
+						PRINTDATA
+							DATAFORM %K30_C_NAME(MASTER)%의 얼굴…보이지 않으면, 역시 외로워…
+							DATAFORM 시러엇, 엉덩이의 구멍…환히 들여다 보\@ TEQUIP:체위2 == 3 ? 이고 있어 # 여 \@…
+							DATAFORM 저기, %K30_C_NAME(MASTER)%…키스 하자, 키스 하고싶어…
+						ENDDATA
+						CALL HPH_PRINT, "HPH」", "L"
+						PRINTFORMDL 에이키는 삽입한 채로 약삭빠르게 몸을 반회전시켰다
+					ENDIF
+					PRINTFORMW 
+				ENDIF
+				SELECTCASE RAND:(3 + (ABL:A감각 > 4) * 2)
+					CASE 0
+						CALL HPH_PRINT, @"「앗, 아앙앗HPH　……당신 위에 올라타고…엉덩이로 엣찌한 일을 하고」", "L"
+						CALL HPH_PRINT, @"「나, 정말, 못된 일을 하고 있는거죠…HPH　…아흐읏HPH」", "L"
+						PRINTFORMDW 기분좋은 일로 인해 자연스럽게 허리가 움직여 버리는 자신을 부끄러워하는 듯, 에이키는 얼굴을 새빨갛게 하고 있다
+						CALL HPH_PRINT, @"「하지만…당신이, 기뻐해 준다면…나는, 이런 일이라도…HPHHPH」", "L"
+						PRINTFORMDW %CALLNAME:MASTER%도 함께 느끼고 있음을 확인하자, 에이키는 기쁜 듯이 피스톤을 계속했다
+					CASE 1
+						CALL HPH_PRINT, @"「앗, 응읏HPH　조금, 기다려줘……지금, 무척…좋을 때니까…」", "L"
+						PRINTFORMDW 에이키는 반쯤 일어선 자세로 스스로 기분 좋은 장소를 찾고 있는 중이다
+						CALL HPH_PRINT, @"「!! 아, 아아아앙…HPH　이거, 좋아! 이게엣, 너무 조아아앗HPHHPH」", "L"
+						PRINTFORMDW 아무래도 항문에 귀두가 걸리는 자극이 마음에 들었는지, 에이키는 허리를 조금씩 흔들기 시작했다
+					CASE 2
+						PRINTFORMDL 에이키는 %CALLNAME:MASTER%의 가슴에 손을 얹고 %TEXTR("페니스/음경/육봉/물건/자지/남근/좆대")%의 존재를 확인하는 듯 요염하게 허리를 움직이고 있다
+						CALL HPH_PRINT, @"「내 엉덩이, 어때HPH　당신이, 들어와서, 나는 무척…행복해…HPH」", "L"
+						PRINTFORMDW 뿌리에서 꽉 조여지고 안은 부드럽게 감싸는 에이키의 애널은, %CALLNAME:MASTER%에게도 허리가 녹을 것 같이 기분 좋다…
+						CALL HPH_PRINT, @"「으으읏HPH　당신은, 편하게 있어…내가, 전부, 해주고 싶어…HPH」", "L"
+						PRINTFORMDW 봉사의 기쁨과 애널의 쾌락을 동시에 충족시킨 에이키는 행복한 미소를 지으며 계속 허리를 움직였다
+					CASE 3
+						CALL HPH_PRINT, @"「이거 봐HPH　이것, 기분 좋지HPH　엄청, 기분 좋지HPH」", "L"
+						PRINTFORMDW 에이키는 무릎으로 앉아 %CALLNAME:MASTER%에게 걸터앉아 찔꺽찔꺽 소리가 날 정도로 외설스럽게 허리를 위아래로 들썩이고 있다
+						CALL HPH_PRINT, @"「%K30_C_NAME(MASTER)%, 하앗, 엉덩이로, 하는거, 좋아하니까앗HPH　이게… 굉장히, 좋은거지잇HPH」", "L"
+						PRINTFORMDW …어떻게 봐도 자신의 쾌락을 위해 애널로 페니스를 탐하고 있지만 에이키는 %CALLNAME:MASTER%의 탓을 하고 싶은 모양이다
+					CASE 4
+						CALL HPH_PRINT, @"「아흐읏, 응…HPH　응으HPH　이런…엉덩이로, 안되는데HPH　안되는데엣HPH」", "L"
+						PRINTFORMDW %CALLNAME:MASTER%에게 올라타서 에이키는 뭔가 막힌 것이 터져나오듯이 허리를 흔들며 애널섹스를 즐기고 있다
+						CALL HPH_PRINT, @"「하지만…굉장해앳HPH　 기분 좋아앗HPH　허리가, 멈추질, 않아앗HPH」", "L"
+						PRINTFORMDW 에이키는 수치와 쾌락으로 얼굴을 붉히면서 말뚝을 박듯이 격렬하게 엉덩이를 계속 흔들었다
+				ENDSELECT
+				TCVAR:30:397 = 0
+			ENDIF
+		ENDIF
+		;절정に応じて一言
+		SIF ABL:A감각 > 2 && (NOWEX:MASTER:11 || (PALAM:욕정 > PALAMLV:4 && NOWEX:A절정))
+			CALL K30_PRE_ORG_MES_A(0)
+		RETURN 1
+	ENDIF
+	;基本セット
+	IF ABL:A감각 > 4
+		IF ABL:노출벽 > 4 && RAND:2 == 1 && !TEQUIP:계속키스
+			TCVAR:30:397 = 1
+			PRINTFORML 「…저기, %K30_C_NAME(MASTER)%. 이런 방식은…어때♥」
+			PRINTDATADL
+				DATAFORM %CALLNAME:MASTER%에게 말을 걸고 나서 에이키는 휙하고 등을 돌렸다
+				DATAFORM 에이키는 엎드린 자세로 유혹하듯 엉덩이를 흔들고 있다
+				DATAFORM 에이키가 %CALLNAME:MASTER%에게 돌아서서 스스로 애널을 펼쳐놓고 유혹해 왔다
+			ENDDATA
+			PRINTFORMW 
+			SELECTCASE RAND:3
+				CASE 0
+					CALL HPH_PRINT, @"「이대로 전부, 나에게 맡겨줘, 당신도 나도… 무척 기분 좋아질거예요…HPH」", "L"
+					PRINTFORMDW 에이키는 이쪽으로 등을 돌린 채 우뚝 선 %조사처리(TEXTR("페니스/음경/육봉/물건/자지/남근/좆대"),"를")% 천천히 항문에 삼켜간다
+					CALL HPH_PRINT, @"「아하아…HPH　뱃속에… 아주 딱딱하고… 뜨거운… 것이HPH」", "L"
+					PRINTFORMDW %조사처리(TEXTR("페니스/음경/육봉/물건/자지/남근/좆대"),"를")% 뿌리까지 애널에 물고 에이키는 만족한 듯이 크게 숨을 내쉬었다…
+				CASE 1
+					CALL HPH_PRINT, @"「보고 있어, %K30_C_NAME(MASTER)%…내 엉덩이가, 당신의 것을… 먹어버리는 모습HPH」", "L"
+					PRINTFORMDL 에이키는 엉덩이를 %CALLNAME:MASTER%에 보여주듯이 내밀고, 그 자세 그대로 페니스에 허리를 가라앉혔다
+					CALL HPH_PRINT, @"「아핫HPH　이것, 만으로… 굉장히, 기분 좋아앗…HPH」", "W"
+					CALL HPH_PRINT, @"「……아앗HPH 굉장해앳, 깊어엇HPH　안쪽HPH　안쪽까지잇, 들어와버려어어HPHHPH」", "L"
+					PRINTFORMDW 삽입만으로 가볍게 절정할 것 같으면서도 에이키는 한층 더 쾌감을 찾아 음란하게 허리를 흔들기 시작했다…
+				CASE 2
+					PRINTFORMDL 그대로 %CALLNAME:MASTER%의 %조사처리(TEXTR("페니스/음경/육봉/물건/자지/남근/좆대"),"를")% 뒷구멍에 대고, 삽입감을 맛보듯 슬슬 허리를 떨어뜨려 간다
+					CALL HPH_PRINT, @"(%K30_C_NAME(MASTER)%에게 얼굴을 보이지 않아서 다행이야……나, 지금 되게 칠칠치 못한 얼굴 하고있어…HPH）", "L"
+					PRINTFORMDW %마스터를% 부정한 구멍으로 스스로 범하고 있다는 배덕감이, 에이키를 여느 때보다 욕정시키고 있다
+					CALL HPH_PRINT, @"（…아아아HPH　엉덩이가, 이렇게나…좋았다니HPH　이런거, 이런 건…HPHHPH）", "L"
+					PRINTFORMDW 표정은 보이지 않지만, 숨결・허리의 움직임・장내의 뜨거움 모든 것이 에이키의 흥분과 열정을 확실히 전해온다…
+			ENDSELECT
+		ELSE
+			TCVAR:30:397 = 0
+			SELECTCASE RAND:3
+				CASE 0
+					CALL HPH_PRINT, @"「내가…이런 상스러운 짓을 기억한 것도, 전부 당신의 탓이니까…HPH」", "L"
+					PRINTFORMDW 부정한 구멍으로 %조사처리(TEXTR("페니스/음경/육봉/물건/자지/남근/좆대"),"를")% 스스로 삼키는 모습은 확실히 이전의 에이키에게는 상상도 할 수 없다
+					CALL HPH_PRINT, @"「하지만…이런, 이런 기분 좋은 일을, 참으라니… 못해앳HPH　앗HPH　여깃HPH　굉장햇HPHHPH」", "L"
+					PRINTFORMDW ……상성이 좋은 장소를 금새 찾은 듯이 에이키는 %CALLNAME:MASTER%의 위에 걸터앉아 쾌락으로 몸을 비비 꼬고 있다
+				CASE 1
+					CALL HPH_PRINT, @"「자아…넣을게요, 천천히… 천천히…HPH」", "L"
+					PRINTFORMDW 에이키는 %CALLNAME:MASTER%의 %TEXTR("페니스/음경/육봉/물건/자지/남근/좆대")%에 손을 대고 항문으로 인도한다
+					CALL HPH_PRINT, @"「당신의 …것으로, 엉덩이, 잔뜩…당해서, 너무 좋아…HPH」", "L"
+					PRINTFORMDW %TEXTR("페니스/음경/육봉/물건/자지/남근/좆대")%에 크게 항문을 넓혀져, 에이키는 도착적인 쾌감에 몸을 떨고 있다…
+				CASE 2
+					CALL HPH_PRINT, @"「제가…해 드릴게요HPH　무척, 기분 좋은 곳…엉덩이, 의… 구멍으로HPH」", "L"
+					PRINTFORMDW 에이키는 %CALLNAME:MASTER%의 페니스를 적응시키듯이 자신의 애널에 천천히 잠기게 한다
+					CALL HPH_PRINT, @"「후후훗HPH　들어왔어요…HPH　그러면… 움직일, 게요HPH」", "L"
+					PRINTFORMDW 자신이 주도권을 가진 체위에 흥분했는지, 에이키의 허리쓰임은 여느 때보다 분별없이 대담해져간다…
+			ENDSELECT
+		ENDIF
+	ELSEIF ABL:A감각 > 2
+		TCVAR:30:397 = 0
+		IF RAND:2 == 1
+			PRINTFORML 「제가 움직여드릴 테니까, 갑자기…하지 말아주세요…」
+			PRINTFORMDW %CALLNAME:MASTER%의 배에 손을 얹으면서 에이키는 조심스럽게 허리를 흔들고 있다
+			CALL HPH_PRINT, @"「응읏…응앗HPH　ㅇ, 여기 안쪽…기분, 좋을지도……아으읏HPH」", "L"
+			PRINTFORMDW ……잠시 후에 에이키의 애널도 완전히 익숙해져, 표정은 희열 쪽으로 바뀌어 갔다
+		ELSE
+			PRINTFORML 「뭔가 나, 되게 쳐다보는 것 같은…」
+			PRINTFORMDW %마스터는% 움직이는 것을 에이키에게 맡기고, 그 음란한 모습을 바라보는 일에 전념하고 있다
+			CALL HPH_PRINT, @"「시러엇, 당신의…것, 또, 커졌어HPH　아아앙앗HPH」", "L"
+			PRINTFORMDW 시간당해 흥분한 에이키는 여느 때 이상으로 후장을 옥죄어 왔다…
+		ENDIF
+	ELSE
+		PRINTFORML 「내가…위에서…엉덩이, 로…?」
+		PRINTFORMDW 여성 상위 체위, 게다가 애널섹스를 요구받아서 에이키는 당황하고 있다
+		PRINTFORML 「자신의 페이스대로, 라는 말을 들어도…조금, 아플…지도…」
+		PRINTFORMDW %CALLNAME:MASTER%의 위에 쭈그리고 앉아서 에이키는 어떻게든 편안한 자세를 찾으려고 했다…
+	ENDIF
+	;절정に応じて一言
+	SIF ABL:A감각 > 2 && (NOWEX:MASTER:11 || (PALAM:욕정 > PALAMLV:4 && NOWEX:A절정))
+		CALL K30_PRE_ORG_MES_A(0)
+ENDIF
+RETURN 1
+
+;==================================================
+;67,対面座位
+;アナル対面座位의流用、だいたい키스ハメになる
+;==================================================
+@M_KOJO_MESSAGE_COM_K30_67
+DRAWLINE
+CALL M_KOJO_MESSAGE_COM_K30_67_99
+CALL M_KOJO_COLOR_K30
+CALL M_KOJO_MESSAGE_COM_K30_67_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K30_67_1
+TCVAR:30:398 = 0
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	;時姦中
+	IF FLAG:70
+		RETURN 1
+	ELSEIF TCVAR:30:385 || TCVAR:30:억지로 || TCVAR:30:만취
+		CALL K30_GASPING_MAGURO
+		RETURN 1
+	ENDIF
+	;-------------------------------------------------
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	IF LOCAL:1 && TCVAR:100 == PLAYER
+		;이거で사정する
+		IF NOWEX:MASTER:사정
+			IF TEQUIP:계속키스
+				IF RAND:2 == 1
+					PRINTFORML 「응웃...!　츄웁.. 쿠핫♥」
+					PRINTFORMDL 교성까지 다 마시듯 에이히메와 뜨거운 입맞춤을 나누지만 %CALLNAME:MASTER%도 한계가 가깝다.
+					PRINTFORML 「푸핫…♥」
+					PRINTFORML 「참지 말고 ...와 주세요♥」
+					PRINTFORMDW 영희는 사정의 전조를 감지하고 다리도 팔도 확실히 %CALLNAME:MASTER%에 얽혀 왔다...
+				ELSE
+					PRINTFORML 「음…후,후…♥ 푸핫!」
+					PRINTFORMDL 서로 숨을 쉴 수 없게 되는 한계까지 키스를 계속하고나서야 입이 떨어진다
+					PRINTFORML 「아.. 안까지 오고잇어..♥」
+					PRINTFORMW 「언제라도 괜찮아요.. 제 안에..♥」
+				ENDIF
+			ELSEIF NOWEX:B절정
+				PRINTFORML 「아앗! %K30_C_NAME(MASTER)%♥ 안돼♥♥ 이거♥ 안돼♥♥」
+				PRINTFORMDW %CALLNAME:MASTER%의 격렬한 피스톤에 농락되어 영희는 비명 같은 교성을 지르고 있다
+				PRINTFORML 「가슴 그렇게나 괴롭히면..♥」
+				PRINTFORMDW 뾰족한 젖꼭지를 달짝지근 씹자 에이히메는 등을 활처럼 휘어뜨렸다
+			ELSE
+				PRINTFORML 「응..♥ 기분 좋아...♥」
+				PRINTFORMDL 영희는 %CALLNAME:MASTER%의 목에 손을 두르고 젖꼭지도 질내도 되는 대로 몸을 맡기고 있다
+				PRINTFORML 「%K30_C_NAME(MASTER)%.. 참지말고..」
+				PRINTFORMW 「쌀거 같으면.. 바로 내주세요..♥」
+			ENDIF
+		;前回사정した
+		ELSEIF TCVAR:102 && TEQUIP:계속키스
+			SELECTCASE RAND:3
+				CASE 0
+					PRINTFORML 「으응.. 츄웁♥」
+					PRINTFORMDL %CALLNAME:MASTER% 타액을 교환하며 에이히메도 적극적으로 혀를 걸어온다.
+					PRINTFORMW 「푸핫..！！」
+					PRINTFORML 「%K30_C_NAME(MASTER)%..아직 부족해요..」
+					PRINTFORML 「당신에게 사랑받는 증거..
+					PRINTFORMW 「좀더...나에게 주세요...♥♥」
+				CASE 1
+					PRINTFORML 「응♥　츄룹♥　츄루르릅♥」
+					PRINTFORMDL 혀를 엉킬때마다 에이키가 더 안겨온다
+					PRINTFORMDW 결합부에선 방금 부은 정액이 새어나오고 있다.
+					PRINTFORML 「아흣♥　넘쳐버려」
+					PRINTFORML 「좀더 넣어주세요%K30_C_NAME(MASTER)%..♥」
+					PRINTFORMW 「당신이 채워줬으면 좋겠어...♥」
+				CASE 2
+					PRINTFORML 「응뭇♥　츄풉♥　할짝...」
+					PRINTFORMDW 히메를 꼭 껴안고 질 안쪽에 페니스를 고정한 채 허리를 흔들었다
+					PRINTFORML 「응우우읏~~♥♥　응우우읏~~♥♥　」
+			ENDSELECT
+		ELSEIF TEQUIP:계속키스
+			SELECTCASE RAND:4
+				CASE 0
+					PRINTFORMDL 키스를 계속하면서 빈 한 손으로 에키의 엉덩이를 쓰다듬다
+					PRINTFORMW 「읏♥　싫엇、그거、조금 부끄러워요..」
+					PRINTFORMDW 양손으로 엉덩이를 잡아 에이키는 반응하여 단단히 조여왔다.
+					PRINTFORML 「아아읏♥　정말, %K30_C_NAME(MASTER)%는 엉덩이.. 너무 좋아하신다니까♥」
+					PRINTFORMW 「...그래도、이거...기분, 좋아...이대로、계속해줘♥」
+				CASE 1
+					PRINTFORML 「후후훗♪　%K30_C_NAME(MASTER)%......츕、츕...♥」
+					PRINTFORMDL 에이키는 %CALLNAME:MASTER%와 연결되어 기쁜듯이 키스의 비를 내리고 있다.
+					PRINTFORMDW 결합부의 물소리 못지않게 입맞춤의 소리가 주위에 울려퍼진다...
+					PRINTFORML 「아흣♥　굉장히、기분、좋아서...굉장히、행복해...♥」
+					PRINTFORMW 「응우읏...♥　이 행복한 기분 당신에게 전해졌을까요......츕♥」
+				CASE 2
+					PRINTFORML 「읏♥　읏♥　ん읏！！　응읏~♥♥」
+					PRINTFORMDW 혀를 엉키면서 허리를 치켜올릴때마다 입술로 막힌 에이키의 몸이 움찔움찔 뛰어오른다.
+					PRINTFORMDL 허리가 빠지지않게 에이키를 잡아 %CALLNAME:MASTER%는 더 피스톤을 가속했다.
+					PRINTFORML 「앗♥　아아읏♥　기다렷！！　격렬햇♥　안돼에♥」
+					PRINTFORMDW 강해지는 쾌락에 몸을 비틀며 넋을 잃고 헐떡이고 있다..
+				CASE 3
+					PRINTFORML 「읏...후우웃♥　%K30_C_NAME(MASTER)%...♥　좀더、하자..♥」
+					PRINTFORMDL 숨을 쉬려고 입을 떼는 %CALLNAME:MASTER%를 에이키는 아쉬운듯
+					PRINTFORMDW 양손으로 %CALLNAME:MASTER%의 머리를 잡고 키스를 계속하려고 한다..
+					PRINTFORML 「좀더 하고싶어♥　 쪽♥」
+					PRINTFORMDW 에이키의 입술도 질내도 %CALLNAME:MASTER%를 원해 놓아줄 생각이 없다..
+			ENDSELECT
+		ELSE
+			IF RAND:2 == 1
+				PRINTFORML 「아앙、좋앗...♥　좀더..♥」
+				PRINTFORMDL 에이키는 온몸을 사랑받는 감각에 부끄러움도 잊고 헐떡이고 있다.
+				PRINTFORML 「나도 모르게 움직여버려..♥」
+				PRINTFORMDW 어느새 에이키는 스스로 허리를 흔들고 있었다.
+			ELSE
+				PRINTFORML 「%K30_C_NAME(MASTER)%에게 사랑받고 있어.. 온몸 전부..♥」
+				PRINTFORMDL %CALLNAME:MASTER%의 머리를 잡고 행복한듯이 헐떡이고 있다.
+				PRINTFORML 「아읏♥　계속.. 이렇게 있고싶어..♥」
+				PRINTFORMDW 에이키는 스스로 가슴을 들이대고 있다..
+			ENDIF
+		ENDIF
+		RETURN 1
+	ENDIF
+	;基本セット
+	IF TFLAG:193 == 2
+		SELECTCASE RAND:5
+			CASE 0
+				PRINTFORML 「읏... 츕、쥬루룹！」
+				PRINTFORML 「아아읏♥　이렇게나...딱딱해졌어..♥」
+				PRINTFORMDW 키스로 듬뿍 침을 흘려넣어 %CALLNAME:MASTER%의 장대는 점점 흥분하고 있다.
+				PRINTFORML 「후훗♥　놓치지않아.. 놓치고싶지 않아...♥　츕、츄풉...할짝...♥」
+				PRINTFORMDW 에이키는 전혀 질리지도 않는듯 %CALLNAME:MASTER%의 귀나 목덜미에도 혀를 대고있다.
+			CASE 1
+				PRINTFORML 「츕、하읍...♥　후훗...행복해요♥」
+				PRINTFORML 「당신과, 하나가 되는건.. 정말로 행복한 일이에요..♥」
+				PRINTFORMDW 에이키는 삽입되면서 %CALLNAME:MASTER%를 껴안았다.
+				PRINTFORML 「읏♥　츕......후훗♥　이대로...계속.. 안기고싶어요..♥」
+				PRINTFORMDL 키스와 함께 에이키는 다리로 %CALLNAME:MASTER%의 허리를 붙잡는다.
+				PRINTFORMDW 서로 가장 깊은 곳에 연결되있는 감각은 그것만으로도 충분한 만족감과 쾌감을 가져다준다..
+			CASE 2
+				PRINTFORML 「츄룹、할짝...쿠츄우우......응우웃♥」
+				PRINTFORMDL 에이키의 질내와 키스가 부드럽게 감싸온다..
+				PRINTFORML 「아앙♥　저의、안...당신이...느껴져요...♥」
+				PRINTFORML 「느긋하게 하는거.. 좋앗...이것만으로도...굉장히、행복한 기분이에요...아아♥」
+				PRINTFORMDW %CALLNAME:MASTER%는 에이키의 질내를 느긋하게 즐기듯 허리를 움직였다.
+			CASE 3
+				PRINTFORML 「앗♥　앗♥　이거엇、갱장...해엣...히이이잇♥」
+				PRINTFORMDW 엄청난 기세로 허리를 흔들어주자 에이키는 침을 흘리며 쾌락의 소용돌이에 빠져있다.
+				PRINTFORML 「안돼♥　%K30_C_NAME(MASTER)%.. 잠깐만..」
+				PRINTFORML 「...읏！？　응읏~♥　응읏~♥...」
+				PRINTFORMDW 자비를 원하는 목소리도 키스로 입을 막자, 최소한의 저항이라는듯 한층 더 강하게 조여온다..!
+			CASE 4
+				PRINTFORML 「읏♥　츄룹、할짝.. 쥬풉!」
+				PRINTFORMDW 에이키쪽에서 적극적으로 키스에다 혀를 걸어온다.
+				PRINTFORML 「몇 번을 해도.. 전혀 질리지않아요♥」
+				PRINTFORML 「당신과、이어지는 것은...정말 행복해요...♥　...츄룹 쪽..」
+				PRINTFORMDW %CALLNAME:MASTER%의 허리사용에 지지않을 정도로 에이키는 혀를 휘감아오고 있다.
+		ENDSELECT
+	ELSEIF TEQUIP:유두빨기 == 1
+		IF RAND:2 == 1
+			PRINTFORML 「히얏...♥　그런, 빨면...기분이 이상해져요..♥」
+			PRINTFORMDW 유두를 혀로 굴리자 에이키의 질 안쪽이 뜨겁게 꿈틀거리기 시작한다.
+			PRINTFORML 「응후읏...후훗♥　정말、%K30_C_NAME(MASTER)%...마치 아기 같네요..♥」
+			IF NOWEX:분유
+				PRINTFORML 「아앙♥　가슴、뜨거워...나올 것...같아요...♥」
+			ELSE
+				PRINTFORML 「읏♥　그런、빨아도...\@ TALENT:모유체질 ? 지금은 # 모유같은건 \@、안나온다구요...♥」
+			ENDIF
+			PRINTFORMDW 에이키는 %CALLNAME:MASTER%의 머리를 안아, \@ NOWEX:분유 ? 조르듯이 # 보다 강한 자극을 원해 \@ 가슴을 밀어붙였다..
+		ELSE
+			PRINTFORML 「하우우..♥　그런、한꺼번에..♥」
+			PRINTFORML 「앗...앗♥　앗♥　아래도 위도..♥」
+			PRINTFORMDL 녹는듯한 꿀단지와 사랑스러운 가슴은 %CALLNAME:MASTER%를 기대하고 있었던 것 같다.
+			PRINTFORMDW 황홀한 표정을 짓는 에이키를 %CALLNAME:MASTER%는 차분히 맛보고 있다.
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;地의文をいじったやつ
+@M_KOJO_MESSAGE_COM_K30_67_99
+SELECTCASE TFLAG:193
+	CASE IS <= 0
+		IF FLAG:70 == 1
+			IF TCVAR:100 == PLAYER && TARGET == TFLAG:103
+				IF NOWEX:MASTER:사정
+					PRINTFORML %CALLNAME:PLAYER%는 시간을 멈춘 %CALLNAME:TARGET%를 끌어안아,
+					PRINTFORML %CALLNAME:TARGET%의 체취를 즐기면서 치밀어오르는 충동에 몸을 맡겼다.
+				ELSEIF TEQUIP:체위2 == 4
+					PRINTFORML %CALLNAME:PLAYER%는 시간을 멈춘 에이키의 엉덩이를 손으로 꽉 잡고 다시 허리를 흔들기 시작했다.
+				ELSE
+					PRINTFORML 질내로부터 %TINKO(PLAYER)%를 빼지않고 다시 끌어안아,
+					PRINTFORML 부드러운 몸의 감촉을 즐기면서 허리를 흔들기 시작했다.
+				ENDIF
+			ELSE
+				PRINTFORM 시간을 멈춘 %CALLNAME:TARGET%의 몸을 안아 올려
+				PRINTFORM %TINKO(PLAYER)%에 내렸다.
+				SIF TEQUIP:0 & 2
+					PRINTFORM 비켜놓은 %SHOW_BOTTOM(TARGET,2)%의 틈은
+				;윤활LV4以上
+				SIF PALAM:윤활 >= PALAMLV:4
+					PRINT 흠뻑 젖어있는
+				;小柄체형
+				IF TALENT:체형 < 0
+					PRINT 어린 꿀단지
+				ELSE
+					PRINT 질
+				ENDIF
+				PRINTFORM 에 삽입해、
+				PRINTL %CALLNAME:TARGET%라는 오나홀에 허리를 흔들었다..
+			ENDIF
+		ELSE
+			IF TCVAR:100 == PLAYER && TARGET == TFLAG:103
+				IF NOWEX:MASTER:사정
+					PRINTFORML %CALLNAME:PLAYER%는 에이키를 껴안은채,
+					PRINTFORML 치밀어오르는 충동에 몸을 맡기고 허리를 밀어붙였다..
+				ELSEIF TEQUIP:체위2 == 4
+					PRINTFORML %CALLNAME:PLAYER%는 에이키의 엉덩이를 꽉 붙잡은채 다시 허리를 흔들기 시작했다..
+				ELSE
+					PRINTFORML 질내로부터 %TINKO(PLAYER)%를 빼지않고 몸을 꼭 끌어안아 허리를 흔들기 시작했다..
+				ENDIF
+			ELSE
+				PRINTFORM 에이키의몸을 안아 올려, 느긋하게 내렸다.
+				SIF TEQUIP:0 & 2
+					PRINTFORM 비켜놓은 %SHOW_BOTTOM(TARGET,2)%의 틈에
+				PRINTFORML %SLIT(, 1)%를 삽입해, 허리를 흔들었다.
+			ENDIF
+			IF TALENT:연모
+				IF TFLAG:193 == -1
+					PRINTFORML 어쩔 수 없다곤 하지만 %CALLNAME:PLAYER%와 키스를 할 수 없는 에이키는 아쉬운듯하다.
+				ELSE
+					PRINTFORML 더럽힐만큼 더럽히고 노골적으로 입맞춤을 피하는 %CALLNAME:PLAYER%에게 에이키는 불만인 것 같다..
+				ENDIF
+			ENDIF
+		ENDIF
+	CASE  1
+		IF FLAG:70 == 1
+			IF NOWEX:MASTER:사정
+				PRINTFORML %CALLNAME:PLAYER%는 시간을 멈춘 에이키를 껴안아,
+				PRINTFORML 에이키의 가슴를 만지면서 치밀어오르는 충동에 몸을 맡기고 허리를 흔들었다...
+			ELSEIF TEQUIP:체위2 == 4
+				PRINTFORML %CALLNAME:PLAYER%는 시간을 멈춘 에이키의 젖꼭지를 핥으면서 다시 허리를 흔들기 시작했다...
+			ELSE
+				PRINTFORMl 질내로부터 %TINKO(PLAYER)%를 빼지않고 에이키를 끌어안아,
+				PRINTFORML %NIPPLE_DESCRIPTION(TARGET,1)%를 괴롭히며 허리를 흔들었다.
+			ENDIF
+		ELSE
+			IF TCVAR:100 == PLAYER && TARGET == TFLAG:103
+				IF NOWEX:MASTER:사정
+					PRINTFORML %CALLNAME:PLAYER%는 에이키의 가슴에 얼굴을 맞대 젖꼭지를 입에 물고
+					PRINTFORML 충동에 몸을 맡기고 허리를 흔들었다...
+				ELSEIF TEQUIP:체위2 == 4
+					PRINTFORML %CALLNAME:PLAYER%는 에이키의 젖꼭지를 혀로 괴롭히며 허리를 흔들었다...
+				ELSE
+					PRINTFORML 질내로부터 %TINKO(PLAYER)%를 빼지않고 에이키의 젖꼭지를 빨며 허리를 흔들기 시작했다.
+				ENDIF
+			ELSE
+				PRINTFORM 에이키의 몸을 안아올려 느긋하게,
+				SIF TEQUIP:0 & 2
+					PRINTFORM 비켜놓은 %SHOW_BOTTOM(TARGET,2)%의 틈,
+				PRINTFORML %SLIT(, 1)%에 삽입해
+				PRINTFORML %NIPPLE_DESCRIPTION(TARGET,1)%을 핥으면서 허리를 흔들었다...
+			ENDIF
+		ENDIF
+	CASE 2
+		IF FLAG:70 == 1
+			IF TCVAR:100 == PLAYER && TARGET == TFLAG:103
+				IF NOWEX:MASTER:사정
+					PRINTFORML %CALLNAME:PLAYER%는 시간을 멈춘 에이키를 껴안아,
+					PRINTFORML %CALLNAME:TARGET%의 입안을 유린하면서 허리를 흔들었다.
+				ELSEIF TEQUIP:체위2 == 4
+					PRINTFORML %CALLNAME:PLAYER%는 시간을 멈춘에이키에게 키스를 하며 혀를 섞으면서 허리를 흔들었다...
+				ELSE
+					PRINTFORML 질내로부터 %TINKO(PLAYER)%를 빼지않고시간을 멈춘 에이키의 몸을 껴안아
+					PRINTFORML 입안을 마음껏 맛보면서 허리를 흔들었다...
+				ENDIF
+			ELSE
+				PRINTFORM 시간을 멈춘 %CALLNAME:TARGET%의 몸을 껴안아 %TINKO(PLAYER)% 뒤로 들고
+				SIF TEQUIP:0 & 2
+					PRINTFORM 비켜놓은 %SHOW_BOTTOM(TARGET,2)%의 틈,
+				;윤활LV4以上
+				SIF PALAM:윤활 >= PALAMLV:4
+					PRINT 흠뻑 젖은
+				;小柄체형
+				IF TALENT:체형 < 0
+					PRINT 어린 꿀단지
+				ELSE
+					PRINT 질
+				ENDIF
+				PRINTFORML 에 삽입해, 키스하며 %CALLNAME:TARGET%라는 오나홀에 한껏 허리를 흔들었다..
+			ENDIF
+		ELSEIF TCVAR:100 == PLAYER && TARGET == TFLAG:103
+			IF NOWEX:MASTER:사정
+				PRINTFORML %CALLNAME:PLAYER%는 %CALLNAME:TARGET%을 끌어안고 계속 키스하며
+				PRINTFORML 충동에 몸을 맡겨 허리를 흔들었다.
+			ELSEIF TEQUIP:체위2 == 4
+				PRINTFORML %CALLNAME:PLAYER%는 %CALLNAME:TARGET%와 키스하며 혀를 얽히며 허리를 흔들었다...
+			ELSE
+				PRINTFORM 질내로부터 %TINKO(PLAYER)%를 빼지않고%CALLNAME:TARGET%의 몸을 껴안아
+				PRINTFORML 혀를 얽으며 허리를 흔들었다...
+			ENDIF
+		ELSE
+			PRINTFORM %CALLNAME:TARGET%의 몸를 껴안아、
+			PRINTFORM 느긋하게 내리며
+			SIF TEQUIP:0 & 2
+				PRINTFORM 비켜놓은 %SHOW_BOTTOM(TARGET,2)%의 틈의
+			PRINTFORML %SLIT(, 1)%에 삽입해, 키스하며 허리를 흔들었다..
+		ENDIF
+ENDSELECT
+PRINTFORMW 
+RETURN
+
+;口가空いてたら키스ハメになったり가슴吸いな가ら挿れたりするEXTRASOURCE関数
+@M_KOJO_EXTRASOURCE_COM_K30_67
+;IF PREVCOM == 71
+;	CALL COM_ABLE71
+;	SIF RESULT == 1
+;		RETURN
+;ENDIF
+IF MASTER_POSE(SET_B, SET_M, 1) == 30 && !TEQUIP:유두캡
+	TEQUIP:30:V접촉부위 = 1
+	TFLAG:193 = 1
+	TEQUIP:유두빨기 = 1
+	TEQUIP:B접촉부위 = 4
+	SOURCE:쾌B = 10 + ABL:PLAYER:혀 * (10 * TALENT:연모)
+	SOURCE:노출 = 10
+	EXP:PLAYER:펠라티오경험 ++
+	RETURN
+ELSEIF K30_KISS_CANCEL()
+	TFLAG:193 = K30_KISS_CANCEL()
+	RETURN
+ENDIF
+CALL COM20
+TEQUIP:계속키스 = 1
+SOURCE:일탈 = 100
+SOURCE:반감 = 200
+TEQUIP:30:입접촉부위 = 4
+TFLAG:193 = 2
+RETURN
+
+;==================================================
+;68,背面座位
+;アナル背面座位의流用、空いた手で몸を色々弄る感じに
+;==================================================
+@M_KOJO_MESSAGE_COM_K30_68
+IF TFLAG:194
+	CALL K30_D_LINE
+ELSE
+	CALL TRAIN_MESSAGE
+ENDIF
+CALL M_KOJO_MESSAGE_COM_K30_68_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K30_68_1
+TCVAR:30:398 = 1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	;時姦中
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	ELSEIF TCVAR:30:385 || TCVAR:30:억지로 || TCVAR:30:만취
+		CALL K30_GASPING_MAGURO
+		RETURN 1
+	ENDIF
+	;-------------------------------------------------
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	IF LOCAL:1 && TCVAR:100 == PLAYER
+		;사정
+		IF NOWEX:PLAYER:사정
+			SELECTCASE RAND:3
+				CASE 0
+					PRINTFORML 「읏♥　앗♥　앗♥　그런！　굉장해♥　굉장해엣♥」
+					PRINTFORMDL 에이키의 허리를 들어올리듯 크게 흔들면
+					PRINTFORMDW 쉽게 안까지 공략할 수 있다.
+					PRINTFORML 「와줫♥　%K30_C_NAME(MASTER)%、와줘어♥♥」
+					PRINTFORMDW 에이키의 질내는 %CALLNAME:MASTER%의 정을 원해 꿈틀거리고 있다.
+				CASE 1
+					PRINTFORMDL 에이키의 팔을 구속하듯 꼭 껴안았다.
+					PRINTFORML 「――――으읏♥♥　――ㅡ읏♥　―――하앗아앙♥」
+					PRINTFORMDW 에이키는 숨을 헐떡이며 결합부에서도 천박한 소리가 난다.
+					PRINTFORML 「안돼！　안돼에♥　이런거 견딜 수가 없어！　조금만♥　천천히..♥♥」
+					PRINTFORMDW 에이키를 지배하는 감각이 %CALLNAME:MASTER%를 격앙시켜간다..
+				CASE 2
+					PRINTFORML 「후ㅡ읏♥　후ㅡ읏♥　여기, 굉장해...♥」
+					PRINTFORMDL 에이키는 스스로 엉거주춤한 자세로 허리를 움직이고 있다.
+					PRINTFORMW 「읏♥　응흣...♥　굉장해... 제 안에서、이렇게나...♥」
+					PRINTFORML 「앗♥　하앗♥　 좋앗♥」
+					PRINTFORMDW 에이키의 선정적인 모습에 %CALLNAME:MASTER%는 견딜 수 없다.
+			ENDSELECT
+		;前回사정した
+		ELSEIF TCVAR:102
+			SELECTCASE RAND:3
+				CASE 0
+					PRINTFORML 「%K30_C_NAME(MASTER)%...♥　좀더、안아...주세요...♥」
+					PRINTFORML 「놓으면...싫어요 좀더、%K30_C_NAME(MASTER)%를 느끼고싶어요♥」
+					PRINTFORMDW %CALLNAME:MASTER%의 욕망을 받아들여 에이키의 몸도 한층 뜨거워진다.
+					PRINTFORML 「후훗♥　당신과... 붙어있는 것만으로도 기분이 좋아져요...♥」
+					PRINTFORML 「그래도、이러면...좀더......후아...앗♥」
+					PRINTFORMDW 에이키의 허리는 그라인드를 시작해, 스스로 쾌감을 요구해온다.
+				CASE 1
+					PRINTFORMDL 문득 생각이 들어 허리를 멈추고 에이키를 꽉 껴안았다.
+					PRINTFORML 「읏...♥　%K30_C_NAME(MASTER)%...움직여주지않는건가요？」
+					PRINTFORMW 「아아음..구멍이.. 근질근질해서...굉장히、애달파서..읏♥」
+					PRINTFORMDL 정액의 맛을 기억한 몸이 %CALLNAME:MASTER%를 원하는듯 하다.
+					PRINTFORML 「부탁..해요...범해주세요...기분좋게해주세요...앗♥　 하앗♥」
+					PRINTFORMDW 에이키로부터 졸라지면서 %CALLNAME:MASTER%는 다시 허리를 흔들었다.
+				CASE 2
+					PRINTFORMDL 활력을 되찾은 육봉으로 격렬하게 에이키를 안았다.
+					PRINTFORMW 「응아앗！　격렬햇......응쿠읏♥　잠깐♥　잠깐♥」
+					PRINTFORMDL 한층 더 허리를 흔드니 에이키는 흐느끼듯 허떡인다.
+					PRINTFORML 「앗♥　앗♥　아앙！　그거、안돼에♥」
+					PRINTFORMDW 억지로 범해지는 감각에 농락되어 어느때보다 흥분한듯 하다.
+			ENDSELECT
+		ELSE
+			SELECTCASE TFLAG:193
+				CASE 0
+					PRINTFORMDL 무릎 위에서 헐떡이는 에이키를 핥으며 더욱 허리를 흔들었다.
+					PRINTFORMW 「꺅...！　싫엇...거기...♥」
+					PRINTFORMW 「힛！　그런곳 핥지말아줘...%K30_C_NAME(MASTER)%..변태..」
+					PRINTFORML 「앗！？　싫엇、거기..♥」
+					PRINTFORMDW 겨드랑이 옆구리 목덜미 핥는 곳을 바꿀때마다 신선한 반응을 보여준다.
+				CASE 1
+					IF TEQUIP:체위2 == 5
+						PRINTFORML %CALLNAME:TARGET%를 등뒤에서 안아 혀를 얽히며 %CALLNAME:TARGET%의 몸을 흔들었다.
+					ELSE
+						PRINTFORML 질내로부터%TINKO(PLAYER)%를 빼지않고 키스해 %CALLNAME:TARGET%의 몸을 즐겼다.
+					ENDIF
+					PRINTFORMW 
+					PRINTFORML 「읏、읏♥　응굿、응츄...」
+					PRINTFORMDL 에이키는 %CALLNAME:MASTER%의 욕망을 받아들이고 있다.
+					PRINTFORMDW 입도 장대도 감싼채 놓지 않으려 한다.
+				CASE 2
+					IF TEQUIP:체위2 == 5
+						PRINTFORMDL %CALLNAME:TARGET%의 가슴을 뒤로 만지며 %CALLNAME:TARGET%의 몸을 흔들었다.
+					ELSE
+						PRINTFORMDL 질내로부터%TINKO(PLAYER)%를 빼지않고%CALLNAME:TARGET%의 가슴을 주무르고 허리를 흔들었다.
+					ENDIF
+					PRINTFORMW 
+					PRINTFORML 「앗...♥　기분, 좋아......쿠훗♥」
+					PRINTFORMDW 에이키는 몸의 힘을 빼고 %CALLNAME:MASTER%의 손에 헐떡이고 있다.
+				CASE 3
+					IF TEQUIP:체위2 == 5
+						PRINTFORML %CALLNAME:TARGET%의 클리를 괴롭히면서 허리를 흔들었다.
+					ELSE
+						PRINTFORML 질내로부터%TINKO(PLAYER)%를 빼지않고 뒤에서 클리를 괴롭히면서 허리를 흔들었다.
+					ENDIF
+					PRINTFORML 「앗...♥　아앙！　앗♥　앗♥　」
+			ENDSELECT
+		ENDIF
+	;基本セット
+	ELSEIF !TFLAG:194
+		IF RAND:2 == 1
+			PRINTFORML 「읏...♥　그런.. 꽉 껴안으면..」
+			PRINTFORMDL 에이키는 %CALLNAME:MASTER%에게 몸을 맡기고 있다.
+		ELSE
+			PRINTFORML 「읏...♥　들어가있네요♥」
+			PRINTFORML 「굉장히、뜨거워...♥」
+			PRINTFORML 「%K30_C_NAME(MASTER)%...안아...주세요♥」
+		ENDIF
+	ELSE
+		IF TFLAG:193 == 3
+			PRINTFORMDL %CALLNAME:MASTER%가 아빠다리로 앉으면 씩씩하게 기립한 장대가 솟는다.
+			IF TEQUIP:0 & 2
+				PRINTFORMDL 에이키는 스스로%SHOW_BOTTOM(TARGET,2)%에 기대 %SLIT(, 1)%에 그것을 삼킨다.
+			ELSE
+				PRINTFORMDL 에이키는 걸터앉아 %SLIT(, 1)%에 천천히 삽입시켰다.
+			ENDIF
+			PRINTFORMW 
+		ELSE
+			PRINTFORMD 에이키\@ TEQUIP:30:B접촉부위 ? 의 두 가슴을 비비면서 # 키스하면서 \@
+			IF TEQUIP:0 & 2
+				PRINTFORMDL %SLIT(, 1)%に%SHOW_BOTTOM(TARGET,2)%의 틈에 느긋하게 삽입했다.
+			ELSE
+				PRINTFORMDL %SLIT(, 1)%를 기다리고 있던 물건으로 천천히 관통했다.
+			ENDIF
+			PRINTFORMW 
+		ENDIF
+		SELECTCASE TFLAG:193
+			CASE 1
+				PRINTFORML 「하우우...♥　%K30_C_NAME(MASTER)%...♥」
+				PRINTFORMDL 에이키는%CALLNAME:MASTER%쪽으로 돌아 바라보다가 키스했다.
+				PRINTFORML 「츕、읏♥　......응읏~♥」
+			CASE 2
+				IF RAND:2 == 1
+					PRINTFORML 「읏...♥　저의 가슴...괴롭히는거 재밌나요？」
+					PRINTFORML 「읏♥　%K30_C_NAME(MASTER)%.. 변태♥」
+				ELSE
+					
+					PRINTFORML 「앗...읏♥　가슴、안도...굉장히、뜨거워...♥」
+					PRINTFORML 「......아앙！　안돼♥　끝부분 괴롭히지말아줘♥」
+				ENDIF
+			CASE 3
+				IF RAND:2 == 1
+					PRINTFORML 「앗...！　%K30_C_NAME(MASTER)%의 것, 굉장해！　굉장해♥」
+					PRINTFORMDL 에이키의 끝까지 도달한 %CALLNAME:MASTER%는 접합부에 손을 뻗는다
+					PRINTFORML 「힛♥♥　그거！　안돼♥」
+					PRINTFORMDW 클리를 괴롭혀주자 엄청난 반응이다.
+				ELSE
+					PRINTFORML 「%K30_C_NAME(MASTER)%...좀더、사랑해줘..♥」
+					PRINTFORMDL 클리를 괴롭혀주자 에이키의 몸이 튀어오른다.
+					PRINTFORMW 「읏♥♥　굉장해 기분...좋앗...♥」
+				ENDIF
+		ENDSELECT
+	ENDIF
+ENDIF
+RETURN 1
+;背面座位で에이키様의いろんなところ弄る感じ의EXTRASOURCE関数
+@M_KOJO_EXTRASOURCE_COM_K30_68
+;IF PREVCOM == 71
+;	CALL COM_ABLE71
+;	SIF RESULT == 1
+;		RETURN
+;ENDIF
+LOCAL:1 = 0
+SIF !SHIRAHU(30) || TCVAR:30:385 || TCVAR:30:억지로
+	RETURN
+TEQUIP:30:V접촉부위 = 1
+TEQUIP:30:B접촉부위 = 0
+SOURCE:쾌B = 0
+SIF TCVAR:PLAYER:이기초 || TCVAR:102
+	RETURN
+SELECTCASE RAND:4
+	CASE 0
+		RETURN
+	CASE 1
+		IF K30_KISS_CANCEL()
+			SOURCE:쾌B = 250
+			TEQUIP:30:B접촉부위 = 3
+			TFLAG:193 = 2
+		ELSE
+			TEQUIP:계속키스 = 1
+			TEQUIP:30:입접촉부위 = 4
+			SOURCE:쾌M = 200
+			TFLAG:193 = 1
+		ENDIF
+	CASE 2
+		SOURCE:쾌B = 250
+		TEQUIP:30:B접촉부위 = 3
+		TFLAG:193 = 2
+	CASE 3
+		TEQUIP:30:C접촉부위 = 3
+		SOURCE:쾌C = 250
+		SOURCE:쾌V += 50
+		TFLAG:193 = 3
+ENDSELECT
+TFLAG:194 = 1
+RETURN
+;==================================================
+;69,対面座位アナル
+;地의文書き換えでむりやり키스ハメ体位にする
+;==================================================
+@M_KOJO_MESSAGE_COM_K30_69
+DRAWLINE
+CALL M_KOJO_MESSAGE_COM_K30_69_99
+CALL M_KOJO_COLOR_K30
+CALL M_KOJO_MESSAGE_COM_K30_69_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K30_69_1
+TCVAR:30:398 = 0
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70 || TFLAG:193 < 0
+		PRINTFORMW 
+		RETURN 1
+	ELSEIF TCVAR:30:385 || TCVAR:30:억지로 || TCVAR:30:만취
+		CALL K30_GASPING_MAGURO
+		RETURN 1
+	ENDIF
+	SIF ABL:A감각 < 3
+	RETURN 1
+	;-------------------------------------------------
+	;挿入継続
+	;-------------------------------------------------
+	IF TCVAR:101 == PLAYER
+		;이거で사정する
+		IF NOWEX:MASTER:사정
+			IF TEQUIP:계속키스
+				IF RAND:2 == 1
+					CALL HPH_PRINT, @"「응우......！　응츄、쿠훗....HPH」", "L"
+					PRINTFORMDW 교성까지 빨아들이는것처럼 에이키와 뜨거운 키스를 나누면서 %CALLNAME:MASTER%도 한계다
+					CALL HPH_PRINT, @"「푸핫..HPH」", "L"
+					CALL HPH_PRINT, @"「%K30_C_NAME(MASTER)%HPH　엉덩이로 끝까지...HPH」", "L"
+					PRINTFORMDW 에이키는 사정의 전조를 눈치채고 %CALLNAME:MASTER%를 껴안았다.
+				ELSE
+					CALL HPH_PRINT, @"「읏......읏ん～HPH」", "L"
+					CALL HPH_PRINT, @"「아우......안、끝っHPH」", "L"
+					CALL HPH_PRINT, @"「더이상...안돼HPH　안돼에HPHHPHHPH」", "W"
+				ENDIF
+			ELSEIF NOWEX:B절정
+				CALL HPH_PRINT, @"「아앙！　%K30_C_NAME(MASTER)%っHPH　안돼HPHHPH　그거HPH　안돼에HPHHPH」", "L"
+				PRINTFORMDW %CALLNAME:MASTER%의 격렬한 피스톤에 교성을 지른다.
+				CALL HPH_PRINT, @"「읏HPH　안돼에HPH」", "L"
+				PRINTFORMDW 젖꼭지를 괴롭혀주자 허리를 활처럼 휘고있다.
+			ELSE
+				CALL HPH_PRINT, @"「읏......응우、읏...HPH　기분좋아...HPH」", "L"
+				PRINTFORMDL 에이키는%CALLNAME:MASTER%의 목에 팔을 걸어 몸을 맡기고있다.
+				PRINTFORML 「%K30_C_NAME(MASTER)%..」
+				CALL HPH_PRINT, @"「사랑해요..HPH」", "W"
+			ENDIF
+			RETURN
+		;前回사정した
+		ELSEIF TCVAR:104 && TEQUIP:계속키스
+			SELECTCASE RAND:3
+				CASE 0
+					CALL HPH_PRINT, @"「읏！　응믓......츄풉HPH　응긋...HPH」", "L"
+					PRINTFORMDL %CALLNAME:MASTER%와 타액을 교환하고있다.
+				CASE 1
+					CALL HPH_PRINT, @"「읏HPH　츄룹......HPH　할짝......HPH」", "L"
+					PRINTFORMDL 혀를 섞을때마다 서로의 침이 흘러진다
+					PRINTFORMDW 애널에선 방금 부은 정액이 배어나오고 있다.
+					CALL HPH_PRINT, @"「아앙HPH　%K30_C_NAME(MASTER)%...넘쳐흘러버려...」", "L"
+					CALL HPH_PRINT, @"「좀더..HPH」", "W"
+				CASE 2
+					CALL HPH_PRINT, @"「읏HPH 읏HPHHPH　츄풉、할짝...」", "L"
+					PRINTFORMDW 사정한 후 그래도%CALLNAME:MASTER%는 시들 기미도 계속해서 애널에 박았다.
+					CALL HPH_PRINT, @"「응우우읏~~HPHHPH　응우우읏~~HPHHPH」", "L"
+			ENDSELECT
+		ELSEIF TEQUIP:계속키스
+			SELECTCASE RAND:4
+				CASE 0
+					PRINTFORMDL 키스를 계속하며 에이키의 엉덩이를 만진다.
+					CALL HPH_PRINT, @"「읏HPH　や읏、%K30_C_NAME(MASTER)%...변태HPH」", "W"
+				CASE 1
+					CALL HPH_PRINT, @"「후훗♪　%K30_C_NAME(MASTER)%......츕、츕...HPH」", "L"
+					PRINTFORMDL 에이키는 %CALLNAME:MASTER%에게 계속 키스한다.
+					CALL HPH_PRINT, @"「아흣HPH　굉장히、기분、좋아서...굉장히、행복해요...HPH」", "L"
+				CASE 2
+					CALL HPH_PRINT, @"「읏HPH　읏HPH　읏！！　응읏~HPHHPH」", "L"
+				CASE 3
+					CALL HPH_PRINT, @"「읏...후우웃HPH　%K30_C_NAME(MASTER)%...HPH」", "L"
+					PRINTFORMDL 숨을 쉬려고 입을 떼는 %CALLNAME:MASTER%를 에이키는 계속 키스하려고 한다.
+			ENDSELECT
+		ELSE
+			IF RAND:2 == 1
+				CALL HPH_PRINT, @"「아앙、좋앗...HPH」", "L"
+				PRINTFORMDL 에이키는 전신을 사랑받는 감각에 헐떡이고 있다.
+			ELSE
+				CALL HPH_PRINT, @"「%K30_C_NAME(MASTER)%...HPH」", "L"
+				PRINTFORMDL %CALLNAME:MASTER%의 머리를 끌어안고 에이키는 헐떡인다.
+				CALL HPH_PRINT, @"「계속 이렇게 있고싶어요..HPH」", "L"
+			ENDIF
+		ENDIF
+	;基本セット
+	ELSEIF TFLAG:193
+		IF RAND:2 == 1
+			CALL HPH_PRINT, @"「히얏...HPH」", "L"
+			PRINTFORMDL 젖꼭지로 혀를 굴리면 에이키의 애널이 더 조여온다.
+			IF NOWEX:분유
+				CALL HPH_PRINT, @"「아앙HPH　가슴、뜨거워..」", "L"
+			ELSE
+				CALL HPH_PRINT, @"「읏HPH　그렇게나 해도.. \@ TALENT:모유체질 ? 지금은 # 모유는 \@、나오지않는다구요...HPH」", "L"
+			ENDIF
+			PRINTFORMDW 에이키는%CALLNAME:MASTER%의 머리를 안아、\@ NOWEX:분유 ? 조르듯이 # 자극을원해 \@ 가슴을 밀어붙인다.
+		ELSE
+			CALL HPH_PRINT, @"「하우우...HPH」", "L"
+			CALL HPH_PRINT, @"「앗...앗HPH　앗HPH」", "L"
+		ENDIF
+	ELSE
+		SELECTCASE RAND:5
+			CASE 0
+				CALL HPH_PRINT, @"「읏HPH　ん츕...쥬루룹！」", "L"
+				CALL HPH_PRINT, @"「아아읏HPH　엉덩이로、이렇게나...딱딱해...HPH」", "L"
+			CASE 1
+				CALL HPH_PRINT, @"「츕、하뭅...HPH　후훗...HPH」", "L"
+				CALL HPH_PRINT, @"「읏HPH　츕......후훗HPH　이대로.. 잠시 같이 이어져있어요..HPH」", "L"
+				PRINTFORMDL 에이키는 다리로 안아 %CALLNAME:MASTER%는 허리를 움직일 수가 없다.
+			CASE 2
+				CALL HPH_PRINT, @"「츄룹、할짝...쿠츄우우......응우웃HPH」", "L"
+				CALL HPH_PRINT, @"「좋앗..HPH」", "L"
+				PRINTFORMDW 뿌리의 조임과 포근한 항내를 즐기면서 %CALLNAME:MASTER%는 느긋하게 허리를 움직였다...
+			CASE 3
+				PRINTFORML 「앗♥　앗♥　이거엇、갱장...해엣...히이이잇♥」
+				PRINTFORMDW 엄청난 기세로 허리를 흔들어주자 에이키는 침을 흘리며 쾌락의 소용돌이에 빠져있다.
+				PRINTFORML 「안돼♥　%K30_C_NAME(MASTER)%.. 잠깐만..」
+				PRINTFORML 「...읏！？　응읏~♥　응읏~♥...」
+				PRINTFORMDW 자비를 원하는 목소리도 키스로 입을 막자, 최소한의 저항이라는듯 한층 더 강하게 조여온다..!
+			CASE 4
+				PRINTFORML 「읏♥　츄룹、할짝.. 쥬풉!」
+				PRINTFORMDW 에이키쪽에서 적극적으로 키스에다 혀를 걸어온다.
+				PRINTFORML 「몇 번을 해도.. 전혀 질리지않아요♥」
+				PRINTFORML 「당신과、이어지는 것은...정말 행복해요...♥　...츄룹 쪽..」
+				PRINTFORMDW %CALLNAME:MASTER%의 허리사용에 지지않을 정도로 에이키는 혀를 휘감아오고 있다.
+		ENDSELECT
+	ENDIF
+	;絶頂に応じて一言
+	SIF ABL:A감각 > 2 && (NOWEX:MASTER:11 || (PALAM:욕정 > PALAMLV:4 && NOWEX:A절정))
+		CALL K30_PRE_ORG_MES_A(0)
+ENDIF
+RETURN 1
+
+;地의文書き換え
+@M_KOJO_MESSAGE_COM_K30_69_99
+SELECTCASE TFLAG:193
+	CASE IS < 0
+		IF FLAG:70
+			;連続
+			IF SELECTCOM == PREVCOM
+				PRINTFORM %CALLNAME:PLAYER%는 시간을 멈춘 에이키의항내에
+				IF TALENT:PLAYER:2 & 2
+					PRINTFORM %TINKO(PLAYER)%를
+				ELSE
+					PRINTFORM 딜도를
+				ENDIF
+				PRINTFORML 넣은채 허리를 흔들었다...
+				PRINTFORMW 
+				RETURN 0
+			;抜かず
+			ELSEIF TCVAR:101 == PLAYER
+				PRINTFORM 장내로부터
+				;調教者についてる
+				IF TALENT:PLAYER:2 & 2
+					PRINTFORM %TINKO(PLAYER)%를
+				ELSE
+					PRINTFORM 딜도를
+				ENDIF
+				PRINTFORM 빼지않고 시간을 멈춘%CALLNAME:TARGET%의 몸를 강하게 끌어안아,
+				PRINTFORML %CALLNAME:TARGET%로 자위했다.
+			ELSE
+				PRINTFORM 시간을 멈춘%CALLNAME:TARGET%의몸를 껴안아
+				SIF TEQUIP:0 & 2
+					PRINTFORM %SHOW_BOTTOM(TARGET,2)%를 무리하게 밀어
+				PRINTFORM %TINKO(PLAYER)%에 박았다.
+				;윤활LV4以上
+				SIF PALAM:윤활 >= PALAMLV:4
+					PRINT 점액 투성이가 된
+				PRINTFORM 엉덩이구멍으로 삽입하면,
+			ENDIF
+			PRINTL %CALLNAME:TARGET%의 엉덩이에 허리를 흔들었다..
+		ELSE
+			;連続
+			IF SELECTCOM == PREVCOM && ASSIPLAY == TFLAG:150
+				PRINTFORML %CALLNAME:TARGET%는 에이키를 강하게 안은채로 허리를 흔들었다...
+			;抜かず
+			ELSEIF TCVAR:101 == PLAYER
+				PRINTFORM 장내로부터
+				;調教者についてる
+				IF TALENT:PLAYER:2 & 2
+					PRINTFORM %TINKO(PLAYER)%를
+				ELSE
+					PRINTFORM 딜도를
+				ENDIF
+				PRINTFORM 빼지않고 %CALLNAME:TARGET%의 몸을 안은채 허리를 흔들었다..
+			ELSE
+				PRINTFORM %CALLNAME:TARGET%의 몸을 껴안아
+				SIF TEQUIP:0 & 2
+					PRINTFORM %SHOW_BOTTOM(TARGET,2)%를 비껴
+				PRINTFORM 느긋하게 내리며
+				;윤활LV4以上
+				SIF PALAM:윤활 >= PALAMLV:4
+					PRINT 점액 투성이가 된
+				PRINTFORML 아누스에 삽입해,허리를 흔들었다..
+			ENDIF
+			IF TALENT:연모
+				IF TFLAG:193 == -1
+					PRINTFORML 어쩔 수 없다곤 하지만 %CALLNAME:PLAYER%와 키스를 할 수 없는 에이키는 아쉬운듯하다.
+				ELSE
+					PRINTFORML 더럽힐만큼 더럽히고 노골적으로 입맞춤을 피하는 %CALLNAME:PLAYER%에게 에이키는 불만인 것 같다..
+				ENDIF
+			ENDIF
+		ENDIF
+	CASE 0
+		IF FLAG:70 == 1
+			IF NOWEX:MASTER:사정
+				PRINTFORML %CALLNAME:PLAYER%는 시간을 멈춘 에이키를 껴안아,
+				PRINTFORML 에이키의 입안을 맛보면서 치밀어오르는 충동에 몸을 맡기고 허리를 흔들었다...
+			ELSEIF TEQUIP:체위2 == 4
+				PRINTFORML %CALLNAME:PLAYER%는 시간을 멈춘 에이키의 입안을 유린하면서 다시 허리를 흔들기 시작했다...
+			ELSE
+				PRINTFORMl 장내로부터 %TINKO(PLAYER)%를 빼지않고 에이키를 끌어안아,
+				PRINTFORML %NIPPLE_DESCRIPTION(TARGET,1)%를 괴롭히며 허리를 흔들었다.
+			ENDIF
+		;抜かず
+		ELSEIF TCVAR:101 == PLAYER
+			IF TCVAR:LOCAL:104
+	 			PRINTFORML 장내로부터%TINKO(PLAYER)%를 빼지않고에이키 키스하며 허리를 흔들었다.
+			ELSEIF TEQUIP:체위2 == 4
+				PRINTFORML %CALLNAME:PLAYER%는 에이키의 입안을 맛보며 허리를 흔들었다...
+			ELSE
+				PRINTFORML %CALLNAME:PLAYER%는 에이키의 몸을 안아 입안을 맛보며 허리를 흔들었다...
+			ENDIF
+		ELSE
+			PRINTFORM %CALLNAME:TARGET%의 몸을 껴안아
+			SIF TEQUIP:0 & 2
+				PRINTFORM %SHOW_BOTTOM(TARGET,2)%를 억지로 벗겨
+			PRINTFORM 느긋하게 내리며
+			;윤활LV4以上
+			SIF PALAM:윤활 >= PALAMLV:4
+				PRINT 점액 투성이가 된
+			PRINTFORML 아누스에 삽입해, 키스하며 허리를 흔들었다..
+		ENDIF
+	CASE 1
+		IF FLAG:70 == 1
+			IF NOWEX:MASTER:사정
+				PRINTFORML %CALLNAME:PLAYER%는 시간을 멈춘 에이키를 안아올려、
+				PRINTFORML 눈앞에 있는 가슴을 괴롭히며 충동에 맡겨 허리를 흔들었다. 
+			ELSEIF TEQUIP:체위2 == 4
+				PRINTFORML %CALLNAME:PLAYER%는 시간을 멈춘 에이키의 젖꼭지를 괴롭히며허리를 흔들었다...
+			ELSE
+				PRINTFORMl 장내로부터%TINKO(PLAYER)%를 빼지않고시간을 멈춘 에이키의 몸을 안아
+				PRINTFORML %NIPPLE_DESCRIPTION(TARGET,1)%하면서 허리를 흔들었다...
+			ENDIF
+		;抜かず
+		ELSEIF TCVAR:101 == PLAYER
+				IF TCVAR:LOCAL:104
+		 			PRINTFORML 장내로부터%TINKO(PLAYER)%를 빼지않고、에이키의젖꼭지를 괴롭히며 허리를 흔들었다.
+				ELSEIF TEQUIP:체위2 == 4
+					PRINTFORML %CALLNAME:PLAYER%는 에이키의젖꼭지를 혀로 괴롭히며 허리를 흔들었다...
+				ELSE
+					PRINTFORML %CALLNAME:PLAYER%는 에이키의 가슴에 얼굴을 파묻어
+					PRINTFORML 충동에 맡겨 허리를 흔들었다.
+				ENDIF
+		ELSE
+			PRINTFORM %CALLNAME:TARGET%의신체를 껴안아
+			SIF TEQUIP:0 & 2
+				PRINTFORM %SHOW_BOTTOM(TARGET,2)%를 빗겨
+			PRINTFORM 느긋하게 내리며
+			;윤활LV4以上
+			SIF PALAM:윤활 >= PALAMLV:4
+				PRINT 점액 투성이가 된
+			PRINTFORML 아누스에 삽입해,
+			PRINTFORML %NIPPLE_DESCRIPTION(TARGET,1)%을 핥으면서 허리를 흔들었다...
+		ENDIF
+ENDSELECT
+PRINTFORMW 
+RETURN
+
+;アナル不快度軽減+口가空いてたら키스ハメになったり가슴吸ったりするEXTRASOURCE関数
+@M_KOJO_EXTRASOURCE_COM_K30_69
+CALL K30_LESS_RESISTANCE_ANAL
+SIF TCVAR:30:385 || TCVAR:30:억지로 || TCVAR:30:만취 || ABL:A감각 < 3
+	RETURN
+TEQUIP:30:A접촉부위 = 1
+IF MASTER_POSE(SET_B, SET_M, 1) == 30 && !TEQUIP:유두캡
+	TFLAG:193 = 1
+	TEQUIP:유두빨기 = 1
+	TEQUIP:B접촉부위 = 4
+	SOURCE:쾌B = 10 + ABL:PLAYER:혀 * (10 * TALENT:연모)
+	SOURCE:노출 = 10
+	EXP:PLAYER:펠라티오경험 ++
+	RETURN
+ELSEIF K30_KISS_CANCEL() < 0
+	TFLAG:193 = K30_KISS_CANCEL()
+	RETURN
+ENDIF
+CALL COM20
+TEQUIP:계속키스 = 1
+SOURCE:일탈 = 100
+SOURCE:반감 = 200
+TEQUIP:30:입접촉부위 = 4
+RETURN
+
+;==================================================
+;70,背面座位アナル
+;==================================================
+@M_KOJO_MESSAGE_COM_K30_70
+IF TFLAG:194
+	CALL K30_D_LINE
+ELSE
+	CALL TRAIN_MESSAGE
+	CALL K30_PRINT_BUTT_IMAGE(SELECTCOM)
+ENDIF
+CALL M_KOJO_MESSAGE_COM_K30_70_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K30_70_1
+TCVAR:30:398 = 1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	ELSEIF TCVAR:30:385 || TCVAR:30:억지로 || TCVAR:30:만취
+		CALL K30_GASPING_MAGURO
+		RETURN 1
+	ENDIF
+	SIF ABL:A감각 < 3
+		RETURN 1
+	;-------------------------------------------------
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	IF LOCAL:1 && TCVAR:101 == PLAYER
+		;사정
+		IF NOWEX:PLAYER:사정
+			SELECTCASE RAND:3
+				CASE 0
+					CALL HPH_PRINT, @"「읏HPH　앗HPH　앗HPH　그런！　굉장해HPH　굉장해엣HPH」", "L"
+					PRINTFORMDL 에이키의 가는 허리를 들어올리듯 크게 흔들어
+					PRINTFORMDW 힘이 빠진 신체는 그때마다 쉽게 상하운동하며 쉽게 직장끝까지 닿는다.
+					CALL HPH_PRINT, @"「%K30_C_NAME(MASTER)%와줫HPH　자지,와줘어HPHHPH」", "L"
+				CASE 1
+					PRINTFORMDL 에이키의 팔이 구속하듯이 꼭 껴안고 허리를 흔들었다.
+					CALL HPH_PRINT, @"「――――으읏HPHHPH　――ㅡ읏HPH　―――하앗아앙HPH」", "L"
+					PRINTFORMDW 압도적인 쾌락에 지배되어 숨 막힐듯 에이키는 헐떡이고 있다.
+					CALL HPH_PRINT, @"「안돼！　안돼에HPH　이런거, 몰라앗！HPHHPH」", "L"
+					PRINTFORMDW 육욕으로 염라님을 타락시킨 감각은 %CALLNAME:MASTER% 격앙시킨다..
+				CASE 2
+					CALL HPH_PRINT, @"「후ㅡ읏HPH　후ㅡ읏HPH　이거、굉장해...HPH」", "L"
+					CALL HPH_PRINT, @"「앗HPH　하앗HPHHPH」", "L"
+					PRINTFORMDW 선정적인 에이키의 모습에 %CALLNAME:MASTER%의 사타구니는 견딜 수가 없다.
+			ENDSELECT
+			RETURN
+		;前回사정した
+		ELSEIF TCVAR:104
+			SELECTCASE RAND:3
+				CASE 0
+					CALL HPH_PRINT, @"「%K30_C_NAME(MASTER)%...HPH　좀더、안아...주실 수 있나요...HPH」", "L"
+					CALL HPH_PRINT, @"「좀더、%K30_C_NAME(MASTER)%를...느끼고싶어HPH」", "L"
+					PRINTFORMDW %CALLNAME:MASTER%의 욕망을 받아들여 에이키의 몸은 뜨겁게 달아오르고 있다.
+					CALL HPH_PRINT, @"「당신과..붙어있는 것만으로도 기분좋아요...HPH」", "L"
+					PRINTFORMDW 에이키는 허리는 그라인드를 시작해 스스로 쾌락을 갈망하고 있다.
+				CASE 1
+					PRINTFORMDL 문득 생각이 들어 허리를 멈추고 에이키를 꽉 껴안았다.
+					PRINTFORML 「읏...♥　%K30_C_NAME(MASTER)%...움직여주지않는건가요？」
+					PRINTFORMW 「아아음..구멍이.. 근질근질해서...굉장히、애달파서..읏♥」
+					PRINTFORMDL 정액의 맛을 기억한 몸이 %CALLNAME:MASTER%를 원하는듯 하다.
+					PRINTFORML 「부탁..해요...범해주세요...기분좋게해주세요...앗♥　 하앗♥」
+					PRINTFORMDW 에이키로부터 졸라지면서 %CALLNAME:MASTER%는 다시 허리를 흔들었다.
+				CASE 2
+					PRINTFORMDL 활력을 되찾은 육봉으로 격렬하게 에이키를 안았다.
+					PRINTFORMW 「응아앗！　격렬햇......응쿠읏♥　잠깐♥　잠깐♥」
+					PRINTFORMDL 한층 더 허리를 흔드니 에이키는 흐느끼듯 허떡인다.
+					PRINTFORML 「앗♥　앗♥　아앙！　그거、안돼에♥」
+					PRINTFORMDW 억지로 범해지는 감각에 농락되어 어느때보다 흥분한듯 하다.
+			ENDSELECT
+		ELSE
+			SELECTCASE TFLAG:193
+				CASE 0
+					LOCAL = K30_FIND_AROUND()
+					IF RAND:3 == 1 && !FLAG:99 && NOWEX:A절정 > 2
+						PRINTFORMDL 거기에 에이키의 애널을 범하면서 양무릎을 안고 못 움직이게 햇다.
+						IF !RAND:2 && LOCAL
+							PRINTFORMDL 머리까지 고정된 자세로 %CALLNAME:LOCAL%의 방향으로 틀면
+							PRINTFORMDL 외설적으로 장대를 물고 있는 애널과 음탕한 %SLIT()%가 드러난다.
+							PRINTFORMW   
+							CALL HPH_PRINT, @"「힛！　시.싫엇...HPH　%CALLNAME:LOCAL%...%K30_C_NAME(LOCAL)%...보지말아주세요...HPH」", "L"
+							PRINTFORMDL 에이키는고개를 저으며 몸을 돌리려 하지만 꼼짝도 할 수 없다.
+							CALL HPH_PRINT, @"「앗HPH　웃HPH 안돼에...HPH」", "L"
+							PRINTFORMDW %CALLNAME:LOCAL%의 시선에 노출되면서, 에이키는 애널을 찔리는 육변기가 되고 있다..
+						ELSE
+							PRINTFORMDL 신체의 자유를 완전히 빼앗아 거침없이 범하면, 에이키의 교성이 한층 커진다.
+							PRINTFORMW   
+							CALL HPH_PRINT, @"「앗HPH　아흣HPH　...엉덩이HPH　안돼에...HPH」", "L"
+							PRINTFORMDL 어쩔 새도 없이 애널을 공격당해 에이키의 의식은 반쯤 날아가있다.
+							CALL HPH_PRINT, @"「HPH 이거엇、HPH　엉덩힛, 엉덩이롯HPH　이상해져버렷HPHHPH」", "L"
+							PRINTFORMDW 에이키의 흐트러진 모습은 %CALLNAME:MASTER%의 정복욕을 더할나위 없이 채워준다..
+						ENDIF
+					ELSEIF RAND:2 == 1
+						CALL HPH_PRINT, @"「히얏HPH　...싫어.. 거긴.. 느껴버려..HPH」", "L"
+						PRINTFORMDL 연결된채로 목덜미나 귀에 키스를 반복하면 에이키의 등이 떨린다.
+						PRINTFORMDW 보이지 않는것으로부터 당하는 것에는 평소보다 예민해진다고 한다.
+					ELSE
+						CALL HPH_PRINT, @"「읏HPH　」", "L"
+						PRINTFORMDW 에이키의엉덩이를 움켜쥐고 큰 스트로크로 흔들었다.
+						CALL HPH_PRINT, @"「아앙HPH　엉덩이！　그렇게 잡으면.. HPHHPH」", "L"
+					ENDIF
+				CASE 1
+					CALL HPH_PRINT, @"「읏HPH　츕...읏HPH　츕......응읏~HPH」", "L"
+					PRINTFORMDW %CALLNAME:MASTER%는 계속 키스하며 허리를 흔들었다.
+					CALL HPH_PRINT, @"「응굿HPH　읏、읏......～～～～っHPHHPH」", "L"
+				CASE 2
+					CALL HPH_PRINT, @"「하앗～っHPH　하앗～HPH　앗...아아...HPHHPH」", "L"
+					PRINTFORMDW 에이키의 가슴을 주르며 계속 박았다
+					CALL HPH_PRINT, @"「하앗っHPHHPH　엉덩이...HPH　아아、가슴...엉덩이...HPHHPH」", "L"
+					PRINTFORMDW 허용량 이상의 쾌감에 에이키의 이성은 이미 날아가버린 것 같다.
+				CASE 3
+					CALL HPH_PRINT, @"「앗...기다렷！　%K30_C_NAME(MASTER)%...기다렷HPH　」", "L"
+					PRINTFORMDW 아랫배에 %CALLNAME:MASTER%의 손이 닿으면 에이키는 겁 먹은듯한 소리를 지른다.
+					CALL HPH_PRINT, @"「~~~~~~읏HPHHPH ~~~~~~~~~~HPHHPH」", "W"
+					PRINTFORMDW 엉덩이 구멍과 클리를 동시에 당하자 에이키는 엄청난 교성을 내고있다..
+			ENDSELECT
+		ENDIF
+	;基本セット
+	ELSEIF !TFLAG:193
+		IF RAND:2 == 1
+			CALL HPH_PRINT, @"「읏...HPH　그렇게나 세게 안으면..」", "L"
+			CALL HPH_PRINT, @"「기뻐서.. 저는...HPH」", "L"
+			PRINTFORMDL 에이키는 완전히 힘을 빼고 몸을 맡기고있다.
+			PRINTFORMDW 뜨겁게 꿈틀거리는 장내도 매끈매끈한 피부도 %CALLNAME:MASTER%를 원해 달라붙는 것 같다..
+		ELSE
+			CALL HPH_PRINT, @"「읏...HPH　엉덩이에 들어왔어...HPH」", "L"
+			CALL HPH_PRINT, @"「굉장히、뜨겁고.. 딱딱해...HPH」", "L"
+			PRINTFORMDW 에이키는 마치 짐승이 마킹을 하듯 엉덩이를 눌러온다..
+			CALL HPH_PRINT, @"「%K30_C_NAME(MASTER)%...안아...주세요..HPH」", "L"
+			CALL HPH_PRINT, @"「좀더...당신에게 안겨서.. 느끼고싶어...HPH」", "W"
+		ENDIF
+	ELSE
+		IF !TFLAG:194
+		ELSEIF TFLAG:193 == 3
+			PRINTFORMDL %CALLNAME:MASTER%가 아빠다리로 앉으면 씩씩하게 기립한 장대가 우뚝 솟는다.
+			IF TEQUIP:0 & 2
+				PRINTFORMDL 에이키는 스스로%SHOW_BOTTOM(TARGET,2)%를 비키고 애널로 장대를 삼켰다..
+			ELSE
+				PRINTFORMDL 에이키는 무릎에 걸터앉아 천천히 애널에 삽입했다..
+			ENDIF
+		ELSE
+			PRINTFORMD 에이키\@ TEQUIP:30:B접촉부위 ? 의 두 가슴을 주무르며 # 키스하며 \@
+			IF TEQUIP:0 & 2
+				PRINTFORMDL 아누스에%SHOW_BOTTOM(TARGET,2)%의 틈으로부터 천천히 삽입했다.
+			ELSE
+				PRINTFORMDL 아누스를 기다리고 있던 물건으로 천천히 꿰뚫었다..
+			ENDIF
+		ENDIF
+		CALL K30_PRINT_BUTT_IMAGE(SELECTCOM)
+		PRINTFORMW 
+		SELECTCASE TFLAG:193
+			CASE 1
+				CALL HPH_PRINT, @"「하우우...HPH　%K30_C_NAME(MASTER)%...HPH」", "L"
+				PRINTFORMDL 에이키는 %CALLNAME:MASTER%의 쪽으로 바라보며 키스 한다.
+				CALL HPH_PRINT, @"「츕、읏HPH　......응읏~HPH」", "W"
+			CASE 2
+				IF RAND:2 == 1
+					CALL HPH_PRINT, @"「읏...HPH　제 가슴.. 괴롭혀서 재밌으신가요..?」", "L"
+					CALL HPH_PRINT, @"「앗HPH　%K30_C_NAME(MASTER)%.. 정말.. 변태HPH」", "W"
+					PRINTFORMDL 조심스러운 가슴에 자극을 받자 애널이 꽉 조여온다.
+					PRINTFORMDW 부끄러움과 음탕함을 겸비한 염라님의 모습에 %CALLNAME:MASTER%의 흥분은 더욱 고조된다...
+				ELSE
+					CALL HPH_PRINT, @"「앗... 읏HPH　가슴、엉덩이도...굉장히、뜨거워...HPH」", "L"
+					CALL HPH_PRINT, @"「......아앙！　안돼HPH　끝부분.. 꼬집지말아줘..HPH」", "L"
+					PRINTFORMDW 에이키의 젖꼭지를 꼬집으면 스위치가 켜졌는지 애널이 꽉 조인다.
+					CALL HPH_PRINT, @"「엣HPH　이런거.. 안돼...HPHHPH」", "L"
+				ENDIF
+			CASE 3
+				CALL HPH_PRINT, @"「앗...！　%K30_C_NAME(MASTER)%거.. 굉장햇..HPH」", "L"
+				PRINTFORMDL 에이키의 애널에 깊이 들어간 %CALLNAME:MASTER%는 %SLIT(30)%에 손을 뻗어
+				CALL HPH_PRINT, @"「힛HPHHPH　그건..!　안돼HPH　바보가 되버렷..HPH」", "L"
+				PRINTFORMDW 볼록 부풀어오른 클리를 괴롭혀주자 에이키는 엄청난 반응을 보여준다.
+		ENDSELECT
+	ENDIF
+	;絶頂に応じて一言
+	SIF ABL:A감각 > 2 && (NOWEX:MASTER:11 || (PALAM:욕정 > PALAMLV:4 && NOWEX:A절정))
+		CALL K30_PRE_ORG_MES_A(0)
+ENDIF
+RETURN 1
+
+;アナル不快度軽減+背面座位で에이키様의いろんなところ弄る感じ의EXTRASOURCE関数
+@M_KOJO_EXTRASOURCE_COM_K30_70
+CALL K30_LESS_RESISTANCE_ANAL
+SIF !SHIRAHU(30) || TCVAR:30:385 || TCVAR:30:억지로 || ABL:A감각 < 3
+	RETURN
+SIF TCVAR:PLAYER:이기초 || TCVAR:104
+	RETURN
+SIF TCVAR:101 != PLAYER
+	TFLAG:194 = 1
+TEQUIP:30:A접촉부위 = 1
+TEQUIP:30:B접촉부위 = 0
+SOURCE:쾌B = 0
+IF TEQUIP:계속키스
+	TFLAG:193 = 1
+	RETURN
+ENDIF
+SELECTCASE RAND:4
+	CASE 0
+		TFLAG:194 = 0
+	CASE 1
+		IF K30_KISS_CANCEL() || !RAND:3
+			SOURCE:쾌B = 250
+			TEQUIP:30:B접촉부위 = 3
+			TFLAG:193 = 2
+		ELSE
+			TEQUIP:계속키스 = 1
+			TEQUIP:30:입접촉부위 = 4
+			SOURCE:쾌M = 200
+			TFLAG:193 = 1
+		ENDIF
+	CASE 2
+		SOURCE:쾌B = 250
+		TEQUIP:30:B접촉부위 = 3
+		TFLAG:193 = 2
+	CASE 3
+		TEQUIP:30:C접촉부위 = 3
+		SOURCE:쾌C = 250
+		SOURCE:쾌V += 50
+		TFLAG:193 = 3
+ENDSELECT
+RETURN
+
+;==================================================
+;71,二穴挿し
+;==================================================
+@M_KOJO_MESSAGE_COM_K30_71
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K30_71_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K30_71_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;考えうる分岐가多해엣る의で地의文의大まかな分岐だけ
+	;連続
+	IF PREVCOM == SELECTCOM
+		PRINTFORMW 
+		RETURN 1
+	;主人V삽입→助手A삽입
+	ELSEIF TCVAR:100 == MASTER
+		PRINTFORMW 
+		RETURN 1
+	;主人A삽입→助手V삽입
+	ELSEIF TCVAR:101 == MASTER
+		PRINTFORMW 
+		RETURN 1
+	;助手V삽입→主人A삽입
+	ELSEIF TCVAR:100 == ASSI
+		PRINTFORMW 
+		RETURN 1
+	;助手A삽입→主人V삽입
+	ELSEIF TCVAR:101 == ASSI
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+
+;==================================================
+;77,小人オナホ(針妙丸用？
+;==================================================
+@M_KOJO_MESSAGE_COM_K30_77
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K30_77_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K30_77_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;小分岐
+	;-------------------------------------------------
+	;初めて
+	;記入チェック
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+	ENDIF
+	;-------------------------------------------------
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && TCVAR:101 == PLAYER
+		;前回사정した
+		IF TCVAR:104
+			PRINTFORMW 
+			RETURN 1
+		ELSE
+			PRINTFORMW 
+			RETURN 1
+		ENDIF
+	ENDIF
+	;基本セット
+	;연모
+	IF TALENT:연모
+		PRINTFORMW 
+		RETURN 1
+	;屈服3
+	ELSEIF MARK:반발각인 == 3
+		PRINTFORMW 
+		RETURN 1
+	;그거以外
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
